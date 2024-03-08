@@ -44,11 +44,12 @@ async function getWorldNews() {
       }
     });
 
-    const Summerizer = new node_summerizer.SummarizerManager(body, 4);
+    const Summerizer = new node_summerizer.SummarizerManager(body, 5);
     worldNewsData[heading] = {
       img: img,
       content: (await Summerizer.getSummaryByRank()).summary,
     };
+
   }
 
   fileSystem.writeFile(
@@ -83,7 +84,7 @@ async function getTechNews() {
       }
     });
 
-    const Summerizer = new node_summerizer.SummarizerManager(body, 4);
+    const Summerizer = new node_summerizer.SummarizerManager(body, 5);
     worldNewsData[heading] = {
       img: img,
       content: (await Summerizer.getSummaryByRank()).summary,
@@ -131,7 +132,7 @@ async function getScienceNews() {
       }
     });
 
-    const Summerizer = new node_summerizer.SummarizerManager(body, 4);
+    const Summerizer = new node_summerizer.SummarizerManager(body, 5);
     scienceNewsData[heading] = {
       img: img,
       content: (await Summerizer.getSummaryByRank()).summary,
