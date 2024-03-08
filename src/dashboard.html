@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MailNews</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+
+  <body
+    class="w-screen bg-gradient-to-b from-slate-950 to-black overflow-x-clip"
+  >
+    <nav class="sticky"></nav>
+
+    <section id="hero" class="h-screen w-full grid overflow-y-clip">
+      <div class="w-2/12 h-2/12 bg-gray-400 -z-20 absolute"></div>
+
+      <div
+        class="p-4 w-2/12 h-min shadow-md rounded-md border border-green-800 absolute right-0 z-0 animate-pulse hover:animate-none"
+      >
+        <div class="h-2 bg-blue-950 mb-5 pb-2 rounded-full"></div>
+        <div class="space-y-5">
+          <div class="h-1 bg-purple-600 rounded w-4/6"></div>
+          <div class="h-1 bg-green-900 rounded w-4/5"></div>
+          <div class="h-1 bg-yellow-600 rounded w-3/5"></div>
+          <div class="h-1 bg-blue-800 rounded w-4/6"></div>
+        </div>
+      </div>
+
+      <div
+        class="p-4 w-2/12 h-min shadow-md rounded-md border border-purple-800 absolute top-24 -left-14 z-0 animate-pulse hover:animate-none"
+      >
+        <div class="h-2 bg-blue-950 mb-5 pb-2 rounded-full"></div>
+        <div class="space-y-5">
+          <div class="h-1 bg-purple-600 rounded w-4/6"></div>
+          <div class="h-1 bg-green-900 rounded w-4/5"></div>
+          <div class="h-1 bg-yellow-600 rounded w-3/5"></div>
+          <div class="h-1 bg-blue-800 rounded w-4/6"></div>
+        </div>
+      </div>
+
+      <div
+        class="p-4 w-2/12 h-min shadow-md rounded-md border border-yellow-500 absolute -right-24 z-5 bottom-40 animate-pulse hover:animate-none"
+      >
+        <div class="h-2 bg-blue-950 mb-5 pb-2 rounded-full"></div>
+        <div class="space-y-5">
+          <div class="h-1 bg-purple-600 rounded w-4/6"></div>
+          <div class="h-1 bg-green-900 rounded w-4/5"></div>
+          <div class="h-1 bg-yellow-600 rounded w-3/5"></div>
+          <div class="h-1 bg-blue-800 rounded w-4/6"></div>
+        </div>
+      </div>
+
+      <div
+        class="p-4 w-2/12 h-min shadow-md rounded-md border border-green-600 absolute -left-40 bottom-20 z-0 animate-pulse hover:animate-none"
+      >
+        <div class="h-2 bg-blue-950 mb-5 pb-2 rounded-full"></div>
+        <div class="space-y-5">
+          <div class="h-1 bg-purple-600 rounded w-4/6"></div>
+          <div class="h-1 bg-green-900 rounded w-4/5"></div>
+          <div class="h-1 bg-yellow-600 rounded w-3/5"></div>
+          <div class="h-1 bg-blue-800 rounded w-4/6"></div>
+        </div>
+      </div>
+      <section class="flex z-30 top-0">
+        <div
+          class="bg-black bg-opacity-40 w-fit px-10 h-screen flex flex-col justify-evenly backdrop-blur-sm text-center"
+        >
+          <a
+            href="#Prefrences"
+            class="text-white px-4 py-2 font-semibold text-3xl tracking-wider"
+            >Prefrences
+          </a>
+          <a
+            href=""
+            class="text-white px-4 py-2 font-semibold text-3xl tracking-wider"
+            >Account</a
+          >
+        </div>
+        <div class="px-10 overflow-y-scroll py-20">
+          <a name="Prefrences"></a>
+          <div><h1 class="text-white text-4xl">News Prefrences</h1></div>
+          <form action="/subscribe" class="text-white m-5" method="post">
+            <div class="grid grid-cols-3 grid-rows-3 gap-x-20 gap-y-5 text-2xl">
+              <label class="flex items-center">
+                <input
+                  type="checkbox"
+                  name="World"
+                  id="world"
+                  class="form-checkbox h-5 w-5"
+                />
+                <span class="ml-3 text-2xl">World News</span>
+              </label>
+              <label class="flex items-center">
+                <input
+                  type="checkbox"
+                  name="World"
+                  id="world"
+                  class="form-checkbox h-5 w-5"
+                />
+                <span class="ml-3 text-2xl">Science News</span>
+              </label>
+              <label class="flex items-center">
+                <input
+                  type="checkbox"
+                  name="World"
+                  id="world"
+                  class="form-checkbox h-5 w-5"
+                />
+                <span class="ml-3 text-2xl">Tech News</span>
+              </label>
+              <label class="flex items-center">
+                <input
+                  type="checkbox"
+                  name="World"
+                  id="world"
+                  class="form-checkbox h-5 w-5"
+                />
+                <span class="ml-3 text-2xl">Business News</span>
+              </label>
+            </div>
+          </form>
+        </div>
+      </section>
+    </section>
+  </body>
+</html>

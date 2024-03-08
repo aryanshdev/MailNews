@@ -1,0 +1,12 @@
+@tailwind utilities;
+@tailwind base;
+@tailwind components;
+
+.very-wide {
+    letter-spacing: 1rem;
+    transition: all 250ms;
+  }
+.hover\:very-very-wide:hover {
+    letter-spacing: 1.92rem;
+    transition: all 250ms;
+  }

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MailNews</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body class="w-screen bg-gradient-to-b from-slate-950 to-black">
+
+<nav class="sticky "></nav>
+
+<section id="hero" class="h-screen w-full  grid">
+     <div class="w-2/12 h-2/12 bg-gray-400  -z-20 absolute "></div> 
+
+    <div
+        class="p-4 w-2/12 h-min shadow-md rounded-md border border-green-800 absolute right-0 z-0 animate-pulse hover:animate-none">
+        <div class="h-2  bg-blue-950 mb-5 pb-2 rounded-full"></div>
+        <div class="space-y-5">
+            <div class="h-1 bg-purple-600 rounded w-4/6"></div>
+            <div class="h-1 bg-green-900 rounded w-4/5"></div>
+            <div class="h-1 bg-yellow-600 rounded w-3/5"></div>
+            <div class="h-1 bg-blue-800 rounded w-4/6"></div>
+        </div>
+    </div>
+
+    <div
+        class="p-4 w-2/12 h-min shadow-md rounded-md border border-purple-800 absolute top-24 -left-14 z-0 animate-pulse hover:animate-none">
+        <div class="h-2  bg-blue-950 mb-5 pb-2 rounded-full"></div>
+        <div class="space-y-5">
+            <div class="h-1 bg-purple-600 rounded w-4/6"></div>
+            <div class="h-1 bg-green-900 rounded w-4/5"></div>
+            <div class="h-1 bg-yellow-600 rounded w-3/5"></div>
+            <div class="h-1 bg-blue-800 rounded w-4/6"></div>
+        </div>
+    </div>
+
+    <div
+        class="p-4 w-2/12 h-min shadow-md rounded-md border border-yellow-500 absolute -right-24 z-5 bottom-40 animate-pulse hover:animate-none">
+        <div class="h-2  bg-blue-950 mb-5 pb-2 rounded-full"></div>
+        <div class="space-y-5">
+            <div class="h-1 bg-purple-600 rounded w-4/6"></div>
+            <div class="h-1 bg-green-900 rounded w-4/5"></div>
+            <div class="h-1 bg-yellow-600 rounded w-3/5"></div>
+            <div class="h-1 bg-blue-800 rounded w-4/6"></div>
+        </div>
+    </div>
+
+    <div
+        class="p-4 w-2/12 h-min shadow-md rounded-md border border-green-600 absolute -left-40 bottom-20 z-0 animate-pulse hover:animate-none">
+        <div class="h-2  bg-blue-950 mb-5 pb-2 rounded-full"></div>
+        <div class="space-y-5">
+            <div class="h-1 bg-purple-600 rounded w-4/6"></div>
+            <div class="h-1 bg-green-900 rounded w-4/5"></div>
+            <div class="h-1 bg-yellow-600 rounded w-3/5"></div>
+            <div class="h-1 bg-blue-800 rounded w-4/6"></div>
+        </div>
+    </div>
+
+    <div class="text-center absolute w-full z-10 top-1/2 -translate-y-1/2 uppercase">
+
+        <h1 class="text-white font-sans lg:text-7xl mb-12 lg:very-wide sm:tracking-wide hover:very-very-wide font-bold sm:text-3xl "  >MailNews</h1>
+        <p class="text-2xl capitalize text-white tracking-widest">World News, directly to your mailbox<br>Powered by <span class="uppercase font-bold ">nlp</span> &amp; <span class="capitalize font-bold">Google</span></p>
+    </div>
+</section>
+
+<section class="w-screen h-screen">
+    <form class="bg-slate-950 flex-1 place-self-stretch" action="/subscribe" method="post">
+        <input class="rounded-2xl placeholder-blue-950" type="text" name="name" id="name" placeholder="Your Name">
+        <label for="email">Enter Email : </label>
+        <input class="invalid:text-red-800" type="email" name="email" id="email" placeholder="Your Email">
+        <select id="country" name="country" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+            <option>United States</option>
+            <option>Canada</option>
+            <option>Mexico</option>
+          </select>
+        <input class="bg-white place-self-center w-fit px-8 py-4 hover:w-full" type="submit" value="Subscribe">
+    </form>
+</section>
+
+</body>
+
+</html>
