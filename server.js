@@ -21,7 +21,7 @@ app.use(express.static("src"));
 
 app.listen(3000, async () => {
 //   await dbClient.connect();
-  await newsWritter.getScienceNews();
+  await newsWritter.generateNewsFiles();
   console.log("SERVER RUNNING ON PORT 3000");
 });
 
