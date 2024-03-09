@@ -315,9 +315,8 @@ async function getEntertainmentNews() {
 }
 
 async function generateNewsFiles() {
-  await Promise.all([getWorldNews(), getTechNews()]);
-  await Promise.all([getEntertainmentNews(), getScienceNews()]);
-  await Promise.all([getBusinessNews(), getSportsNews()]);
+  await Promise.all([getWorldNews(), getTechNews(), getScienceNews()]);
+  await Promise.all([getBusinessNews(), getSportsNews(), getEntertainmentNews()]);
 }
 
 module.exports = { generateNewsFiles };
