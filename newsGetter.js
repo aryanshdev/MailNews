@@ -5,7 +5,7 @@ const node_summerizer = require("node-summarizer");
 const { workerData } = require("worker_threads");
 
 let worldNewsURLs = "https://www.ndtv.com/world-news";
-let techNewsURLs = "https://www.gadgets360.com/news";
+let techNewsURLs = "https://techcrunch.com/";
 let scienceNewsURL = "https://www.nature.com/latest-news";
 
 const reqHeaders = {
@@ -16,7 +16,7 @@ const reqHeaders = {
   "Accept-Language": "en-US,en;q=0.5",
 };
 
-let techNewsData = {};
+
 
 async function getWorldNews() {
   let worldNewsData = {};
@@ -60,13 +60,15 @@ async function getWorldNews() {
 }
 
 async function getTechNews() {
-  let rawMainHTML = await axios.get(worldNewsURLs, {
+  let techNewsData = {};
+
+  let rawMainHTML = await axios.get(techNewsURLs, {
     headers: reqHeaders,
   });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
 
-  const newsLinks = $(".newsHdng a").toArray();
+  const newsLinks = $(".post-block__title__link").toArray();
   for (const aLink of newsLinks) {
     let rawArticleHTML = await axios.get(aLink.attribs["href"], {
       headers: reqHeaders,
@@ -85,7 +87,7 @@ async function getTechNews() {
     });
 
     const Summerizer = new node_summerizer.SummarizerManager(body, 5);
-    worldNewsData[heading] = {
+    techNewsData[heading] = {
       img: img,
       content: (await Summerizer.getSummaryByRank()).summary,
     };
