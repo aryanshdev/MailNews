@@ -296,7 +296,6 @@ async function getEntertainmentNews() {
         text = articleHTML(para).text();
       }
 
-      console.log("\n");
       if (text !== null) {
         body += text;
       }
@@ -316,14 +315,9 @@ async function getEntertainmentNews() {
 }
 
 async function generateNewsFiles() {
-  await Promise.all([
-    getWorldNews(),
-    getTechNews(),
-    getScienceNews(),
-    getBusinessNews(),
-    getSportsNews(),
-    getEntertainmentNews(),
-  ]);
+  await Promise.all([getWorldNews(), getTechNews()]);
+  await Promise.all([getEntertainmentNews(), getScienceNews()]);
+  await Promise.all([getBusinessNews(), getSportsNews()]);
 }
 
 module.exports = { generateNewsFiles };
