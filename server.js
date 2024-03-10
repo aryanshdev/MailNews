@@ -23,6 +23,7 @@ app.listen(3000, async () => {
 //   await dbClient.connect();
   await newsWritter.generateNewsFiles();
   console.log("SERVER RUNNING ON PORT 3000");
+  process.exit(0);
 });
 
 app.get("/", (req, res) => {

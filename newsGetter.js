@@ -61,6 +61,7 @@ async function getWorldNews() {
     JSON.stringify(worldNewsData),
     (error) => {}
   );
+  console.log("GENERATED WORLD NEWS")
 }
 
 async function getTechNews() {
@@ -110,6 +111,7 @@ async function getTechNews() {
     JSON.stringify(techNewsData),
     (error) => {}
   );
+  console.log("GENERATED TECH NEWS")
 }
 
 async function getScienceNews() {
@@ -158,6 +160,8 @@ async function getScienceNews() {
     JSON.stringify(scienceNewsData),
     (error) => {}
   );
+
+  console.log("GENERATED SCIENCE NEWS")
 }
 
 async function getBusinessNews() {
@@ -211,6 +215,8 @@ async function getBusinessNews() {
     JSON.stringify(businessNewsData),
     (error) => {}
   );
+
+  console.log("GENERATED BUSINESS NEWS")
 }
 
 async function getSportsNews() {
@@ -263,6 +269,8 @@ async function getSportsNews() {
     JSON.stringify(sportsNewsData),
     (error) => {}
   );
+
+  console.log("GENERATED SPORTS NEWS")
 }
 
 async function getEntertainmentNews() {
@@ -312,6 +320,8 @@ async function getEntertainmentNews() {
     JSON.stringify(entertainmentNewsData),
     (error) => {}
   );
+
+  console.log("GENERATED ENTERTAINMENT NEWS")
 }
 
 async function generateNewsFiles() {

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    
+<section class="w-screen h-screen">
+    <form class="bg-slate-950 flex-1 place-self-stretch" action="/subscribe" method="post">
+        <input class="rounded-2xl placeholder-blue-950" type="text" name="name" id="name" placeholder="Your Name">
+        <label for="email">Enter Email : </label>
+        <input class="invalid:text-red-800" type="email" name="email" id="email" placeholder="Your Email">
+        <select id="country" name="country" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+            <option>United States</option>
+            <option>Canada</option>
+            <option>Mexico</option>
+          </select>
+        <input class="bg-white place-self-center w-fit px-8 py-4 hover:w-full" type="submit" value="Subscribe">
+    </form>
+</section>
+</body>
+</html>

@@ -202,6 +202,18 @@
   place-self: stretch;
 }
 
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-x-hidden {
+  overflow-x: hidden;
+}
+
+.overflow-y-hidden {
+  overflow-y: hidden;
+}
+
 .overflow-x-clip {
   overflow-x: clip;
 }
@@ -1058,6 +1070,10 @@ video {
     max-width: 20rem;
   }
 
+  .sm\:text-left {
+    text-align: left;
+  }
+
   .sm\:text-3xl {
     font-size: 1.875rem;
     line-height: 2.25rem;
@@ -1074,6 +1090,12 @@ video {
 
   .sm\:tracking-wide {
     letter-spacing: 0.025em;
+  }
+}
+
+@media (min-width: 768px) {
+  .md\:text-left {
+    text-align: left;
   }
 }
 
