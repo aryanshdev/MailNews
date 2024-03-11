@@ -52,6 +52,7 @@ async function getWorldNews() {
     const Summerizer = new node_summerizer.SummarizerManager(body, 5);
     worldNewsData[heading] = {
       img: img,
+      link: aLink.attribs["href"],
       content: (await Summerizer.getSummaryByRank()).summary,
     };
   }
@@ -61,7 +62,7 @@ async function getWorldNews() {
     JSON.stringify(worldNewsData),
     (error) => {}
   );
-  console.log("GENERATED WORLD NEWS")
+  console.log("GENERATED WORLD NEWS");
 }
 
 async function getTechNews() {
@@ -102,6 +103,7 @@ async function getTechNews() {
     const Summerizer = new node_summerizer.SummarizerManager(body, 5);
     techNewsData[heading] = {
       img: img,
+      link:aLink.attribs["href"],
       content: (await Summerizer.getSummaryByRank()).summary,
     };
   }
@@ -111,7 +113,7 @@ async function getTechNews() {
     JSON.stringify(techNewsData),
     (error) => {}
   );
-  console.log("GENERATED TECH NEWS")
+  console.log("GENERATED TECH NEWS");
 }
 
 async function getScienceNews() {
@@ -137,7 +139,7 @@ async function getScienceNews() {
     let articleHTML = cheerio.load(rawArticleHTML);
     let heading = articleHTML("h1.c-article-magazine-title").text();
     let img = articleHTML("figure.figure picture img")["0"]
-      ? "https://www.nature.com" +
+      ? "https:" +
         articleHTML("figure.figure picture img")["0"].attribs.src
       : null; // articleHTML(".ytp-cued-thumbnail-overlay-image")[0].attribs.style.match(/https?:\/\/[^\\s]+/)[0];
     let body = "";
@@ -151,6 +153,7 @@ async function getScienceNews() {
     const Summerizer = new node_summerizer.SummarizerManager(body, 5);
     scienceNewsData[heading] = {
       img: img,
+      link: "https://www.nature.com" + aLink.attribs["href"],
       content: (await Summerizer.getSummaryByRank()).summary,
     };
   }
@@ -161,7 +164,7 @@ async function getScienceNews() {
     (error) => {}
   );
 
-  console.log("GENERATED SCIENCE NEWS")
+  console.log("GENERATED SCIENCE NEWS");
 }
 
 async function getBusinessNews() {
@@ -206,6 +209,7 @@ async function getBusinessNews() {
     const Summerizer = new node_summerizer.SummarizerManager(body, 5);
     businessNewsData[heading] = {
       img: img,
+      link : "https://www.reuters.com" + aLink.attribs["href"],
       content: (await Summerizer.getSummaryByRank()).summary,
     };
   }
@@ -216,7 +220,7 @@ async function getBusinessNews() {
     (error) => {}
   );
 
-  console.log("GENERATED BUSINESS NEWS")
+  console.log("GENERATED BUSINESS NEWS");
 }
 
 async function getSportsNews() {
@@ -260,6 +264,7 @@ async function getSportsNews() {
     const Summerizer = new node_summerizer.SummarizerManager(body, 5);
     sportsNewsData[heading] = {
       img: img,
+      link :  "https://www.reuters.com" + aLink.attribs["href"],
       content: (await Summerizer.getSummaryByRank()).summary,
     };
   }
@@ -269,8 +274,7 @@ async function getSportsNews() {
     JSON.stringify(sportsNewsData),
     (error) => {}
   );
-
-  console.log("GENERATED SPORTS NEWS")
+  console.log("GENERATED SPORTS NEWS");
 }
 
 async function getEntertainmentNews() {
@@ -311,6 +315,7 @@ async function getEntertainmentNews() {
     const Summerizer = new node_summerizer.SummarizerManager(body, 5);
     entertainmentNewsData[heading] = {
       img: img,
+      link :  "https://www.wionews.com" + aLink.attribs["href"],
       content: (await Summerizer.getSummaryByRank()).summary,
     };
   }
@@ -321,12 +326,18 @@ async function getEntertainmentNews() {
     (error) => {}
   );
 
-  console.log("GENERATED ENTERTAINMENT NEWS")
+  console.log("GENERATED ENTERTAINMENT NEWS");
 }
 
 async function generateNewsFiles() {
-  await Promise.all([getWorldNews(), getTechNews(), getScienceNews()]);
-  await Promise.all([getBusinessNews(), getSportsNews(), getEntertainmentNews()]);
+  await Promise.all([
+    getWorldNews(),
+    getTechNews(),
+    getScienceNews(),
+    getBusinessNews(),
+    getSportsNews(),
+    getEntertainmentNews(),
+  ]);
 }
 
 module.exports = { generateNewsFiles };

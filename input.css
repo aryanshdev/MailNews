@@ -10,3 +10,15 @@
     letter-spacing: 1.92rem;
     transition: all 250ms;
   }
+
+
+::-webkit-scrollbar-track {
+  background: #fc0000;
+  border-radius: 5px;
+}
+
+
+::-webkit-scrollbar-thumb {
+  background: #b73737;
+  border-radius: 5px;
+}

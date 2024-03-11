@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MailNews</title>
+  <link href="style.css" rel="stylesheet" />
+</head>
+
+<body class="bg-slate-950 flex w-screen h-screen scroll-smooth">
+  <!-- SIDE NAVBAR ON LARGE DISPLAY -->
+
+  <div
+    class="hidden xl:flex w-1/5 h-screen px-5 bg-slate-900 text-white font-semibold text-lg bg-opacity-35 backdrop-blur-lg flex-col justify-center text-center">
+    <h1 class="text-3xl font-extrabold">MailNews</h1>
+    <div class="flex-col flex justify-evenly text-center h-2/3">
+      <a href="">World News</a>
+      <a href="">Science News</a>
+      <a href="">Tech News</a>
+      <a href="">Business News</a>
+      <a href="">Sports News</a>
+      <a href="">Entertainment News</a>
+    </div>
+  </div>
+
+  <!-- TOP NAVBAR ON LARGE DISPLAY -->
+  <div class="w-screen xl:w-4/5 h-auto overflow-x-scroll">
+    <button onclick="moveRight()" id="arrow-right"
+      class="backdrop-blur-md py-2 align-middle fixed z-50 top-auto right-0 xl:hidden disabled:fill-green-700">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="white"
+        class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+      </svg>
+    </button>
+    <button onclick="moveLeft()" id="arrow-left"
+      class="backdrop-blur-md py-2 align-middle fixed z-50 top-auto left-0 xl:hidden">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="white"
+        class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+      </svg>
+    </button>
+    <div
+      class="flex xl:hidden h-auto whitespace-nowrap overflow-y-scroll scroll-smooth top-0 sticky z-10 bg-slate-800 text-white font-semibold text-lg bg-opacity-35 backdrop-blur-lg flex-row text-center">
+      <div class="sticky flex-row py-2 flex text-center h-fit min-w-fit overflow-x-scroll">
+        <div class="w-screen" id="world-btn">
+          <a href="">World News</a>
+          <div class="w-10/12 mx-auto bg-gray-200 rounded-full h-1.5 mt-2 dark:bg-gray-700">
+            <div class="bg-blue-600 h-1 rounded-full" id="progress-world" style="width: 45%"></div>
+          </div>
+        </div>
+        <div class="w-screen" id="science-btn">
+          <a href="">Science News</a>
+        </div>
+        <div class="w-screen" id="tech-btn"" ><a href="">Tech News</a>
+        </div>
+        <div class=" w-screen" id="business-btn">
+          <a href="">Business News</a>
+        </div>
+        <div class="w-screen" id="sports-btn"><a href="">Sports News</a></div>
+        <div class="w-screen" id="entertainment-btn">
+          <a href="">Entertainment News</a>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div id="world" onscroll="updateSectionProgress('world')" style="position: relative;">
+        <div class="progress-bar" id="progress-world"></div>
+        <h1 class="text-white text-2xl font-bold mt-10 text-center">World News</h1>
+        <% for (news in worldNews) { %>
+          <%- include('newsContainer',{ 
+            newsContent: worldNews[news]['content'],
+            newsHeading: news, 
+            newsImgSrc: worldNews[news]['img'], 
+            newsLink: worldNews[news]['link']})
+          %>
+        <% } %>
+      </div>
+      <div id="science">
+        <h1 class="text-white text-2xl font-bold mt-10 text-center">
+          Science News
+        </h1>
+        <% for (news in scienceNews) { %> <%- include('newsContainer',{ newsContent: scienceNews[news]['content'],
+            newsHeading: news, newsImgSrc: scienceNews[news]['img'], newsLink: scienceNews[news]['link']}) %>
+            <% } %>
+      </div>
+      <div id="tech">
+        <h1 class="text-white text-2xl font-bold mt-10 text-center">
+          Tech News
+        </h1>
+        <% for (news in scienceNews) { %> <%- include('newsContainer',{ newsContent: scienceNews[news]['content'],
+            newsHeading: news, newsImgSrc: scienceNews[news]['img'], newsLink: scienceNews[news]['link']}) %>
+            <% } %>
+      </div>
+      <div id="business">
+        <h1 class="text-white text-2xl font-bold mt-10 text-center">
+          Business News
+        </h1>
+        <% for (news in scienceNews) { %> <%- include('newsContainer',{ newsContent: scienceNews[news]['content'],
+            newsHeading: news, newsImgSrc: scienceNews[news]['img'], newsLink: scienceNews[news]['link']}) %>
+            <% } %>
+      </div>
+      <div id="sports">
+        <h1 class="text-white text-2xl font-bold mt-10 text-center">
+          Sports News
+        </h1>
+        <% for (news in scienceNews) { %> <%- include('newsContainer',{ newsContent: scienceNews[news]['content'],
+            newsHeading: news, newsImgSrc: scienceNews[news]['img'], newsLink: scienceNews[news]['link']}) %>
+            <% } %>
+      </div>
+      <div id="entertainment">
+        <h1 class="text-white text-2xl font-bold mt-10 text-center">
+          Entertainment News
+        </h1>
+        <% for (news in scienceNews) { %> <%- include('newsContainer',{ newsContent: scienceNews[news]['content'],
+            newsHeading: news, newsImgSrc: scienceNews[news]['img'], newsLink: scienceNews[news]['link']}) %>
+            <% } %>
+      </div>
+    </div>
+</body>
+<script>
+  let sectionArrays = [
+    "#world",
+    "#science",
+    "#tech",
+    "#business",
+    "#sports",
+    "#entertainment",
+  ];
+
+  let i = 0;
+  try {
+    i = sectionArrays.find("#" + window.location.href.split("#")[1].trim());
+  } catch (error) {
+    i = 0;
+  }
+  function updateSectionProgress(sectionId) {
+  const section = document.getElementById(sectionId);
+  const progressBar = document.getElementById(`progress-${sectionId}`);
+
+  if (!section || !progressBar) {
+    return; // Handle potential errors
+  }
+
+  const sectionHeight = section.scrollHeight;
+  const visibleHeight = section.clientHeight;
+  const scrollTop = section.scrollTop;
+
+  // Calculate scroll progress as a percentage
+  const scrollProgress = Math.min(scrollTop / (sectionHeight - visibleHeight), 1) * 100;
+
+  // Update progress bar width using CSS style
+  progressBar.style.width = `${scrollProgress}%`;
+}
+
+
+
+
+  function moveRight() {
+    i++;
+    document.querySelector("#arrow-left").removeAttribute("disabled");
+    document.querySelector(sectionArrays[i]).scrollIntoView();
+    document.querySelector(sectionArrays[i] + "-btn").scrollIntoView({
+      block: "center",
+    });
+
+    if (i == 5) {
+      document
+        .querySelector("#arrow-right")
+        .setAttribute("disabled", "disabled");
+    }
+    console.log(i);
+  }
+  function moveLeft() {
+    i--;
+    if (i < 0) {
+      document
+        .querySelector("#arrow-left")
+        .setAttribute("disabled", "disabled");
+      i = 0;
+      return;
+    }
+    document.querySelector("#arrow-right").removeAttribute("disabled");
+    document.querySelector(sectionArrays[i]).scrollIntoView();
+    document.querySelector(sectionArrays[i] + "-btn").scrollIntoView({
+      block: "center",
+    });
+    if (i == 0) {
+      document
+        .querySelector("#arrow-left")
+        .setAttribute("disabled", "disabled");
+    }
+  }
+</script>
+
+</html>
