@@ -25,7 +25,10 @@
     </div>
 
     <!-- TOP NAVBAR ON SMALL DISPLAY -->
-    <div  class="w-screen xl:w-4/5 h-auto overflow-x-scroll xl:overflow-x-auto"  onscroll="updateSectionProgress()">
+    <div
+      class="w-screen xl:w-4/5 h-auto overflow-x-scroll xl:overflow-x-auto"
+      id="progressAttach"
+    >
       <button
         onclick="moveRight()"
         id="arrow-right"
@@ -71,10 +74,10 @@
         class="flex xl:hidden h-auto whitespace-nowrap overflow-y-scroll scroll-smooth top-0 sticky z-10 bg-slate-800 text-white font-semibold text-lg bg-opacity-35 backdrop-blur-lg flex-row text-center"
       >
         <div
-          class="sticky flex-row py-2 flex text-center h-fit min-w-fit overflow-x-scroll "
+          class="sticky flex-row py-2 flex text-center h-fit min-w-fit overflow-x-scroll"
         >
           <div class="w-screen" id="world-btn">
-            <a >World News</a>
+            <a>World News</a>
             <div
               class="bg-gray-200 w-4/5 m-auto rounded-full h-auto dark:bg-gray-700"
             >
@@ -86,7 +89,7 @@
             </div>
           </div>
           <div class="w-screen" id="science-btn">
-            <a >Science News</a>
+            <a>Science News</a>
             <div
               class="bg-gray-200 w-4/5 m-auto rounded-full h-auto dark:bg-gray-700"
             >
@@ -97,8 +100,7 @@
               ></div>
             </div>
           </div>
-          <div class="w-screen" id="tech-btn"" 
-          ><a>Tech News</a>
+          <div class="w-screen" id="tech-btn"" ><a>Tech News</a>
           <div
             class="bg-gray-200 w-4/5 m-auto rounded-full h-auto dark:bg-gray-700"
           >
@@ -110,7 +112,7 @@
           </div>
         </div>
         <div class="w-screen" id="business-btn">
-          <a >Business News</a>
+          <a>Business News</a>
           <div
             class="bg-gray-200 w-4/5 m-auto rounded-full h-auto dark:bg-gray-700"
           >
@@ -134,7 +136,7 @@
           </div>
         </div>
         <div class="w-screen" id="entertainment-btn">
-          <a >Entertainment News</a>
+          <a>Entertainment News</a>
           <div
             class="bg-gray-200 w-4/5 m-auto rounded-full h-auto dark:bg-gray-700"
           >
@@ -149,9 +151,7 @@
     </div>
     <div>
       <div id="world" class="pt-12">
-        <h1 class="text-white text-2xl font-bold   text-center">
-          World News
-        </h1>
+        <h1 class="text-white text-2xl font-bold text-center">World News</h1>
         <% for (news in worldNews) { %> <%- include('newsContainer',{
         newsContent: worldNews[news]['content'], newsHeading: news, newsImgSrc:
         worldNews[news]['img'], newsLink: worldNews[news]['link']}) %> <% } %>
@@ -170,9 +170,8 @@
           Tech News
         </h1>
         <% for (news in techNews) { %> <%- include('newsContainer',{
-        newsContent: techNews[news]['content'], newsHeading: news,
-        newsImgSrc: techNews[news]['img'], newsLink:
-        techNews[news]['link']}) %> <% } %>
+        newsContent: techNews[news]['content'], newsHeading: news, newsImgSrc:
+        techNews[news]['img'], newsLink: techNews[news]['link']}) %> <% } %>
       </div>
       <div id="business" class="pt-5">
         <h1 class="text-white text-2xl font-bold mt-10 text-center">
@@ -188,9 +187,8 @@
           Sports News
         </h1>
         <% for (news in sportsNews) { %> <%- include('newsContainer',{
-        newsContent: sportsNews[news]['content'], newsHeading: news,
-        newsImgSrc: sportsNews[news]['img'], newsLink:
-        sportsNews[news]['link']}) %> <% } %>
+        newsContent: sportsNews[news]['content'], newsHeading: news, newsImgSrc:
+        sportsNews[news]['img'], newsLink: sportsNews[news]['link']}) %> <% } %>
       </div>
       <div id="entertainment" class="pt-5">
         <h1 class="text-white text-2xl font-bold mt-10 text-center">
@@ -216,29 +214,30 @@
     let currentSlide = 0;
     let lastAuto = false;
     try {
-      currentSlide = sectionArrays.find(
+      currentSlide = sectionArrays.indexOf(
         "#" + window.location.href.split("#")[1].trim()
       );
     } catch (error) {
       currentSlide = 0;
-    }
+    } 
 
     function updatePanelAuto() {
-
       document
         .querySelector(sectionArrays[currentSlide] + "-btn")
         .scrollIntoView();
-      // if (currentSlide == 0) {
-      //   document
-      //     .querySelector("#arrow-left")
-      //     .setAttribute("disabled", "disabled");
-      // }
-      // if (currentSlide == 5) {
-      //   document
-      //     .querySelector("#arrow-right")
-      //     .setAttribute("disabled", "disabled");
-      // }
+
+      if (currentSlide == 0) {
+        document
+          .querySelector("#arrow-left")
+          .setAttribute("disabled", "disabled");
+      }
+      if (currentSlide == 5) {
+        document
+          .querySelector("#arrow-right")
+          .setAttribute("disabled", "disabled");
+      }
     }
+    updatePanelAuto();
 
     function updateSectionProgress() {
       for (let j = 0; j < 6; j++) {
@@ -255,35 +254,12 @@
           sectionArrays.indexOf(lastHundred) <
             sectionArrays.indexOf("#" + sectionId)
         ) {
-          console.log("lastHundred: " + lastHundred);
           lastHundred = "#" + sectionId;
           currentSlide = sectionArrays.indexOf(lastHundred) + 1;
-          currentSlide = currentSlide == 6 ? 5 : currentSlide;
-          console.log("lastHundred: " + lastHundred);
-          console.log("currentSlide: " + currentSlide);
+          currentSlide = currentSlide > 5 ? 5 : currentSlide;
           updatePanelAuto();
         }
 
-        // if (
-        //   value > 99 &&
-        //   currentSlide == sectionArrays.indexOf("#" + sectionId)
-        // ) {
-        //   currentSlide = sectionArrays.indexOf("#" + sectionId) + 1;
-        //   currentSlide = currentSlide == 6 ? 5 : currentSlide;
-        //   lastAuto = true;
-        //   updatePanelAuto();
-        // }
-        // else if (
-        //   value < 0 &&
-        //   currentSlide == sectionArrays.indexOf("#" + sectionId)
-        //  // && lastAuto != true
-        // ) {
-        //   console.log(value)
-        //   lastAuto = false;
-        //   currentSlide = sectionArrays.indexOf("#" + sectionId) - 1;
-        //   currentSlide = currentSlide == -1 ? 0 : currentSlide;
-        //  updatePanelAuto();
-        // }
         value = value >= 99 ? 100 : value;
         value = value <= 0 ? 0 : value;
 
@@ -328,5 +304,9 @@
           .setAttribute("disabled", "disabled");
       }
     }
+    document.getElementById("progressAttach").addEventListener("scroll", () => {
+      updateSectionProgress();
+    });
+    document.onload = updatePanelAuto();
   </script>
 </html>
