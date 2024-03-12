@@ -214,16 +214,19 @@
       "#entertainment",
     ];
 
-    let i = 0;
+    let currentSlide = 0;
+    let lastAuto = false;
     try {
-      i = sectionArrays.find("#" + window.location.href.split("#")[1].trim());
+      currentSlide = sectionArrays.find(
+        "#" + window.location.href.split("#")[1].trim()
+      );
     } catch (error) {
-      i = 0;
+      currentSlide = 0;
     }
 
     function updateSectionProgress() {
-      for (let i = 0; i < 6; i++) {
-        var sectionId = sectionArrays[i].replace("#", "");
+      for (let j = 0; j < 6; j++) {
+        var sectionId = sectionArrays[j].replace("#", "");
         var ele = document.getElementById(sectionId);
 
         let value = Math.ceil(
@@ -232,47 +235,90 @@
             100
         );
 
-        value = value >= 100 ? 100 : value;
+        if (
+          value > 99 &&
+          currentSlide == sectionArrays.indexOf("#" + sectionId)
+        ) {
+          currentSlide = sectionArrays.indexOf("#" + sectionId) + 1;
+          currentSlide = currentSlide == 6 ? 5 : currentSlide;
+          lastAuto = true;
+          updatePanelAuto();
+        }
+        else if (
+          value < 0 &&
+          currentSlide == sectionArrays.indexOf("#" + sectionId)
+         // && lastAuto != true
+        ) {
+          console.log(value)
+          lastAuto = false;
+          currentSlide = sectionArrays.indexOf("#" + sectionId) - 1;
+          currentSlide = currentSlide == -1 ? 0 : currentSlide;
+         updatePanelAuto();
+        }
+        value = value >= 98 ? 100 : value;
         value = value <= 0 ? 0 : value;
+
         document.getElementById(`progress-${sectionId}`).style.width =
           value + "%";
       }
     }
 
     function moveRight() {
-      i++;
+      currentSlide++;
       document.querySelector("#arrow-left").removeAttribute("disabled");
-      document.querySelector(sectionArrays[i]).scrollIntoView();
-      document.querySelector(sectionArrays[i] + "-btn").scrollIntoView({
-        behavior:"smooth",
-        block: "center",
-      });
+      document.querySelector(sectionArrays[currentSlide]).scrollIntoView();
+      document
+        .querySelector(sectionArrays[currentSlide] + "-btn")
+        .scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
 
-      if (i == 5) {
+      if (currentSlide == 5) {
         document
           .querySelector("#arrow-right")
           .setAttribute("disabled", "disabled");
       }
-      console.log(i);
+      console.log(currentSlide);
     }
     function moveLeft() {
-      i--;
-      if (i < 0) {
+      currentSlide--;
+      if (currentSlide < 0) {
         document
           .querySelector("#arrow-left")
           .setAttribute("disabled", "disabled");
-        i = 0;
+        currentSlide = 0;
         return;
       }
       document.querySelector("#arrow-right").removeAttribute("disabled");
-      document.querySelector(sectionArrays[i]).scrollIntoView();
-      document.querySelector(sectionArrays[i] + "-btn").scrollIntoView({
-        block: "center",
-        behavior:"smooth"
-      });
-      if (i == 0) {
+      document.querySelector(sectionArrays[currentSlide]).scrollIntoView();
+      document
+        .querySelector(sectionArrays[currentSlide] + "-btn")
+        .scrollIntoView({
+          block: "center",
+          behavior: "smooth",
+        });
+      if (currentSlide == 0) {
         document
           .querySelector("#arrow-left")
+          .setAttribute("disabled", "disabled");
+      }
+    }
+
+    function updatePanelAuto() {
+      document
+        .querySelector(sectionArrays[currentSlide] + "-btn")
+        .scrollIntoView({
+          behavior: "smooth",
+        });
+      if (currentSlide == 0) {
+        document
+          .querySelector("#arrow-left")
+          .setAttribute("disabled", "disabled");
+      }
+      if (currentSlide == 5) {
+        document
+          .querySelector("#arrow-right")
           .setAttribute("disabled", "disabled");
       }
     }
