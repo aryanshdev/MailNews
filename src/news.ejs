@@ -15,24 +15,21 @@
     >
       <h1 class="text-3xl font-extrabold">MailNews</h1>
       <div class="flex-col flex justify-evenly text-center h-2/3">
-        <a href="">World News</a>
-        <a href="">Science News</a>
-        <a href="">Tech News</a>
-        <a href="">Business News</a>
-        <a href="">Sports News</a>
-        <a href="">Entertainment News</a>
+        <a href="#world">World News</a>
+        <a href="#science">Science News</a>
+        <a href="#tech">Tech News</a>
+        <a href="#business">Business News</a>
+        <a href="#sports">Sports News</a>
+        <a href="#entertainment">Entertainment News</a>
       </div>
     </div>
 
-    <!-- TOP NAVBAR ON LARGE DISPLAY -->
-    <div
-      class="w-screen xl:w-4/5 h-auto overflow-x-scroll"
-      onscroll="updateSectionProgress()"
-    >
+    <!-- TOP NAVBAR ON SMALL DISPLAY -->
+    <div  class="w-screen xl:w-4/5 h-auto overflow-x-scroll xl:overflow-x-auto"  onscroll="updateSectionProgress()">
       <button
         onclick="moveRight()"
         id="arrow-right"
-        class="backdrop-blur-md py-2 align-middle fixed z-50 top-auto right-0 xl:hidden disabled:fill-green-700"
+        class="backdrop-blur-md py-2 align-middle fixed z-50 top-auto right-0 xl:hidden disabled:opacity-25"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -52,7 +49,8 @@
       <button
         onclick="moveLeft()"
         id="arrow-left"
-        class="backdrop-blur-md py-2 align-middle fixed z-50 top-auto left-0 xl:hidden"
+        disabled="disabled"
+        class="backdrop-blur-md py-2 align-middle fixed z-50 top-auto left-0 xl:hidden disabled:opacity-25"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -73,91 +71,92 @@
         class="flex xl:hidden h-auto whitespace-nowrap overflow-y-scroll scroll-smooth top-0 sticky z-10 bg-slate-800 text-white font-semibold text-lg bg-opacity-35 backdrop-blur-lg flex-row text-center"
       >
         <div
-          class="sticky flex-row py-2 flex text-center h-fit min-w-fit overflow-x-scroll"
+          class="sticky flex-row py-2 flex text-center h-fit min-w-fit overflow-x-scroll "
         >
           <div class="w-screen" id="world-btn">
-            <a href="">World News</a>
+            <a >World News</a>
             <div
               class="bg-gray-200 w-4/5 m-auto rounded-full h-auto dark:bg-gray-700"
             >
               <div
                 class="bg-blue-600 h-1 rounded-full"
                 id="progress-world"
-                style="width: 45%"
+                style="width: 0%"
               ></div>
             </div>
           </div>
           <div class="w-screen" id="science-btn">
-            <a href="">Science News</a>
+            <a >Science News</a>
             <div
               class="bg-gray-200 w-4/5 m-auto rounded-full h-auto dark:bg-gray-700"
             >
               <div
                 class="bg-blue-600 h-1 rounded-full"
                 id="progress-science"
-                style="width: 45%"
+                style="width: 0%"
               ></div>
             </div>
           </div>
-          <div class="w-screen" id="tech-btn"" ><a href="">Tech News</a>
+          <div class="w-screen" id="tech-btn"" 
+          ><a>Tech News</a>
           <div
             class="bg-gray-200 w-4/5 m-auto rounded-full h-auto dark:bg-gray-700"
           >
             <div
               class="bg-blue-600 h-1 rounded-full"
               id="progress-tech"
-              style="width: 45%"
+              style="width: 0%"
             ></div>
           </div>
         </div>
         <div class="w-screen" id="business-btn">
-          <a href="">Business News</a>
+          <a >Business News</a>
           <div
             class="bg-gray-200 w-4/5 m-auto rounded-full h-auto dark:bg-gray-700"
           >
             <div
               class="bg-blue-600 h-1 rounded-full"
               id="progress-business"
-              style="width: 45%"
+              style="width: 0%"
             ></div>
           </div>
         </div>
         <div class="w-screen" id="sports-btn">
-          <a href="">Sports News</a>
+          <a>Sports News</a>
           <div
             class="bg-gray-200 w-4/5 m-auto rounded-full h-auto dark:bg-gray-700"
           >
             <div
               class="bg-blue-600 h-1 rounded-full"
               id="progress-sports"
-              style="width: 45%"
+              style="width: 0%"
             ></div>
           </div>
         </div>
         <div class="w-screen" id="entertainment-btn">
-          <a href="">Entertainment News</a>
+          <a >Entertainment News</a>
           <div
             class="bg-gray-200 w-4/5 m-auto rounded-full h-auto dark:bg-gray-700"
           >
             <div
               class="bg-blue-600 h-1 rounded-full"
               id="progress-entertainment"
-              style="width: 45%"
+              style="width: 0%"
             ></div>
           </div>
         </div>
       </div>
     </div>
     <div>
-      <div id="world">
-        <h1 class="text-white text-2xl font-bold mt-10 text-center">
+      <div id="world" class="pt-12">
+        <h1 class="text-white text-2xl font-bold   text-center">
           World News
         </h1>
         <% for (news in worldNews) { %> <%- include('newsContainer',{
         newsContent: worldNews[news]['content'], newsHeading: news, newsImgSrc:
         worldNews[news]['img'], newsLink: worldNews[news]['link']}) %> <% } %>
       </div>
-      <div id="science">
+      <div id="science" class="pt-5">
         <h1 class="text-white text-2xl font-bold mt-10 text-center">
           Science News
         </h1>
@@ -166,41 +165,41 @@
         newsImgSrc: scienceNews[news]['img'], newsLink:
         scienceNews[news]['link']}) %> <% } %>
       </div>
-      <div id="tech">
+      <div id="tech" class="pt-5">
         <h1 class="text-white text-2xl font-bold mt-10 text-center">
           Tech News
         </h1>
-        <% for (news in scienceNews) { %> <%- include('newsContainer',{
-        newsContent: scienceNews[news]['content'], newsHeading: news,
-        newsImgSrc: scienceNews[news]['img'], newsLink:
-        scienceNews[news]['link']}) %> <% } %>
+        <% for (news in techNews) { %> <%- include('newsContainer',{
+        newsContent: techNews[news]['content'], newsHeading: news,
+        newsImgSrc: techNews[news]['img'], newsLink:
+        techNews[news]['link']}) %> <% } %>
       </div>
-      <div id="business">
+      <div id="business" class="pt-5">
         <h1 class="text-white text-2xl font-bold mt-10 text-center">
           Business News
         </h1>
-        <% for (news in scienceNews) { %> <%- include('newsContainer',{
-        newsContent: scienceNews[news]['content'], newsHeading: news,
-        newsImgSrc: scienceNews[news]['img'], newsLink:
-        scienceNews[news]['link']}) %> <% } %>
+        <% for (news in businessNews) { %> <%- include('newsContainer',{
+        newsContent: businessNews[news]['content'], newsHeading: news,
+        newsImgSrc: businessNews[news]['img'], newsLink:
+        businessNews[news]['link']}) %> <% } %>
       </div>
-      <div id="sports">
+      <div id="sports" class="pt-5">
         <h1 class="text-white text-2xl font-bold mt-10 text-center">
           Sports News
         </h1>
-        <% for (news in scienceNews) { %> <%- include('newsContainer',{
-        newsContent: scienceNews[news]['content'], newsHeading: news,
-        newsImgSrc: scienceNews[news]['img'], newsLink:
-        scienceNews[news]['link']}) %> <% } %>
+        <% for (news in sportsNews) { %> <%- include('newsContainer',{
+        newsContent: sportsNews[news]['content'], newsHeading: news,
+        newsImgSrc: sportsNews[news]['img'], newsLink:
+        sportsNews[news]['link']}) %> <% } %>
       </div>
-      <div id="entertainment">
+      <div id="entertainment" class="pt-5">
         <h1 class="text-white text-2xl font-bold mt-10 text-center">
           Entertainment News
         </h1>
-        <% for (news in scienceNews) { %> <%- include('newsContainer',{
-        newsContent: scienceNews[news]['content'], newsHeading: news,
-        newsImgSrc: scienceNews[news]['img'], newsLink:
-        scienceNews[news]['link']}) %> <% } %>
+        <% for (news in entertainmentNews) { %> <%- include('newsContainer',{
+        newsContent: entertainmentNews[news]['content'], newsHeading: news,
+        newsImgSrc: entertainmentNews[news]['img'], newsLink:
+        entertainmentNews[news]['link']}) %> <% } %>
       </div>
     </div>
   </body>
@@ -213,7 +212,7 @@
       "#sports",
       "#entertainment",
     ];
-
+    let lastHundred = null;
     let currentSlide = 0;
     let lastAuto = false;
     try {
@@ -222,6 +221,23 @@
       );
     } catch (error) {
       currentSlide = 0;
+    }
+
+    function updatePanelAuto() {
+
+      document
+        .querySelector(sectionArrays[currentSlide] + "-btn")
+        .scrollIntoView();
+      // if (currentSlide == 0) {
+      //   document
+      //     .querySelector("#arrow-left")
+      //     .setAttribute("disabled", "disabled");
+      // }
+      // if (currentSlide == 5) {
+      //   document
+      //     .querySelector("#arrow-right")
+      //     .setAttribute("disabled", "disabled");
+      // }
     }
 
     function updateSectionProgress() {
@@ -234,28 +250,41 @@
             ele.offsetHeight) *
             100
         );
-
         if (
-          value > 99 &&
-          currentSlide == sectionArrays.indexOf("#" + sectionId)
+          value == 100 &&
+          sectionArrays.indexOf(lastHundred) <
+            sectionArrays.indexOf("#" + sectionId)
         ) {
-          currentSlide = sectionArrays.indexOf("#" + sectionId) + 1;
+          console.log("lastHundred: " + lastHundred);
+          lastHundred = "#" + sectionId;
+          currentSlide = sectionArrays.indexOf(lastHundred) + 1;
           currentSlide = currentSlide == 6 ? 5 : currentSlide;
-          lastAuto = true;
+          console.log("lastHundred: " + lastHundred);
+          console.log("currentSlide: " + currentSlide);
           updatePanelAuto();
         }
-        else if (
-          value < 0 &&
-          currentSlide == sectionArrays.indexOf("#" + sectionId)
-         // && lastAuto != true
-        ) {
-          console.log(value)
-          lastAuto = false;
-          currentSlide = sectionArrays.indexOf("#" + sectionId) - 1;
-          currentSlide = currentSlide == -1 ? 0 : currentSlide;
-         updatePanelAuto();
-        }
-        value = value >= 98 ? 100 : value;
+
+        // if (
+        //   value > 99 &&
+        //   currentSlide == sectionArrays.indexOf("#" + sectionId)
+        // ) {
+        //   currentSlide = sectionArrays.indexOf("#" + sectionId) + 1;
+        //   currentSlide = currentSlide == 6 ? 5 : currentSlide;
+        //   lastAuto = true;
+        //   updatePanelAuto();
+        // }
+        // else if (
+        //   value < 0 &&
+        //   currentSlide == sectionArrays.indexOf("#" + sectionId)
+        //  // && lastAuto != true
+        // ) {
+        //   console.log(value)
+        //   lastAuto = false;
+        //   currentSlide = sectionArrays.indexOf("#" + sectionId) - 1;
+        //   currentSlide = currentSlide == -1 ? 0 : currentSlide;
+        //  updatePanelAuto();
+        // }
+        value = value >= 99 ? 100 : value;
         value = value <= 0 ? 0 : value;
 
         document.getElementById(`progress-${sectionId}`).style.width =
@@ -266,20 +295,18 @@
     function moveRight() {
       currentSlide++;
       document.querySelector("#arrow-left").removeAttribute("disabled");
-      document.querySelector(sectionArrays[currentSlide]).scrollIntoView();
+      document.querySelector(sectionArrays[currentSlide]).scrollIntoView({
+        block: "start",
+      });
       document
         .querySelector(sectionArrays[currentSlide] + "-btn")
-        .scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
+        .scrollIntoView();
 
       if (currentSlide == 5) {
         document
           .querySelector("#arrow-right")
           .setAttribute("disabled", "disabled");
       }
-      console.log(currentSlide);
     }
     function moveLeft() {
       currentSlide--;
@@ -294,31 +321,10 @@
       document.querySelector(sectionArrays[currentSlide]).scrollIntoView();
       document
         .querySelector(sectionArrays[currentSlide] + "-btn")
-        .scrollIntoView({
-          block: "center",
-          behavior: "smooth",
-        });
+        .scrollIntoView();
       if (currentSlide == 0) {
         document
           .querySelector("#arrow-left")
-          .setAttribute("disabled", "disabled");
-      }
-    }
-
-    function updatePanelAuto() {
-      document
-        .querySelector(sectionArrays[currentSlide] + "-btn")
-        .scrollIntoView({
-          behavior: "smooth",
-        });
-      if (currentSlide == 0) {
-        document
-          .querySelector("#arrow-left")
-          .setAttribute("disabled", "disabled");
-      }
-      if (currentSlide == 5) {
-        document
-          .querySelector("#arrow-right")
           .setAttribute("disabled", "disabled");
       }
     }

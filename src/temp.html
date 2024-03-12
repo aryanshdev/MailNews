@@ -253,21 +253,7 @@
 
         document.getElementById(`progress-${sectionId}`).style.width =
           value + "%";
-        if (
-          value == 100 &&
-          sectionArrays.indexOf(lastHundred) <
-            sectionArrays.indexOf("#" + sectionId)
-        ) {
-          console.log("lastHundred: " + lastHundred);
-          lastHundred = "#" + sectionId;
-          currentSlide = sectionArrays.indexOf(lastHundred) + 1;
-          currentSlide = currentSlide == 6 ? 5 : currentSlide;
-          console.log("lastHundred: " + lastHundred);
-          console.log("currentSlide: " + currentSlide);
-          updatePanelAuto(sectionArrays, currentSlide);
-
-        }
-      }
+       }
     }
 
     function moveRight() {
