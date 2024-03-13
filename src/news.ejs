@@ -18,28 +18,28 @@
     <!-- SIDE NAVBAR ON LARGE DISPLAY -->
 
     <div
-      class="hidden xl:flex w-1/5 h-screen px-5 bg-slate-900 text-white font-semibold text-lg bg-opacity-35 backdrop-blur-lg flex-col justify-center text-center"
+      class="hidden lg:flex w-1/5 h-screen px-5 bg-slate-900 text-white font-semibold text-lg bg-opacity-35 backdrop-blur-lg flex-col justify-center text-center"
     >
       <h1 class="text-3xl font-extrabold">MailNews</h1>
       <div class="flex-col flex justify-evenly text-center h-2/3">
-        <a href="#world">World News</a>
-        <a href="#science">Science News</a>
-        <a href="#tech">Tech News</a>
-        <a href="#business">Business News</a>
-        <a href="#sports">Sports News</a>
-        <a href="#entertainment">Entertainment News</a>
+        <a href="#world" id="world-txt"   class="duration-300" >World News</a>
+        <a href="#science" id="science-txt"   class="duration-300">Science News</a>
+        <a href="#tech" id="tech-txt"  class="duration-300">Tech News</a>
+        <a href="#business" id="business-txt"  class="duration-300">Business News</a>
+        <a href="#sports" id="sports-txt " class="duration-300">Sports News</a>
+        <a href="#entertainment" id="entertainment-txt"  class="duration-300">Entertainment News</a>
       </div>
     </div>
 
     <!-- TOP NAVBAR ON SMALL DISPLAY -->
     <div
-      class="w-screen xl:w-4/5 h-auto overflow-x-scroll  xl:overflow-x-auto"
+      class="w-screen lg:w-4/5 h-auto overflow-x-scroll lg:overflow-x-auto"
       id="progressAttach"
     >
       <button
         onclick="moveRight()"
         id="arrow-right"
-        class="backdrop-blur-md py-2 align-middle fixed z-50 top-auto right-0 xl:hidden disabled:opacity-25"
+        class="backdrop-blur-md py-2 align-middle fixed z-50 top-auto right-0 lg:hidden disabled:opacity-25"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -60,7 +60,7 @@
         onclick="moveLeft()"
         id="arrow-left"
         disabled="disabled"
-        class="backdrop-blur-md py-2 align-middle fixed z-50 top-auto left-0 xl:hidden disabled:opacity-25"
+        class="backdrop-blur-md py-2 align-middle fixed z-50 top-auto left-0 lg:hidden disabled:opacity-25"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -78,7 +78,7 @@
         </svg>
       </button>
       <div
-        class="flex xl:hidden h-auto whitespace-nowrap overflow-y-scroll scroll-smooth top-0 sticky z-10 bg-slate-800 text-white font-semibold text-lg bg-opacity-25 backdrop-blur-lg flex-row text-center"
+        class="flex lg:hidden h-auto whitespace-nowrap overflow-y-scroll scroll-smooth top-0 sticky z-10 bg-slate-800 text-white font-semibold text-lg bg-opacity-25 backdrop-blur-lg flex-row text-center"
       >
         <div
           class="sticky flex-row py-2 flex text-center h-fit min-w-fit overflow-x-scroll scroll-smooth"
@@ -156,13 +156,15 @@
         </div>
       </div>
     </div>
-    <div>
+    <div class="overflow-scroll scroll-smooth">
+      <a name="world"></a>
       <div id="world" class="pt-12">
         <h1 class="text-white text-2xl font-bold text-center">World News</h1>
         <% for (news in worldNews) { %> <%- include('newsContainer',{
         newsContent: worldNews[news]['content'], newsHeading: news, newsImgSrc:
         worldNews[news]['img'], newsLink: worldNews[news]['link']}) %> <% } %>
       </div>
+      <a name="science"></a>
       <div id="science" class="pt-5">
         <h1 class="text-white text-2xl font-bold mt-10 text-center">
           Science News
@@ -172,6 +174,7 @@
         newsImgSrc: scienceNews[news]['img'], newsLink:
         scienceNews[news]['link']}) %> <% } %>
       </div>
+      <a name="tech"></a>
       <div id="tech" class="pt-5">
         <h1 class="text-white text-2xl font-bold mt-10 text-center">
           Tech News
@@ -180,6 +183,7 @@
         newsContent: techNews[news]['content'], newsHeading: news, newsImgSrc:
         techNews[news]['img'], newsLink: techNews[news]['link']}) %> <% } %>
       </div>
+      <a name="business"></a>
       <div id="business" class="pt-5">
         <h1 class="text-white text-2xl font-bold mt-10 text-center">
           Business News
@@ -189,6 +193,7 @@
         newsImgSrc: businessNews[news]['img'], newsLink:
         businessNews[news]['link']}) %> <% } %>
       </div>
+      <a name="sports"></a>
       <div id="sports" class="pt-5">
         <h1 class="text-white text-2xl font-bold mt-10 text-center">
           Sports News
@@ -197,6 +202,7 @@
         newsContent: sportsNews[news]['content'], newsHeading: news, newsImgSrc:
         sportsNews[news]['img'], newsLink: sportsNews[news]['link']}) %> <% } %>
       </div>
+      <a name="entertainment"></a>
       <div id="entertainment" class="pt-5">
         <h1 class="text-white text-2xl font-bold mt-10 text-center">
           Entertainment News
@@ -208,7 +214,7 @@
       </div>
     </div>
   </body>
-  
+
   <script>
     let sectionArrays = [
       "#world",
@@ -229,8 +235,6 @@
     } catch (error) {
       currentSlide = 0;
     }
-
-    
 
     async function updatePanelAuto() {
       await document
@@ -254,75 +258,103 @@
     }
 
     async function updateSectionProgress() {
-      for (let j = 0; j < 6; j++) {
-        var sectionId = sectionArrays[j].replace("#", "");
-        var ele = document.getElementById(sectionId);
+      if (window.innerWidth < 1024) {
+        for (let j = 0; j < 6; j++) {
+          var sectionId = sectionArrays[j].replace("#", "");
+          var ele = document.getElementById(sectionId);
 
-        let value = Math.ceil(
-          ((ele.offsetHeight - ele.getBoundingClientRect().bottom) /
-            ele.offsetHeight) *
-            100
-        );
-        if (
-          value >= 100 &&
-          sectionArrays.indexOf(lastHundred) <
-            sectionArrays.indexOf("#" + sectionId)
-        ) {
-          lastHundred = "#" + sectionId;
-          currentSlide = sectionArrays.indexOf(lastHundred) + 1;
-          currentSlide = currentSlide > 5 ? 5 : currentSlide;
-          await updatePanelAuto();
+          let value =
+            Math.round(
+              ((ele.offsetHeight - ele.getBoundingClientRect().bottom) /
+                ele.offsetHeight) *
+                10000
+            ) / 100;
+          if (
+            value >= 100 &&
+            sectionArrays.indexOf(lastHundred) <
+              sectionArrays.indexOf("#" + sectionId)
+          ) {
+            lastHundred = "#" + sectionId;
+            currentSlide = sectionArrays.indexOf(lastHundred) + 1;
+            currentSlide = currentSlide > 5 ? 5 : currentSlide;
+            await updatePanelAuto();
 
-          document.querySelector(sectionArrays[currentSlide]).scrollIntoView({
-            block: "start",
-            behavior:"auto"
-          });
-        }
-        if (value < 0) {
-          let index =
-            sectionArrays.indexOf(lastHundred) < 0
-              ? 0
-              : sectionArrays.indexOf(lastHundred);
-
+            document.querySelector(sectionArrays[currentSlide]).scrollIntoView({
+              block: "start",
+              behavior: "auto",
+            });
+          }
           if (value < 0) {
-            try {
-              if (
-                parseInt(
-                  document
-                    .getElementById(
-                      `progress-${sectionArrays[currentSlide - 1].replace(
-                        "#",
-                        ""
-                      )}`
-                    )
-                    .style.width.replace("%", "")
-                ) < 99
-              ) {
-                console.log(currentSlide);
-                currentSlide--;
-                lastHundred = sectionArrays[currentSlide - 1];
-                currentSlide = currentSlide < 0 ? 0 : currentSlide;
+            let index =
+              sectionArrays.indexOf(lastHundred) < 0
+                ? 0
+                : sectionArrays.indexOf(lastHundred);
 
-                await updatePanelAuto();
-                await document
-                  .querySelector(sectionArrays[currentSlide])
-                  .scrollIntoView({
-                    block: "end",
-                    behavior:"auto"
-                  });
-              }
-            } catch (e) {}
+            if (value < 0) {
+              try {
+                if (
+                  parseInt(
+                    document
+                      .getElementById(
+                        `progress-${sectionArrays[currentSlide - 1].replace(
+                          "#",
+                          ""
+                        )}`
+                      )
+                      .style.width.replace("%", "")
+                  ) < 99
+                ) {
+                  currentSlide--;
+                  lastHundred = sectionArrays[currentSlide - 1];
+                  currentSlide = currentSlide < 0 ? 0 : currentSlide;
+
+                  await updatePanelAuto();
+                  await document
+                    .querySelector(sectionArrays[currentSlide])
+                    .scrollIntoView({
+                      block: "end",
+                      behavior: "smooth",
+                    });
+                }
+              } catch (e) {}
+            }
+          }
+
+          value = value > 100 ? 100 : value;
+          value = value < 0 ? 0 : value;
+
+          document.getElementById(`progress-${sectionId}`).style.width =
+            value + "%";
+        }
+      } else {
+        for (let j = 0; j < 6; j++) {
+          var sectionId = sectionArrays[j].replace("#", "");
+          var ele = document.getElementById(sectionId);
+
+          let value = Math.floor(
+            ((ele.offsetHeight - ele.getBoundingClientRect().bottom) /
+              ele.offsetHeight) *
+              100
+          );
+
+          if (value > -3 && value < 100) {
+
+            document
+              .querySelector(sectionArrays[j] + "-txt").classList.add("text-sky-400");
+              document
+              .querySelector(sectionArrays[j] + "-txt").classList.add("text-xl");
+            document
+              .querySelector(sectionArrays[j] + "-txt").classList.add("font-bold");
+
+          } else {
+            document.querySelector(sectionArrays[j] + "-txt").classList.remove("text-sky-400")
+            document.querySelector(sectionArrays[j] + "-txt").classList.remove("font-bold")        
+            document.querySelector(sectionArrays[j] + "-txt").classList.remove("text-xl")
+            document.querySelector(sectionArrays[j] + "-txt").classList.add("text-white")
           }
         }
-
-        value = value > 100 ? 100 : value;
-        value = value < 0 ? 0 : value;
-
-        document.getElementById(`progress-${sectionId}`).style.width =
-          value + "%";
       }
     }
-
     function moveRight() {
       currentSlide++;
       document.querySelector("#arrow-left").removeAttribute("disabled");
@@ -331,13 +363,16 @@
       });
       document
         .querySelector(sectionArrays[currentSlide] + "-btn")
-        .scrollIntoView();
+        .scrollIntoView({
+          behavior: "smooth",
+        });
 
       if (currentSlide == 5) {
         document
           .querySelector("#arrow-right")
           .setAttribute("disabled", "disabled");
       }
+      lastHundred = sectionArrays[currentSlide - 1];
     }
     function moveLeft() {
       currentSlide--;
@@ -345,6 +380,7 @@
         document
           .querySelector("#arrow-left")
           .setAttribute("disabled", "disabled");
+        lastHundred = null;
         currentSlide = 0;
         return;
       }
@@ -358,7 +394,10 @@
           .querySelector("#arrow-left")
           .setAttribute("disabled", "disabled");
       }
+
+      lastHundred = sectionArrays[currentSlide - 1];
     }
+
     document
       .getElementById("progressAttach")
       .addEventListener("scroll", updateSectionProgress);

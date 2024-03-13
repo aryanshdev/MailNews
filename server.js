@@ -24,7 +24,7 @@ app.use(express.static("src"));
 
 app.listen(3000, async () => {
   // await dbClient.connect();
-  // await newsWritter.generateNewsFiles();
+  await newsWritter.generateNewsFiles();
   console.log("SERVER RUNNING ON PORT 3000");
 });
 
@@ -81,8 +81,6 @@ app.get("/news", (req, res) => {
     __dirname + "/worldNews.json",
     (error, data) => {}
   ));
-
-
 
   res.render(__dirname + "/src/news.ejs", {
     businessNews: business,
