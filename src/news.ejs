@@ -1,11 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MailNews</title>
     <link href="style.css" rel="stylesheet" />
   </head>
+
+  <style>
+    /* width */
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
 
   <body class="bg-slate-950 flex w-screen h-screen scroll-smooth">
     <!-- SIDE NAVBAR ON LARGE DISPLAY -->
@@ -26,7 +33,7 @@
 
     <!-- TOP NAVBAR ON SMALL DISPLAY -->
     <div
-      class="w-screen xl:w-4/5 h-auto overflow-x-scroll xl:overflow-x-auto"
+      class="w-screen xl:w-4/5 h-auto overflow-x-scroll  xl:overflow-x-auto"
       id="progressAttach"
     >
       <button
@@ -71,10 +78,10 @@
         </svg>
       </button>
       <div
-        class="flex xl:hidden h-auto whitespace-nowrap overflow-y-scroll scroll-smooth top-0 sticky z-10 bg-slate-800 text-white font-semibold text-lg bg-opacity-35 backdrop-blur-lg flex-row text-center"
+        class="flex xl:hidden h-auto whitespace-nowrap overflow-y-scroll scroll-smooth top-0 sticky z-10 bg-slate-800 text-white font-semibold text-lg bg-opacity-25 backdrop-blur-lg flex-row text-center"
       >
         <div
-          class="sticky flex-row py-2 flex text-center h-fit min-w-fit overflow-x-scroll"
+          class="sticky flex-row py-2 flex text-center h-fit min-w-fit overflow-x-scroll scroll-smooth"
         >
           <div class="w-screen" id="world-btn">
             <a>World News</a>
@@ -82,7 +89,7 @@
               class="bg-gray-200 w-4/5 m-auto rounded-full h-auto dark:bg-gray-700"
             >
               <div
-                class="bg-blue-600 h-1 rounded-full"
+                class="bg-purple-600 h-1 rounded-full"
                 id="progress-world"
                 style="width: 0%"
               ></div>
@@ -94,7 +101,7 @@
               class="bg-gray-200 w-4/5 m-auto rounded-full h-auto dark:bg-gray-700"
             >
               <div
-                class="bg-blue-600 h-1 rounded-full"
+                class="bg-purple-600 h-1 rounded-full"
                 id="progress-science"
                 style="width: 0%"
               ></div>
@@ -105,7 +112,7 @@
             class="bg-gray-200 w-4/5 m-auto rounded-full h-auto dark:bg-gray-700"
           >
             <div
-              class="bg-blue-600 h-1 rounded-full"
+              class="bg-purple-600 h-1 rounded-full"
               id="progress-tech"
               style="width: 0%"
             ></div>
@@ -117,7 +124,7 @@
             class="bg-gray-200 w-4/5 m-auto rounded-full h-auto dark:bg-gray-700"
           >
             <div
-              class="bg-blue-600 h-1 rounded-full"
+              class="bg-purple-600 h-1 rounded-full"
               id="progress-business"
               style="width: 0%"
             ></div>
@@ -129,7 +136,7 @@
             class="bg-gray-200 w-4/5 m-auto rounded-full h-auto dark:bg-gray-700"
           >
             <div
-              class="bg-blue-600 h-1 rounded-full"
+              class="bg-purple-600 h-1 rounded-full"
               id="progress-sports"
               style="width: 0%"
             ></div>
@@ -141,7 +148,7 @@
             class="bg-gray-200 w-4/5 m-auto rounded-full h-auto dark:bg-gray-700"
           >
             <div
-              class="bg-blue-600 h-1 rounded-full"
+              class="bg-purple-600 h-1 rounded-full"
               id="progress-entertainment"
               style="width: 0%"
             ></div>
@@ -201,6 +208,7 @@
       </div>
     </div>
   </body>
+  
   <script>
     let sectionArrays = [
       "#world",
@@ -211,6 +219,7 @@
       "#entertainment",
     ];
     let lastHundred = null;
+    let lastZero = null;
     let currentSlide = 0;
     let lastAuto = false;
     try {
@@ -219,27 +228,32 @@
       );
     } catch (error) {
       currentSlide = 0;
-    } 
+    }
 
-    function updatePanelAuto() {
-      document
+    
+
+    async function updatePanelAuto() {
+      await document
         .querySelector(sectionArrays[currentSlide] + "-btn")
-        .scrollIntoView();
-
+        .scrollIntoView({
+          block: "center",
+          behavior: "instant",
+        });
       if (currentSlide == 0) {
         document
           .querySelector("#arrow-left")
           .setAttribute("disabled", "disabled");
-      }
-      if (currentSlide == 5) {
+      } else if (currentSlide == 5) {
         document
           .querySelector("#arrow-right")
           .setAttribute("disabled", "disabled");
+      } else {
+        document.querySelector("#arrow-left").removeAttribute("disabled");
+        document.querySelector("#arrow-right").removeAttribute("disabled");
       }
     }
-    updatePanelAuto();
 
-    function updateSectionProgress() {
+    async function updateSectionProgress() {
       for (let j = 0; j < 6; j++) {
         var sectionId = sectionArrays[j].replace("#", "");
         var ele = document.getElementById(sectionId);
@@ -250,18 +264,59 @@
             100
         );
         if (
-          value == 100 &&
+          value >= 100 &&
           sectionArrays.indexOf(lastHundred) <
             sectionArrays.indexOf("#" + sectionId)
         ) {
           lastHundred = "#" + sectionId;
           currentSlide = sectionArrays.indexOf(lastHundred) + 1;
           currentSlide = currentSlide > 5 ? 5 : currentSlide;
-          updatePanelAuto();
+          await updatePanelAuto();
+
+          document.querySelector(sectionArrays[currentSlide]).scrollIntoView({
+            block: "start",
+            behavior:"auto"
+          });
+        }
+        if (value < 0) {
+          let index =
+            sectionArrays.indexOf(lastHundred) < 0
+              ? 0
+              : sectionArrays.indexOf(lastHundred);
+
+          if (value < 0) {
+            try {
+              if (
+                parseInt(
+                  document
+                    .getElementById(
+                      `progress-${sectionArrays[currentSlide - 1].replace(
+                        "#",
+                        ""
+                      )}`
+                    )
+                    .style.width.replace("%", "")
+                ) < 99
+              ) {
+                console.log(currentSlide);
+                currentSlide--;
+                lastHundred = sectionArrays[currentSlide - 1];
+                currentSlide = currentSlide < 0 ? 0 : currentSlide;
+
+                await updatePanelAuto();
+                await document
+                  .querySelector(sectionArrays[currentSlide])
+                  .scrollIntoView({
+                    block: "end",
+                    behavior:"auto"
+                  });
+              }
+            } catch (e) {}
+          }
         }
 
-        value = value >= 99 ? 100 : value;
-        value = value <= 0 ? 0 : value;
+        value = value > 100 ? 100 : value;
+        value = value < 0 ? 0 : value;
 
         document.getElementById(`progress-${sectionId}`).style.width =
           value + "%";
@@ -304,9 +359,10 @@
           .setAttribute("disabled", "disabled");
       }
     }
-    document.getElementById("progressAttach").addEventListener("scroll", () => {
-      updateSectionProgress();
-    });
-    document.onload = updatePanelAuto();
+    document
+      .getElementById("progressAttach")
+      .addEventListener("scroll", updateSectionProgress);
+
+    document.addEventListener("DOMContentLoaded", updatePanelAuto);
   </script>
 </html>
