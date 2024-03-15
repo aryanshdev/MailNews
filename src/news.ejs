@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MailNews</title>
+    <title>News | MailNews</title>
     <link href="style.css" rel="stylesheet" />
   </head>
   <style>
@@ -21,13 +21,10 @@
   </style>
 
   <body class="bg-slate-950 flex w-screen h-screen scroll-smooth relative">
-
     <nav
-      class="fixed  bg-transparent top-0 left-0 w-full px-4 py-0 backdrop-blur-lg text-white z-20 flex items-center h-12 justify-between
+      class="fixed bg-slate-950 bg-opacity-90 lg:bg-opacity-45 top-0 left-0 w-full px-4 py-0 backdrop-blur-lg text-white z-20 flex items-center h-12 justify-between"
     >
-      <div
-        class="w-screen flex flex-wrap items-center justify-between p-2 bg-transparent"
-      >
+      <div class="w-screen flex flex-wrap items-center justify-between p-2">
         <a href="/">
           <span
             class="self-center text-xl font-semibold whitespace-nowrap text-white"
@@ -61,7 +58,7 @@
         </button>
         <div
           id="mobile-menu"
-          class="hidden top-10 lg:hidden w-screen fixed text-center left-0 z-50 border-l-4 border-b-4 border-r-4 border-fuchsia-800 rounded-br-lg rounded-bl-lg bg-slate-950 bg-opacity-75 backdrop-blur-2xl  duration-500"
+          class="hidden top-10 lg:hidden w-screen fixed text-center left-0 z-50 rounded-br-lg rounded-bl-lg bg-slate-950 backdrop-blur-2xl duration-500"
         >
           <a href="#" class="block text-white py-2 px-4">Home</a>
           <a href="#" class="block text-white py-2 px-4">About</a>
@@ -112,7 +109,7 @@
     >
       <h1 class="text-3xl font-extrabold">MailNews</h1>
       <div class="flex-col flex justify-evenly text-center h-2/3">
-        <a href="#world" id="world-txt" class="duration-300" >World News</a>
+        <a href="#world" id="world-txt" class="duration-300">World News</a>
         <a href="#science" id="science-txt" class="duration-300"
           >Science News</a
         >
@@ -252,16 +249,16 @@
         </div>
       </div>
     </div>
-    <div class="overflow-scroll scroll-smooth">
-      <a name="world"></a>
-      <div id="world" class="pt-8">
+    <div class="overflow-scroll scroll-smooth scroll-my-36">
+      <a name="world" style="width: 50px; height: 10rem;"></a>
+      <div id="world" class="pt-2">
         <h1 class="text-white text-2xl font-bold text-center">World News</h1>
         <% for (news in worldNews) { %> <%- include('newsContainer',{
         newsContent: worldNews[news]['content'], newsHeading: news, newsImgSrc:
         worldNews[news]['img'], newsLink: worldNews[news]['link']}) %> <% } %>
       </div>
       <a name="science"></a>
-      <div id="science" class="pt-8">
+      <div id="science" class="pt-32">
         <h1 class="text-white text-2xl font-bold mt-10 text-center">
           Science News
         </h1>
@@ -271,7 +268,7 @@
         scienceNews[news]['link']}) %> <% } %>
       </div>
       <a name="tech"></a>
-      <div id="tech" class="pt-8">
+      <div id="tech" class="pt-32 scroll-mb-10 snap-y">
         <h1 class="text-white text-2xl font-bold mt-10 text-center">
           Tech News
         </h1>
@@ -280,7 +277,7 @@
         techNews[news]['img'], newsLink: techNews[news]['link']}) %> <% } %>
       </div>
       <a name="business"></a>
-      <div id="business" class="pt-8">
+      <div id="business" class="pt-32">
         <h1 class="text-white text-2xl font-bold mt-10 text-center">
           Business News
         </h1>
@@ -290,7 +287,7 @@
         businessNews[news]['link']}) %> <% } %>
       </div>
       <a name="sports"></a>
-      <div id="sports" class="pt-5">
+      <div id="sports" class="pt-32">
         <h1 class="text-white text-2xl font-bold mt-10 text-center">
           Sports News
         </h1>
@@ -299,7 +296,7 @@
         sportsNews[news]['img'], newsLink: sportsNews[news]['link']}) %> <% } %>
       </div>
       <a name="entertainment"></a>
-      <div id="entertainment" class="pt-8">
+      <div id="entertainment" class="pt-32">
         <h1 class="text-white text-2xl font-bold mt-10 text-center">
           Entertainment News
         </h1>
@@ -361,6 +358,7 @@
     }
 
     async function updateSectionProgress() {
+
       if (window.innerWidth < 1024) {
         for (let j = 0; j < 6; j++) {
           var sectionId = sectionArrays[j].replace("#", "");
@@ -415,8 +413,7 @@
                   await document
                     .querySelector(sectionArrays[currentSlide])
                     .scrollIntoView({
-                      block: "end",
-                      behavior: "smooth",
+                     block: "end"
                     });
                 }
               } catch (e) {}
@@ -440,10 +437,10 @@
               100
           );
 
-          if (value > -1 && value < 102) {
+          if (value >= -2.5 && value <= 97.5) {
             document
-                .querySelector(sectionArrays[j] + "-txt")
-                .classList.remove("text-white");
+              .querySelector(sectionArrays[j] + "-txt")
+              .classList.remove("text-white");
             document
               .querySelector(sectionArrays[j] + "-txt")
               .classList.add("text-sky-400");
@@ -477,6 +474,7 @@
     function moveRight() {
       currentSlide++;
       document.querySelector("#arrow-left").removeAttribute("disabled");
+
       document.querySelector(sectionArrays[currentSlide]).scrollIntoView({
         block: "start",
       });
@@ -495,6 +493,7 @@
     }
     function moveLeft() {
       currentSlide--;
+ 
       if (currentSlide < 0) {
         document
           .querySelector("#arrow-left")
@@ -503,18 +502,25 @@
         currentSlide = 0;
         return;
       }
+
       document.querySelector("#arrow-right").removeAttribute("disabled");
       document.querySelector(sectionArrays[currentSlide]).scrollIntoView();
       document
         .querySelector(sectionArrays[currentSlide] + "-btn")
         .scrollIntoView();
       if (currentSlide == 0) {
+        document.querySelector("a[name='world']").style.display = "block";
+        
+        document.querySelector("a[name='world']").scrollIntoView();
         document
           .querySelector("#arrow-left")
           .setAttribute("disabled", "disabled");
+         
+        document.querySelector("a[name='world']").style.display = "inline";
       }
 
       lastHundred = sectionArrays[currentSlide - 1];
+     
     }
 
     document
