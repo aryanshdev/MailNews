@@ -250,7 +250,7 @@
       </div>
     </div>
     <div class="overflow-scroll scroll-smooth scroll-my-36">
-      <a name="world" style="width: 50px; height: 10rem;"></a>
+      <a name="world" style="width: 50px; height: 10rem"></a>
       <div id="world" class="pt-2">
         <h1 class="text-white text-2xl font-bold text-center">World News</h1>
         <% for (news in worldNews) { %> <%- include('newsContainer',{
@@ -330,11 +330,15 @@
     let lastAuto = false;
     try {
       currentSlide = sectionArrays.indexOf(
-        "#" + window.location.href.split("#")[1].trim()
+        "#" + (window.location.href.split("#")[1].trim() == ""
+          ? 'world'
+          : window.location.href.split("#")[1].trim())
       );
     } catch (error) {
       currentSlide = 0;
     }
+    console.log(currentSlide);
+    console.log(sectionArrays[currentSlide]);
 
     async function updatePanelAuto() {
       await document
@@ -358,7 +362,6 @@
     }
 
     async function updateSectionProgress() {
-
       if (window.innerWidth < 1024) {
         for (let j = 0; j < 6; j++) {
           var sectionId = sectionArrays[j].replace("#", "");
@@ -413,7 +416,7 @@
                   await document
                     .querySelector(sectionArrays[currentSlide])
                     .scrollIntoView({
-                     block: "end"
+                      block: "end",
                     });
                 }
               } catch (e) {}
@@ -493,7 +496,6 @@
     }
     function moveLeft() {
       currentSlide--;
- 
       if (currentSlide < 0) {
         document
           .querySelector("#arrow-left")
@@ -508,19 +510,19 @@
       document
         .querySelector(sectionArrays[currentSlide] + "-btn")
         .scrollIntoView();
+        
       if (currentSlide == 0) {
         document.querySelector("a[name='world']").style.display = "block";
-        
+
         document.querySelector("a[name='world']").scrollIntoView();
         document
           .querySelector("#arrow-left")
           .setAttribute("disabled", "disabled");
-         
+
         document.querySelector("a[name='world']").style.display = "inline";
       }
 
       lastHundred = sectionArrays[currentSlide - 1];
-     
     }
 
     document
@@ -528,5 +530,6 @@
       .addEventListener("scroll", updateSectionProgress);
 
     document.addEventListener("DOMContentLoaded", updatePanelAuto);
+    
   </script>
 </html>

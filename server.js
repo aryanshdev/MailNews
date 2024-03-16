@@ -91,3 +91,14 @@ app.get("/news", (req, res) => {
     worldNews: world,
   });
 });
+
+
+
+app.get("/ping", (req, res) => {
+  req.status(200).send("PONG");
+});
+
+// At Last
+app.get("*", (req, res) => {
+  res.status(404).send("404");
+});
