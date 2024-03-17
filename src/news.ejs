@@ -330,9 +330,10 @@
     let lastAuto = false;
     try {
       currentSlide = sectionArrays.indexOf(
-        "#" + (window.location.href.split("#")[1].trim() == ""
-          ? 'world'
-          : window.location.href.split("#")[1].trim())
+        "#" +
+          (window.location.href.split("#")[1].trim() == ""
+            ? "world"
+            : window.location.href.split("#")[1].trim())
       );
     } catch (error) {
       currentSlide = 0;
@@ -506,19 +507,27 @@
       }
 
       document.querySelector("#arrow-right").removeAttribute("disabled");
+      console.log(sectionArrays[currentSlide]);
       document.querySelector(sectionArrays[currentSlide]).scrollIntoView();
       document
         .querySelector(sectionArrays[currentSlide] + "-btn")
         .scrollIntoView();
-        
-      if (currentSlide == 0) {
-        document.querySelector("a[name='world']").style.display = "block";
 
-        document.querySelector("a[name='world']").scrollIntoView();
+      if (currentSlide == 0) {
+        console.log("here");
         document
           .querySelector("#arrow-left")
           .setAttribute("disabled", "disabled");
-
+        document.querySelector("a[name='world']").style.display = "block";
+        document.querySelector("a[name='world']").scrollIntoView({
+          block: "start",
+          behavior: "instant",
+        });
+        document
+          .querySelector(sectionArrays[currentSlide] + "-btn")
+          .scrollIntoView({
+            behavior: "instant",
+          });
         document.querySelector("a[name='world']").style.display = "inline";
       }
 
@@ -530,6 +539,5 @@
       .addEventListener("scroll", updateSectionProgress);
 
     document.addEventListener("DOMContentLoaded", updatePanelAuto);
-    
   </script>
 </html>

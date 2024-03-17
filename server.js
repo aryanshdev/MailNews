@@ -95,10 +95,10 @@ app.get("/news", (req, res) => {
 
 
 app.get("/ping", (req, res) => {
-  req.status(200).send("PONG");
+  res.status(200).send("<h1>PONG<h1>");
 });
 
 // At Last
 app.get("*", (req, res) => {
-  res.status(404).send("404");
+  res.status(404).send("<h1>Woops! Page Not Found!</h1>");
 });
