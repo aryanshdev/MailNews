@@ -8,7 +8,7 @@ const fileSystem = require("fs");
 const app = express();
 
 let db = new sql.Database("mailNews.db", (err) => {});
-
+db.run("drop table users");
 db.run(
   "CREATE TABLE IF NOT EXISTS users (emailID TEXT PRIMARY KEY, name TEXT, password TEXT NOT NULL, dos DATE NOT NULL, emailslot INTEGER)"
 );
@@ -18,7 +18,7 @@ async function cronNews(){
   console.log("News Updated");
 }
 
-cron.schedule("*/4 * * * *", cronNews);
+cron.schedule("0 */4 * * *", cronNews);
 
 
 
