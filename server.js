@@ -1,10 +1,26 @@
 const express = require("express");
-const redis = require("redis");
+const cron = require("node-cron");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 let newsWritter = require("./newsGetter");
+const sql = require("sqlite3").verbose();
 const fileSystem = require("fs");
 const app = express();
+
+let db = new sql.Database("mailNews.db", (err) => {});
+
+db.run(
+  "CREATE TABLE IF NOT EXISTS users (emailID TEXT PRIMARY KEY, name TEXT, password TEXT NOT NULL, dos DATE NOT NULL, emailslot INTEGER)"
+);
+
+async function cronNews(){
+  await newsWritter.generateNewsFiles();
+  console.log("News Updated");
+}
+
+cron.schedule("*/4 * * * *", cronNews);
+
+
 
 app.use(
   session({
@@ -18,13 +34,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set("view engine", "ejs");
 
-let dbClient = redis.createClient();
-
 app.use(express.static("src"));
 
 app.listen(3000, async () => {
-  // await dbClient.connect();
- // await newsWritter.generateNewsFiles();
   console.log("SERVER RUNNING ON PORT 3000");
 });
 
@@ -77,10 +89,9 @@ app.get("/news", (req, res) => {
     fileSystem.readFileSync(__dirname + "/techNews.json", (error, data) => {})
   );
 
-  var world = JSON.parse(fileSystem.readFileSync(
-    __dirname + "/worldNews.json",
-    (error, data) => {}
-  ));
+  var world = JSON.parse(
+    fileSystem.readFileSync(__dirname + "/worldNews.json", (error, data) => {})
+  );
 
   res.render(__dirname + "/src/news.ejs", {
     businessNews: business,
@@ -91,8 +102,6 @@ app.get("/news", (req, res) => {
     worldNews: world,
   });
 });
-
-
 
 app.get("/ping", (req, res) => {
   res.status(200).send("<h1>PONG<h1>");
