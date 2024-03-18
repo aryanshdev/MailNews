@@ -8,12 +8,16 @@ const fileSystem = require("fs");
 const app = express();
 
 let db = new sql.Database("mailNews.db", (err) => {});
-db.run("drop table users");
+db.run("drop table if exists users");
 db.run(
   "CREATE TABLE IF NOT EXISTS users (emailID TEXT PRIMARY KEY, name TEXT, password TEXT NOT NULL, dos DATE NOT NULL, emailslot INTEGER)"
 );
 
 async function cronNews(){
+  const currentDate = new Date();
+const formattedDateTime = `${currentDate.toLocaleDateString()}, ${currentDate.toLocaleTimeString()}`;
+
+console.log("Current date and time:", formattedDateTime);
   await newsWritter.generateNewsFiles();
   console.log("News Updated");
 }
@@ -36,8 +40,12 @@ app.set("view engine", "ejs");
 
 app.use(express.static("src"));
 
-app.listen(3000, async () => {
-  console.log("SERVER RUNNING ON PORT 3000");
+app.listen(10000 , async () => {
+  const currentDate = new Date();
+const formattedDateTime = `${currentDate.toLocaleDateString()}, ${currentDate.toLocaleTimeString()}`;
+
+console.log("Current date and time:", formattedDateTime);
+  console.log("SERVER RUNNING ON PORT 10000 ");
 });
 
 app.get("/", (req, res) => {

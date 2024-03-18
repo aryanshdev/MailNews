@@ -194,8 +194,8 @@ async function getBusinessNews() {
 
     let img = articleHTML("div.styles__fill__3xCr1 img")["0"]
       ? articleHTML("div.styles__fill__3xCr1 img")["0"].attribs.src
-      : null; // articleHTML(".ytp-cued-thumbnail-overlay-image")[0].attribs.style.match(/https?:\/\/[^\\s]+/)[0];
-    let body = "";
+      : null;
+      let body = "";
     articleHTML(
       ".text__text__1FZLe.text__dark-grey__3Ml43.text__regular__2N1Xr.text__small__1kGq2.body__full_width__ekUdw.body__small_body__2vQyf.article-body__paragraph__2-BtD"
     ).each((index, para) => {
