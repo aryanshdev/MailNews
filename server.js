@@ -125,5 +125,5 @@ app.get("/ping", (req, res) => {
 
 // At Last
 app.get("*", (req, res) => {
-  res.status(404).send("<h1>Woops! Page Not Found!</h1>");
+  res.status(404).sendFile(__dirname + "/src/404.html");
 });
