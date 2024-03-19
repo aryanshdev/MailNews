@@ -22,7 +22,7 @@ console.log("Current date and time:", formattedDateTime);
   console.log("News Updated");
 }
 
-cron.schedule("0 */4 * * *", cronNews);
+cron.schedule("0 */2 * * *", cronNews);
 
 
 
@@ -64,6 +64,10 @@ app.post("/subscribe", async (req, res) => {
     res.send("ALREADY SUBSCRIBED");
   }
 });
+
+app.get("/signup", (req,res)=>{
+  res.sendFile(__dirname+"/src/signup.html")
+})
 
 app.get("/news", (req, res) => {
   var business, entertainment, science, sports, tech, world;
