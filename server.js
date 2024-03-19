@@ -69,6 +69,10 @@ app.get("/signup", (req,res)=>{
   res.sendFile(__dirname+"/src/signup.html")
 })
 
+app.get("/signin", (req,res)=>{
+  res.sendFile(__dirname+"/src/signin.html")
+})
+
 app.get("/news", (req, res) => {
   var business, entertainment, science, sports, tech, world;
 
