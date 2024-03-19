@@ -1,27 +1,331 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Document</title>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2238125462513134"
-     crossorigin="anonymous"></script>
-</head>
-<body>
-    
-<section class="w-screen h-screen">
-    <form class="bg-slate-950 flex-1 place-self-stretch" action="/subscribe" method="post">
-        <input class="rounded-2xl placeholder-blue-950" type="text" name="name" id="name" placeholder="Your Name">
-        <label for="email">Enter Email : </label>
-        <input class="invalid:text-red-800" type="email" name="email" id="email" placeholder="Your Email">
-        <select id="country" name="country" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
-            <option>United States</option>
-            <option>Canada</option>
-            <option>Mexico</option>
-          </select>
-        <input class="bg-white place-self-center w-fit px-8 py-4 hover:w-full" type="submit" value="Subscribe">
-    </form>
-</section>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Sign-Up | MailNews</title>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2238125462513134"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body
+    class="bg-slate-950 flex flex-wrap w-screen h-screen scroll-smooth overflow-x-hidden"
+  >
+    <nav
+      class="fixed bg-slate-950 bg-opacity-90 lg:bg-opacity-45 top-0 left-0 w-full px-4 py-0 backdrop-blur-lg text-white z-20 flex items-center h-12 justify-between"
+    >
+      <div class="w-screen flex flex-wrap items-center justify-between p-2">
+        <a href="/">
+          <span
+            class="self-center text-xl font-semibold whitespace-nowrap text-white"
+            >MailNews</span
+          >
+        </a>
+        <button
+          id="navbar-solid-bg-btn"
+          data-collapse-toggle="navbar-solid-bg-btn"
+          type="button"
+          class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+          aria-controls="navbar-solid-bg"
+          aria-expanded="false"
+        >
+          <span class="sr-only">Open main menu</span>
+          <svg
+            class="w-5 h-5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 17 14"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M1 1h15M1 7h15M1 13h15"
+            />
+          </svg>
+        </button>
+        <div
+          id="mobile-menu"
+          class="hidden top-10 lg:hidden w-screen fixed text-center left-0 z-50 rounded-br-lg rounded-bl-lg bg-slate-950 backdrop-blur-2xl duration-500"
+        >
+          <a href="#" class="block text-white py-2 px-4">Home</a>
+          <a href="#" class="block text-white py-2 px-4">About</a>
+          <a href="#" class="block text-white py-2 px-4">Services</a>
+          <a href="#" class="block text-white py-2 px-4">Contact</a>
+        </div>
+        <div class="hidden w-full md:block md:w-auto" id="navbar-solid-bg">
+          <ul
+            class="flex flex-col font-medium mt-4 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent"
+          >
+            <li>
+              <a
+                href="/"
+                class="block py-2 px-3 md:p-0 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent"
+                aria-current="page"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent"
+                >Services</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent"
+                >Pricing</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent"
+                >Contact</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="w-20 h-20"></div>
+    <div
+      class="h-56 w-56 rounded-full blur-3xl -left-14 fixed top-0 bg-purple-700"
+    ></div>
+
+    <div
+    class="h-56 w-56 rounded-full blur-3xl -right-14  fixed bottom-0 bg-yellow-700"
+  ></div>
+
+
+    <section
+      class="w-screen flex items-center justify-center overflow-x-hidden align-middle m-auto"
+    >
+      <div
+        class="bg-white bg-opacity-5 block backdrop-blur-lg w-5/6 lg:w-1/2 h-auto rounded-xl m-auto text-center px-5 py-6 text-white"
+      >
+        <h1 class="font-bold text-2xl">Subscribe To MailNews</h1>
+        <form action="/subscribe" method="post" class="pt-8 gap-2 lg:px-14">
+          <input
+            type="text"
+            required
+            name="name"
+            class="border-slate-800 border-2 border-solid rounded-lg w-full p-2 outline-none mb-5 bg-slate-800 focus:bg-slate-700 duration-200 text-white font-semibold"
+            placeholder="Name"
+            onblur="checkNameFill(this)"
+          />
+          <input
+            type="email"
+            required
+            name="email"
+            class="border-slate-800 border-2 border-solid rounded-lg w-full p-2 outline-none bg-slate-800 focus:bg-slate-700 duration-200 mb-5 text-white font-semibold"
+            placeholder="Email"
+            onblur="validateEmail(this)"
+          />
+          <input
+            type="text"
+            required
+            name="pass"
+            class="border-slate-800 border-2 border-solid rounded-lg w-full p-2 outline-none bg-slate-800 focus:bg-slate-700 duration-200 mb-2 text-white font-semibold"
+            placeholder="Create Password"
+            onblur="validatePasswordPattern(this)"
+          />
+          <p
+            class="mb-5 text-slate-400 font-light text-sm transition-all duration-200"
+            id="password-hint"
+          >
+            Password Should Be Atleast 6 Characters And Contain Letters, Atleast
+            1 Symbol and 1 Number
+          </p>
+          <input
+            type="password"
+            required
+            name="conpass"
+            class="border-slate-800 border-2 border-solid rounded-lg w-full p-2 outline-none bg-slate-800 focus:bg-slate-700 duration-200 mb-5 text-white font-semibold"
+            placeholder="Confirm Password"
+            onblur="validateSamePassword(this)"
+          />
+
+          <input type="number" hidden name="slot" />
+
+          <h2 class="mt-1 font-bold text-xl text-left">
+           Oye Laude Kya lega ?
+          </h2>
+          <fieldset
+            class="grid grid-cols-2 gap-2 mt-4 text-white text-lg align-middle justify-center break-words"
+          >
+          <div class="flex items-center">
+            <input
+              type="checkbox"
+              id="option1"
+              name="option1"
+              value="option1"
+              class="mr-3"
+            />
+            <label for="option1">Muh Me</label>
+          </div>
+
+            <div class="flex items-center">
+              <input
+                type="checkbox"
+                id="option1"
+                name="option1"
+                value="option1"
+                class="mr-3"
+              />
+              <label for="option1">World</label>
+            </div>
+            <div class="flex items-center">
+              <input
+                type="checkbox"
+                id="option2"
+                name="option2"
+                value="option2"
+                class="mr-3"
+              />
+              <label for="option2">Science</label>
+            </div>
+            <div class="flex items-center">
+              <input
+                type="checkbox"
+                id="option3"
+                name="option3"
+                value="option3"
+                class="mr-3"
+              />
+              <label for="option3">Tech</label>
+            </div>
+            <div class="flex items-center">
+              <input
+                type="checkbox"
+                id="option4"
+                name="option4"
+                value="option4"
+                class="mr-3"
+              />
+              <label for="option4">Business</label>
+            </div>
+            <div class="flex items-center">
+              <input
+                type="checkbox"
+                id="option5"
+                name="option5"
+                value="option5"
+                class="mr-3 checked:bg-green-600"
+              />
+              <label for="option5">Sports</label>
+            </div>
+            <div class="flex items-center w-full overflow-clip break-words">
+              <input
+                type="checkbox"
+                id="option6"
+                name="option6"
+                value="option6"
+                class="mr-3 checked:bg-green-500"
+              />
+              <label for="option6">Entertainment</label>
+            </div>
+          </fieldset>
+
+          <button
+            type="submit"
+            class="!bg-slate-700 text-white rounded-full px-12 py-3 mt-5 font-semibold text-lg"
+          >
+            Subscribe
+          </button>
+        </form>
+      </div>
+    </section>
+  </body>
+  <style>
+    input[type="checkbox"]:checked:after {
+      background-color: greenyellow;
+    }
+    input[type="checkbox"]:after {
+      content: " ";
+      position: relative;
+      left: 40%;
+      top: 20%;
+      width: 15%;
+      height: 40%;
+      border: solid #fff;
+      border-width: 0 2px 2px 0;
+      transform: rotate(50deg);
+      display: none;
+    }
+  </style>
+  <script>
+    function getSlot() {
+      var d = new Date().setHours(7, 0, 0, 0);
+      return d.getUTCHours();
+    }
+    document.querySelector('input[name="slot"]').value = parseInt(
+      new Date(new Date().getHours())
+    );
+    function checkNameFill(ele) {
+      ele.value
+        ? ((ele.style.border = "2px solid rgb(34, 197, 94)"),
+          document
+            .querySelector("button[type='submit']")
+            .removeAttribute("disabled"))
+        : (ele.style.border = "2px solid red"),
+        document
+          .querySelector("button[type='submit']")
+          .setAttribute("disabled", "disabled");
+    }
+    function validateEmail(ele) {
+      if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(ele.value)) {
+        (ele.style.border = "2px solid rgb(34, 197, 94)"),
+          document
+            .querySelector("button[type='submit']")
+            .removeAttribute("disabled");
+      } else {
+        (ele.style.border = "2px solid red"),
+          (ele.value = ""),
+          ele.setAttribute("placeholder", "Enter a Valid E-Mail"),
+          document
+            .querySelector("button[type='submit']")
+            .setAttribute("disabled", "disabled");
+      }
+    }
+    function validatePasswordPattern(ele) {
+      /(?=^.*[A-Za-z])(?=^.*\d)(?=^.*[!@#$%^&*])^.+$/.test(ele.value) &&
+      ele.value.length >= 6
+        ? ((ele.style.border = "2px solid rgb(34, 197, 94)"),
+          document
+            .querySelector("button[type='submit']")
+            .removeAttribute("disabled"))
+        : (ele.style.border = "2px solid red"),
+        document
+          .querySelector("button[type='submit']")
+          .removeAttribute("disabled");
+      document
+        .querySelector("button[type='submit']")
+        .setAttribute("disabled", "disabled");
+      validateSamePassword(ele.form.conpass);
+    }
+    function validateSamePassword(ele) {
+      ele.value == ele.form.pass.value && ele.value
+        ? (ele.style.border = "2px solid rgb(34, 197, 94)")
+        : (ele.style.border = "2px solid red"),
+        document
+          .querySelector("button[type='submit']")
+          .removeAttribute("disabled");
+      (ele.vlaue = ""),
+        ele.value
+          ? ele.setAttribute("placeholder", "Passwords Should Match")
+          : null,
+        document
+          .querySelector("button[type='submit']")
+          .setAttribute("disabled", "disabled");
+    }
+  </script>
 </html>
