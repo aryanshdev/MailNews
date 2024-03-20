@@ -7,8 +7,8 @@ let newsWritter = require("./newsGetter");
 const sql = require("sqlite3").verbose();
 const fileSystem = require("fs");
 const crypto = require("crypto");
-const e = require("express");
 require("dotenv").config();
+
 const verificationMailBody = `
 <!DOCTYPE html>
 <html>
@@ -47,10 +47,26 @@ const verificationMailBody = `
 `;
 
 const app = express();
+app.use(
+  session({
+    secret: "MailNews-Secret",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 1800000 },
+  })
+);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.set("view engine", "ejs");
+app.use(express.static("src"));
 
 let db = new sql.Database("mailNews.db", (err) => {});
 
-//google auth
+db.run("drop table if exists users");
+db.run(
+  "CREATE TABLE IF NOT EXISTS users (emailID TEXT PRIMARY KEY, name TEXT NOT NULL, password TEXT NOT NULL, dos DATE NOT NULL, interests TEXT NOT NULL, emailslot INTEGER NOT NULL )"
+);
+
 let mailer = nodemailer.createTransport({
   service: "gmail",
   host: "smtp.gmail.com",
@@ -64,11 +80,6 @@ let mailer = nodemailer.createTransport({
     refreshToken: process.env.REFRESH_TOKEN,
   },
 });
-
-db.run("drop table if exists users");
-db.run(
-  "CREATE TABLE IF NOT EXISTS users (emailID TEXT PRIMARY KEY, name TEXT NOT NULL, password TEXT NOT NULL, dos DATE NOT NULL, interests TEXT NOT NULL, emailslot INTEGER NOT NULL )"
-);
 
 async function cronNews() {
   const currentDate = new Date();
@@ -88,22 +99,6 @@ function inSubscribing(req, res, next) {
     res.redirect("/signin");
   }
 }
-
-app.use(
-  session({
-    secret: "MailNews-Secret",
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 1800000 },
-  })
-);
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-app.set("view engine", "ejs");
-
-app.use(express.static("src"));
 
 app.listen(10000, async () => {
   const currentDate = new Date();
@@ -139,17 +134,31 @@ app.get("/verify", inSubscribing, (req, res) => {
   res.sendFile(__dirname + "/src/emailverify.html");
 });
 
-app.post("/verifyEmail", inSubscribing, (req, res) => {
+app.post("/verifyEmail", inSubscribing, async (req, res) => {
   if (req.body.verificationCode == req.session.registrationCode) {
-    res.status(200).send("Email Verified");
-  }
-  else{
+    db.run(
+      `INSERT INTO users VALUES(
+        ${req.session.currentSubs.email},
+        ${req.session.currentSubs.name},
+        ${req.session.currentSubs.password},
+        ${new Date().toISOString()},
+        ${req.session.currentSubs.interests},
+        ${req.session.currentSubs.slot})`,
+      (err) => {
+        if (err) {
+          res.status(400).send("Email Already Registered");
+        } else {
+          res.redirect("/registration-successful");
+        }
+      }
+    );
+  } else {
     res.status(400).send("Invalid Code");
   }
 });
 
-
 app.get("/registration-successful", inSubscribing, (req, res) => {
+  delete req.session.currentSubs;
   res.sendFile(__dirname + "/src/register_success.html");
 });
 app.get("/signup", (req, res) => {

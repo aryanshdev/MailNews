@@ -170,6 +170,7 @@
       function verify() {
         var form = document.forms[0];
         const formData = new FormData(form);
+        var data = new URLSearchParams()
         document
           .querySelector("button[type='submit']")
           .setAttribute("disabled", "disabled");
@@ -180,7 +181,10 @@
       </svg>`;
         const response = fetch("/verifyEmail", {
           method: "POST",
-          body: formData,
+          body: new URLSearchParams(formData).toString(),
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
         }).then((res) => {
           if (res.status === 200) {
             window.location.href = "/registration-successful";
