@@ -1,121 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Sign In | MailNews</title>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2238125462513134"
+      crossorigin="anonymous"
+    ></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
-  <title>Sign In | MailNews</title>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2238125462513134"
-    crossorigin="anonymous"></script>
-</head>
-
-<body class="bg-slate-950 flex flex-wrap w-screen h-screen scroll-smooth overflow-x-hidden">
-  <nav
-    class="fixed bg-slate-950 bg-opacity-90 lg:bg-opacity-45 top-0 left-0 w-full px-4 py-0 backdrop-blur-lg text-white z-20 flex items-center h-12 justify-between">
-    <div class="w-screen flex flex-wrap items-center justify-between p-2">
-      <a href="/">
-        <span class="self-center text-xl font-semibold whitespace-nowrap text-white">MailNews</span>
-      </a>
-      <button id="navbar-solid-bg-btn" data-collapse-toggle="navbar-solid-bg-btn" type="button"
-        class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-        aria-controls="navbar-solid-bg" aria-expanded="false">
-        <span class="sr-only">Open main menu</span>
-        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M1 1h15M1 7h15M1 13h15" />
-        </svg>
-      </button>
-      <div id="mobile-menu"
-        class="hidden top-10 lg:hidden w-screen fixed text-center left-0 z-50 rounded-br-lg rounded-bl-lg bg-slate-950 backdrop-blur-2xl duration-500">
-        <a href="/" class="block text-white py-2 px-4">Home</a>
-        <a href="/news" class="block text-white py-2 px-4">News</a>
-        <a href="#" class="block text-white py-2 px-4">Sign In</a>
-        <a href="#" class="block text-white py-2 px-4">Contact</a>
-      </div>
-      <div class="hidden w-full md:block md:w-auto" id="navbar-solid-bg">
-        <ul
-          class="flex flex-col font-medium mt-4 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent">
-          <li>
-            <a href="/"
-              class="block py-2 px-3 md:p-0 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent"
-              aria-current="page">Home</a>
-          </li>
-          <li>
-            <a href="#"
-              class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent">Services</a>
-          </li>
-          <li>
-            <a href="#"
-              class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent">Pricing</a>
-          </li>
-          <li>
-            <a href="#"
-              class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent">Contact</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <div class="h-56 w-56 rounded-full blur-3xl -left-14 fixed top-0 bg-purple-700 -z-10"></div>
-  <div class="h-56 w-56 rounded-full blur-3xl -right-14 fixed bottom-0 bg-yellow-700 -z-10"></div>
-
-  <section class="w-screen flex items-center justify-center overflow-x-hidden align-middle m-auto">
-    <div
-      class="bg-slate-800 bg-opacity-25 block backdrop-blur-lg w-5/6 lg:w-1/2 h-auto rounded-xl m-auto text-center px-5 py-4 text-white">
-      <h1 class="font-bold text-2xl">Sign In To MailNews</h1>
-      <form action="/subscribe" method="post" class="pt-4 gap-2 lg:px-3 lg:pt-4 lg:text-sm">
-        
-        <input type="email" required name="email"
-          class="border-slate-800 border-2 border-solid rounded-lg w-full p-2 outline-nonelg:p-2 bg-slate-800 focus:bg-slate-700 duration-200 mb-5 text-white font-semibold"
-          placeholder="Email" onblur="validateEmail(this)" />
-        <input type="text" required name="pass" autocomplete="current-password"
-          class="border-slate-800 border-2 border-solid rounded-lg w-full p-2 outline-nonelg:p-2 bg-slate-800 focus:bg-slate-700 duration-200 mb-2 text-white font-semibold"
-          placeholder="Enter Password" />
-          <button type="submit" disabled
-          class="!bg-slate-700 text-white rounded-full px-9 py-2 lg:px-4 lg:py-2 mt-5 font-semibold text-lg disabled:opacity-75">
-          Sign In
+  <body
+    class="bg-slate-950 flex flex-wrap w-screen h-screen scroll-smooth overflow-x-hidden"
+  >
+    <nav
+      class="fixed bg-slate-950 bg-opacity-90 lg:bg-opacity-45 top-0 left-0 w-full px-4 py-0 backdrop-blur-lg text-white z-20 flex items-center h-12 justify-between"
+    >
+      <div class="w-screen flex flex-wrap items-center justify-between p-2">
+        <a href="/">
+          <span
+            class="self-center text-xl font-semibold whitespace-nowrap text-white"
+            >MailNews</span
+          >
+        </a>
+        <button
+          id="navbar-solid-bg-btn"
+          data-collapse-toggle="navbar-solid-bg-btn"
+          type="button"
+          class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+          aria-controls="navbar-solid-bg"
+          aria-expanded="false"
+        >
+          <span class="sr-only">Open main menu</span>
+          <svg
+            class="w-5 h-5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 17 14"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M1 1h15M1 7h15M1 13h15"
+            />
+          </svg>
         </button>
+        <div
+          id="mobile-menu"
+          class="hidden top-10 lg:hidden w-screen fixed text-center left-0 z-50 rounded-br-lg rounded-bl-lg bg-slate-950 backdrop-blur-2xl duration-500"
+        >
+          <a href="/" class="block text-white py-2 px-4">Home</a>
+          <a href="/news" class="block text-white py-2 px-4">News</a>
+          <a href="#" class="block text-white py-2 px-4">Sign In</a>
+          <a href="#" class="block text-white py-2 px-4">Contact</a>
+        </div>
+        <div class="hidden w-full md:block md:w-auto" id="navbar-solid-bg">
+          <ul
+            class="flex flex-col font-medium mt-4 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent"
+          >
+            <li>
+              <a
+                href="/"
+                class="block py-2 px-3 md:p-0 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent"
+                aria-current="page"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent"
+                >Services</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent"
+                >Pricing</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent"
+                >Contact</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div
+      class="h-56 w-56 rounded-full blur-3xl -left-14 fixed top-0 bg-purple-700 -z-10"
+    ></div>
+    <div
+      class="h-56 w-56 rounded-full blur-3xl -right-14 fixed bottom-0 bg-yellow-700 -z-10"
+    ></div>
+
+    <section
+      class="w-screen flex items-center justify-center overflow-x-hidden align-middle m-auto"
+    >
+      <div
+        class="bg-slate-800 bg-opacity-25 block backdrop-blur-lg w-5/6 lg:w-1/2 h-auto rounded-xl m-auto text-center px-5 py-4 text-white"
+      >
+        <h1 class="font-bold text-2xl">Sign In To MailNews</h1>
+
+        <div
+          id="popup"
+          class="bg-red-500 w-full h-auto relative p-3 font-semibold rounded-md my-3"
+          style="display: none"
+        >
+          <p>HIHIHIHIH</p>
+          <div class="absolute -top-2 -right-2" onclick="toggleError('none')">
+            <svg
+            class="w-6 h-6 text-white fill-white scale-110 bg-red-900 rounded-full"
+              xmlns="http://www.w3.org/2000/svg"
+              x="0px"
+              y="0px"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12,2C6.47,2,2,6.47,2,12c0,5.53,4.47,10,10,10s10-4.47,10-10C22,6.47,17.53,2,12,2z M16.707,15.293 c0.391,0.391,0.391,1.023,0,1.414C16.512,16.902,16.256,17,16,17s-0.512-0.098-0.707-0.293L12,13.414l-3.293,3.293 C8.512,16.902,8.256,17,8,17s-0.512-0.098-0.707-0.293c-0.391-0.391-0.391-1.023,0-1.414L10.586,12L7.293,8.707 c-0.391-0.391-0.391-1.023,0-1.414s1.023-0.391,1.414,0L12,10.586l3.293-3.293c0.391-0.391,1.023-0.391,1.414,0 s0.391,1.023,0,1.414L13.414,12L16.707,15.293z"
+              ></path>
+            </svg>
+          </div>
+        </div>
+
+        <form
+          action="javascript:submitForm()"
+          method="post"
+          class="pt-4 gap-2 lg:px-3 lg:pt-4 lg:text-sm"
+        >
+          <input
+            type="email"
+            required
+            name="email"
+            class="border-slate-800 border-2 border-solid rounded-lg w-full p-2 outline-nonelg:p-2 bg-slate-800 focus:bg-slate-700 duration-200 mb-5 text-white font-semibold"
+            placeholder="Email"
+            onblur="validateEmail(this)"
+          />
+          <input
+            type="text"
+            required
+            name="pass"
+            autocomplete="current-password"
+            class="border-slate-800 border-2 border-solid rounded-lg w-full p-2 outline-nonelg:p-2 bg-slate-800 focus:bg-slate-700 duration-200 mb-2 text-white font-semibold"
+            placeholder="Enter Password"
+          />
+          <button
+            type="submit"
+            disabled
+            class="!bg-slate-700 text-white rounded-full px-9 py-2 lg:px-4 lg:py-2 mt-5 font-semibold text-lg disabled:opacity-75"
+          >
+            Sign In
+          </button>
 
           <div class="w-full flex flex-row items-center">
-            <hr class="w-full">
+            <hr class="w-full" />
             <p class="font-bold p-3">Or</p>
-            <hr class="w-full">
+            <hr class="w-full" />
           </div>
 
-          <button type="button" onclick="window.location.href='/google-login'"
-          class="!bg-slate-700 w-full justify-evenly text-white rounded-full max-w-56 m-auto items-center flex px-1 py-2 lg:px-4 lg:py-2 mt-1 font-semibold text-base disabled:opacity-75">
-          <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="35" height="35" viewBox="0 0 48 48">
-            <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"></path><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path>
+          <button
+            type="button"
+            onclick="window.location.href='/google-login'"
+            class="!bg-slate-700 w-full justify-evenly text-white rounded-full max-w-56 m-auto items-center flex px-1 py-2 lg:px-4 lg:py-2 mt-1 font-semibold text-base disabled:opacity-75"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              x="0px"
+              y="0px"
+              width="35"
+              height="35"
+              viewBox="0 0 48 48"
+            >
+              <path
+                fill="#FFC107"
+                d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"
+              ></path>
+              <path
+                fill="#FF3D00"
+                d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"
+              ></path>
+              <path
+                fill="#4CAF50"
+                d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"
+              ></path>
+              <path
+                fill="#1976D2"
+                d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
+              ></path>
             </svg>
-          Sign In With Google
-        </button>
-
-        
-      </form>
-      <p class="mt-4">New To MailNews ? <br> <span class=" text-fuchsia-500 font-semibold"><a href="/signup">Sign-Up</a></span></p>
-    </div>
-  </section>
-</body>
-<script>
-
-function validateEmail(ele) {
-    if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(ele.value)) {
-      (ele.style.border = "2px solid rgb(34, 197, 94)"),
-        document
-          .querySelector("button[type='submit']")
-          .removeAttribute("disabled");
-    } else {
-      (ele.style.border = "2px solid red"),
-        (ele.value = ""),
-        ele.setAttribute("placeholder", "Enter a Valid E-Mail"),
-        document
-          .querySelector("button[type='submit']")
-          .setAttribute("disabled", "disabled");
+            Sign In With Google
+          </button>
+        </form>
+        <p class="mt-4">
+          New To MailNews ? <br />
+          <span class="text-fuchsia-500 font-semibold"
+            ><a href="/signup">Sign-Up</a></span
+          >
+        </p>
+      </div>
+    </section>
+  </body>
+  <script>
+    var popup = document.querySelector("#popup");
+    function toggleError(visibility) {
+      popup.style.display = visibility;
     }
-  }
 
-</script>
+    function validateEmail(ele) {
+      if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(ele.value)) {
+        (ele.style.border = "2px solid rgb(34, 197, 94)"),
+          document
+            .querySelector("button[type='submit']")
+            .removeAttribute("disabled");
+      } else {
+        (ele.style.border = "2px solid red"),
+          (ele.value = ""),
+          ele.setAttribute("placeholder", "Enter a Valid E-Mail"),
+          document
+            .querySelector("button[type='submit']")
+            .setAttribute("disabled", "disabled");
+      }
+    }
 
+    function submitForm() {
+      var processedData = new URLSearchParams(new FormData(document.forms[0]));
+      fetch("/signin", {
+        method: "POST",
+        body: processedData,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      })
+        .then(async (res) => {
+          if (res.status == 401) {
+            popup.firstElementChild.textContent = await res.text();
+            toggleError("block");
+          } 
+          else  if (res.status == 404) {
+            popup.firstElementChild.textContent = await res.text();
+            toggleError("block");
+          } 
+        });
+    }
+  </script>
 </html>

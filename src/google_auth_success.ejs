@@ -115,7 +115,8 @@
         </h1>
         <p class="pb-4 font-semibold">Connected E-Mail : <%= email %></p>
         <p>You Can Now Use This Email To Login</p>
-        <p class="mt-3 font-semibold text-sm">You Will Be Redirected To Login In Few Moments</p>
+        <p class="mt-3 font-semibold text-sm">You Will Be Redirected To Login In Few Moments <a class="text-fuchsia-500 block mt-2 font-bold" href="/signin">Continue</a></p>
+
         <div
         class="mt-5 bg-gradient-to-r from-pink-700 via-indigo-500 to-emerald-500 absolute bottom-0 left-0 h-2 rounded-b-lg z-30 w-full" style="animation: loading linear 7500ms;"></div>
       </div>
@@ -137,6 +138,6 @@
   <script>
     setTimeout(() => {
       window.location.href = "/login";
-    }, 7500);
+    }, 7600);
   </script>
 </html>

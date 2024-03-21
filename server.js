@@ -68,15 +68,16 @@ let db = new sql.Database("mailNews.db", (err) => {});
 db.run(
   "CREATE TABLE IF NOT EXISTS users (emailID TEXT PRIMARY KEY, name TEXT NOT NULL, password TEXT NOT NULL, dos TEXT NOT NULL, interests TEXT NOT NULL, emailslot INTEGER NOT NULL, googleUID TEXT UNIQUE )"
 );
-
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.OAUTH2_CLIENT_ID,
       clientSecret: process.env.OAUTH2_CLIENT_SECRET,
-      callbackURL: "/process-login",
+      callbackURL:
+        process.env.NODE_ENV === "production"
+          ? "https://mailnews.onrender.com/process-google-auth"
+          : "http://localhost:10000/process-google-auth",
       scope: ["https://www.googleapis.com/auth/plus.login"],
-      
     },
     function (accessToken, refreshToken, profile, done) {
       return done(null, profile._json);
@@ -87,12 +88,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 passport.serializeUser(function (user, done) {
   done(null, user);
-})
+});
 
 passport.deserializeUser(function (obj, done) {
   done(null, obj);
 });
-
 
 let mailer = nodemailer.createTransport({
   service: "gmail",
@@ -133,9 +133,6 @@ function ensureAuthenticated(req, res, next) {
   res.redirect("/signin");
 }
 app.listen(10000, async () => {
-  const currentDate = new Date();
-  const formattedDateTime = `${currentDate.toLocaleDateString()}, ${currentDate.toLocaleTimeString()}`;
-  console.log("Current date and time:", formattedDateTime);
   console.log("SERVER RUNNING ON PORT 10000 ");
 });
 
@@ -143,8 +140,42 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/src/index.html");
 });
 
-app.get("/dashboard", (req, res) => {
-  res.sendFile(__dirname + "/src/dashboard.html");
+app.post("/signin", (req, res) => {
+  db.get(
+    `SELECT * FROM users WHERE emailID = "${req.body.email}"`,
+    (err, row) => {
+      if (row) {
+        if (
+          row.password ==
+          crypto.createHash("sha256").update(req.body.pass).digest("hex")
+        ) {
+          req.session.loggedin = row.emailID;
+          res.redirect("/dashboard");
+        } else {
+          res.status(401).send("Wrong Password");
+        }
+      } else {
+        res.status(404).send("Account Not Found, Check Credentials And Try Again");
+      }
+    }
+  );
+})
+
+app.get("/dashboard", ensureAuthenticated, (req, res) => {
+  let email = req.user.email || req.session.loggedin;
+  db.get(
+    `SELECT * FROM users WHERE emailID = "${email}"`,
+    (err, row) => {
+      if (row) {
+        res.render(__dirname + "/src/dashboard.ejs", {
+          email: row.emailID,
+          
+        });
+      } else {
+        res.status(404).send("Account Not Found");
+      }
+    }
+  );
 });
 
 app.post("/subscribe", (req, res) => {
@@ -155,16 +186,19 @@ app.post("/subscribe", (req, res) => {
         if (!req.session.currentSubs) {
           req.session.currentSubs = req.body;
           req.session.registrationCode = Math.random().toString().slice(3, 10);
-          await mailer.sendMail({
-            to: req.body.email,
-            from: `MailNews ${process.env.EMAIL}`,
-            subject: "Verify Your Email | MailNews",
-            html: verificationMailBody.replace(
-              "VERIFICATION_CODE",
-              req.session.registrationCode
-            ),
-          }).catch((err) => {
-            console.log(err);});
+          await mailer
+            .sendMail({
+              to: req.body.email,
+              from: `MailNews ${process.env.EMAIL}`,
+              subject: "Verify Your Email | MailNews",
+              html: verificationMailBody.replace(
+                "VERIFICATION_CODE",
+                req.session.registrationCode
+              ),
+            })
+            .catch((err) => {
+              console.log(err);
+            });
           res.status(200).send("Verification Code Sent");
         } else {
           res.redirect("/verify");
@@ -197,7 +231,7 @@ app.post("/verifyEmail", inSubscribing, async (req, res) => {
         console.log(err);
         if (err) {
           res.status(400).send("Email Already Registered");
-        } else { 
+        } else {
           delete req.session.registrationCode;
           res.redirect("/registration-successful");
         }
@@ -209,7 +243,8 @@ app.post("/verifyEmail", inSubscribing, async (req, res) => {
 });
 
 app.get(
-  "/connect-google", inSubscribing,
+  "/connect-google",
+  inSubscribing,
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
@@ -219,22 +254,25 @@ app.get(
 );
 
 app.get(
-  "/process-login",
+  "/process-google-auth",
   passport.authenticate("google", {
     failureRedirect: "/signin",
     successRedirect: "/google-auth-success",
     keepSessionInfo: true,
-  }
-)
+  })
 );
 
 app.get("/google-auth-success", ensureAuthenticated, (req, res) => {
   res.redirect(
-    req.session.currentSubs ?  "/connect-google-success" :"/dashboard" 
+    req.session.currentSubs ? "/connect-google-success" : "/dashboard"
   );
 });
 
-app.get("/connect-google-success",ensureAuthenticated,  (req, res) => {
+app.get("/connect-google-success", (req, res) => {
+  res.render(__dirname + "/src/google_auth_success.ejs", {
+    email: "req.user.email",
+  });
+  return;
   db.run(
     `UPDATE users SET googleUID = '${req.user.sub}' WHERE emailID = '${req.session.currentSubs.email}'`,
     (err) => {
@@ -242,7 +280,9 @@ app.get("/connect-google-success",ensureAuthenticated,  (req, res) => {
         res.status(500).send("Error");
       } else {
         delete req.session.currentSubs;
-        res.render(__dirname + "/src/google_auth_success.ejs", {email: req.user.email});
+        res.render(__dirname + "/src/google_auth_success.ejs", {
+          email: req.user.email,
+        });
       }
     }
   );
