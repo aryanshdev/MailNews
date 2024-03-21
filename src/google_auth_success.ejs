@@ -134,70 +134,16 @@
             </svg>
           </div>
         </div>
-        <h1 class="font-bold text-2xl">Verify Your Email</h1>
-        <form
-          action="javascript:verify()"
-          method="post"
-          class="pt-4 gap-2 lg:px-3 lg:pt-4 lg:text-sm"
-        >
+        <h1 class="font-bold text-2xl">Google Account Connected Successfully</h1>
+       
           <p class="pb-4">
-            A Verification Code Has Been Sent To Your Email Address, Please
-            Enter That Code Below To Continue
+           Connected E-Mail : <%= email %>
+           <br>
+           You Can Now Use This Email To Login
           </p>
-          <input
-            type="text"
-            required
-            name="verificationCode"
-            class="border-slate-800 border-2 border-solid rounded-lg w-full p-2 outline-nonelg:p-2 bg-slate-800 focus:bg-slate-700 duration-200 mb-2 text-white font-semibold"
-            placeholder="Enter Code"
-          />
-          <button
-            type="submit"
-            class="!bg-slate-700 text-white rounded-full px-9 py-2 lg:px-4 lg:py-2 mt-5 font-semibold text-lg disabled:bg-opacity-70 disabled:text-gray-400"
-          >
-            Verify
-          </button>
+         
         </form>
       </div>
     </section>
-    <script>
-      var popup = document.querySelector("#popup");
-      function toggleError(visibility) {
-        popup.style.display = visibility;
-      }
-
-      function verify() {
-        var form = document.forms[0];
-        const formData = new FormData(form);
-        var data = new URLSearchParams();
-        document
-          .querySelector("button[type='submit']")
-          .setAttribute("disabled", "disabled");
-        document.querySelector("button[type='submit']").innerHTML = `
-      <svg class="animate-spin  h-7 w-7 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-        <circle class="opacity-50" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-        <path  fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-      </svg>`;
-        const response = fetch("/verifyEmail", {
-          method: "POST",
-          body: new URLSearchParams(formData).toString(),
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }).then((res) => {
-          if (res.status === 200) {
-            window.location.href = "/registration-successful";
-          } else {
-            document
-              .querySelector("button[type='submit']")
-              .removeAttribute("disabled");
-            document.querySelector(
-              "button[type='submit']"
-            ).innerHTML = `Verify`;
-            toggleError("block");
-          }
-        });
-      }
-    </script>
   </body>
 </html>

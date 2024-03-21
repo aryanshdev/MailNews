@@ -1,7 +1,10 @@
 const express = require("express");
 const cron = require("node-cron");
+const passport = require("passport");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const bodyParser = require("body-parser");
 const session = require("express-session");
+const cookieParser = require("cookie-parser");
 const nodemailer = require("nodemailer");
 let newsWritter = require("./newsGetter");
 const sql = require("sqlite3").verbose();
@@ -51,21 +54,45 @@ app.use(
   session({
     secret: "MailNews-Secret",
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: { maxAge: 1800000 },
   })
 );
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static("src"));
 
 let db = new sql.Database("mailNews.db", (err) => {});
-
-db.run("drop table if exists users");
 db.run(
-  "CREATE TABLE IF NOT EXISTS users (emailID TEXT PRIMARY KEY, name TEXT NOT NULL, password TEXT NOT NULL, dos DATE NOT NULL, interests TEXT NOT NULL, emailslot INTEGER NOT NULL )"
+  "CREATE TABLE IF NOT EXISTS users (emailID TEXT PRIMARY KEY, name TEXT NOT NULL, password TEXT NOT NULL, dos TEXT NOT NULL, interests TEXT NOT NULL, emailslot INTEGER NOT NULL, googleUID TEXT UNIQUE )"
 );
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.OAUTH2_CLIENT_ID,
+      clientSecret: process.env.OAUTH2_CLIENT_SECRET,
+      callbackURL: "/process-login",
+      scope: ["https://www.googleapis.com/auth/plus.login"],
+      
+    },
+    function (accessToken, refreshToken, profile, done) {
+      return done(null, profile._json);
+    }
+  )
+);
+app.use(passport.initialize());
+app.use(passport.session());
+passport.serializeUser(function (user, done) {
+  done(null, user);
+})
+
+passport.deserializeUser(function (obj, done) {
+  done(null, obj);
+});
+
 
 let mailer = nodemailer.createTransport({
   service: "gmail",
@@ -75,8 +102,8 @@ let mailer = nodemailer.createTransport({
     type: "OAuth2",
     user: process.env.EMAIL,
     pass: process.env.PASSWORD,
-    clientId: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
+    clientId: process.env.EMAILER_CLIENT_ID,
+    clientSecret: process.env.EMAILER_CLIENT_SECRET,
     refreshToken: process.env.REFRESH_TOKEN,
   },
 });
@@ -115,19 +142,33 @@ app.get("/dashboard", (req, res) => {
   res.sendFile(__dirname + "/src/dashboard.html");
 });
 
-app.post("/subscribe", async (req, res) => {
-  req.session.currentSubs = req.body;
-  req.session.registrationCode = Math.random().toString().slice(3, 10);
-  await mailer.sendMail({
-    to: req.body.email,
-    from: `MailNews ${process.env.EMAIL}`,
-    subject: "Verify Your Email | MailNews",
-    html: verificationMailBody.replace(
-      "VERIFICATION_CODE",
-      req.session.registrationCode
-    ),
-  });
-  res.status(200).send("Verification Code Sent");
+app.post("/subscribe", (req, res) => {
+  db.get(
+    `SELECT * FROM users WHERE emailID = "${req.body.email}"`,
+    async (err, row) => {
+      if (!row) {
+        if (!req.session.currentSubs) {
+          req.session.currentSubs = req.body;
+          req.session.registrationCode = Math.random().toString().slice(3, 10);
+          await mailer.sendMail({
+            to: req.body.email,
+            from: `MailNews ${process.env.EMAIL}`,
+            subject: "Verify Your Email | MailNews",
+            html: verificationMailBody.replace(
+              "VERIFICATION_CODE",
+              req.session.registrationCode
+            ),
+          }).catch((err) => {
+            console.log(err);});
+          res.status(200).send("Verification Code Sent");
+        } else {
+          res.redirect("/verify");
+        }
+      } else {
+        res.status(409).send("Email Already Registered");
+      }
+    }
+  );
 });
 
 app.get("/verify", inSubscribing, (req, res) => {
@@ -137,17 +178,22 @@ app.get("/verify", inSubscribing, (req, res) => {
 app.post("/verifyEmail", inSubscribing, async (req, res) => {
   if (req.body.verificationCode == req.session.registrationCode) {
     db.run(
-      `INSERT INTO users VALUES(
-        ${req.session.currentSubs.email},
-        ${req.session.currentSubs.name},
-        ${req.session.currentSubs.password},
-        ${new Date().toISOString()},
-        ${req.session.currentSubs.interests},
+      `INSERT INTO users (emailID, name, password, dos, interests, emailslot) VALUES(
+        "${req.session.currentSubs.email}",
+        "${req.session.currentSubs.name}",
+        "${crypto
+          .createHash("sha256")
+          .update(req.session.currentSubs.pass)
+          .digest("hex")}",
+        "${new Date().toISOString()}",
+        "${req.session.currentSubs.interests}",
         ${req.session.currentSubs.slot})`,
       (err) => {
+        console.log(err);
         if (err) {
           res.status(400).send("Email Already Registered");
-        } else {
+        } else { 
+          delete req.session.registrationCode;
           res.redirect("/registration-successful");
         }
       }
@@ -157,8 +203,43 @@ app.post("/verifyEmail", inSubscribing, async (req, res) => {
   }
 });
 
+app.get(
+  "/connect-google",
+  passport.authenticate("google", { session:false, scope: ["profile", "email"] })
+);
+
+app.get(
+  "/process-login",
+  passport.authenticate("google", {
+    failureRedirect: "/signin",
+    successRedirect: "/google-auth-success",
+    keepSessionInfo: true,
+  }
+)
+);
+
+app.get("/google-auth-success", (req, res) => {
+  res.redirect(
+    req.session.currentSubs ?  "/connect-google-success" :"/dashboard" 
+  );
+});
+
+app.get("/connect-google-success", inSubscribing, (req, res) => {
+  console.log(req.user);
+  db.run(
+    `UPDATE users SET googleUID = '${req.user.sub}' WHERE emailID = '${req.session.currentSubs.email}'`,
+    (err) => {
+      if (err) {
+        res.status(500).send("Error");
+      } else {
+        delete req.session.currentSubs;
+        res.render(__dirname + "/src/google_auth_success.ejs", {email: req.user.email});
+      }
+    }
+  );
+});
+
 app.get("/registration-successful", inSubscribing, (req, res) => {
-  delete req.session.currentSubs;
   res.sendFile(__dirname + "/src/register_success.html");
 });
 app.get("/signup", (req, res) => {
