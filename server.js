@@ -126,7 +126,12 @@ function inSubscribing(req, res, next) {
     res.redirect("/signin");
   }
 }
-
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect("/signin");
+}
 app.listen(10000, async () => {
   const currentDate = new Date();
   const formattedDateTime = `${currentDate.toLocaleDateString()}, ${currentDate.toLocaleTimeString()}`;
@@ -204,8 +209,13 @@ app.post("/verifyEmail", inSubscribing, async (req, res) => {
 });
 
 app.get(
-  "/connect-google",
-  passport.authenticate("google", { session:false, scope: ["profile", "email"] })
+  "/connect-google", inSubscribing,
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+app.get(
+  "/google-login",
+  passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
 app.get(
@@ -218,14 +228,13 @@ app.get(
 )
 );
 
-app.get("/google-auth-success", (req, res) => {
+app.get("/google-auth-success", ensureAuthenticated, (req, res) => {
   res.redirect(
     req.session.currentSubs ?  "/connect-google-success" :"/dashboard" 
   );
 });
 
-app.get("/connect-google-success", inSubscribing, (req, res) => {
-  console.log(req.user);
+app.get("/connect-google-success",ensureAuthenticated,  (req, res) => {
   db.run(
     `UPDATE users SET googleUID = '${req.user.sub}' WHERE emailID = '${req.session.currentSubs.email}'`,
     (err) => {
