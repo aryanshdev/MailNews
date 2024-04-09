@@ -3,22 +3,32 @@
 @tailwind components;
 
 .very-wide {
-    letter-spacing: 1rem;
-    transition: all 250ms;
-  }
+  letter-spacing: 1rem;
+  transition: all 250ms;
+}
 .hover\:very-very-wide:hover {
-    letter-spacing: 1.92rem;
-    transition: all 250ms;
-  }
-
+  letter-spacing: 1.92rem;
+  transition: all 250ms;
+}
 
 ::-webkit-scrollbar-track {
   background: #fc0000;
   border-radius: 5px;
 }
 
-
 ::-webkit-scrollbar-thumb {
   background: #b73737;
   border-radius: 5px;
 }
+
+.slide-into-screen-from-right {
+  animation: slide-right-to-screen ease-in-out;
+}
+.slide-outof-screen-to-right {
+  animation: slide-right-out-screen ease-in-out;
+}
+
+.translate-x-100{
+  transform: translateX(100%)
+}
+

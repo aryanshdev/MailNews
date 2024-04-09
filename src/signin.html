@@ -98,6 +98,13 @@
     </nav>
 
     <div
+      id="popup"
+      class="border-solid border-2 border-gray-400 w-auto p-3 top-10 bg-blue-700 translate-x-100 max-w-56 z-50 my-10 font-sans font-semibold fixed text-white right-0 rounded-md transition-all duration-200 md:text-lg md:p-4 md:max-w-72"
+    >
+      MESSAGE
+    </div>
+
+    <div
       class="h-56 w-56 rounded-full blur-3xl -left-14 fixed top-0 bg-purple-700 -z-10"
     ></div>
     <div
@@ -108,32 +115,9 @@
       class="w-screen flex items-center justify-center overflow-x-hidden align-middle m-auto"
     >
       <div
-        class="bg-slate-800 bg-opacity-25 block backdrop-blur-lg w-5/6 lg:w-1/2 h-auto rounded-xl m-auto text-center px-5 py-4 text-white"
+        class="bg-slate-800 bg-opacity-25 block backdrop-blur-lg w-5/6 lg:w-1/2 h-auto rounded-xl mt-16 md:mt-auto m-auto  text-center px-5 py-4 text-white"
       >
         <h1 class="font-bold text-2xl">Sign In To MailNews</h1>
-
-        <div
-          id="popup"
-          class="bg-red-500 w-full h-auto relative p-3 font-semibold rounded-md my-3"
-          style="display: none"
-        >
-          <p>HIHIHIHIH</p>
-          <div class="absolute -top-2 -right-2" onclick="toggleError('none')">
-            <svg
-            class="w-6 h-6 text-white fill-white scale-110 bg-red-900 rounded-full"
-              xmlns="http://www.w3.org/2000/svg"
-              x="0px"
-              y="0px"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M12,2C6.47,2,2,6.47,2,12c0,5.53,4.47,10,10,10s10-4.47,10-10C22,6.47,17.53,2,12,2z M16.707,15.293 c0.391,0.391,0.391,1.023,0,1.414C16.512,16.902,16.256,17,16,17s-0.512-0.098-0.707-0.293L12,13.414l-3.293,3.293 C8.512,16.902,8.256,17,8,17s-0.512-0.098-0.707-0.293c-0.391-0.391-0.391-1.023,0-1.414L10.586,12L7.293,8.707 c-0.391-0.391-0.391-1.023,0-1.414s1.023-0.391,1.414,0L12,10.586l3.293-3.293c0.391-0.391,1.023-0.391,1.414,0 s0.391,1.023,0,1.414L13.414,12L16.707,15.293z"
-              ></path>
-            </svg>
-          </div>
-        </div>
 
         <form
           action="javascript:submitForm()"
@@ -149,13 +133,19 @@
             onblur="validateEmail(this)"
           />
           <input
-            type="text"
+            type="password"
             required
             name="pass"
             autocomplete="current-password"
             class="border-slate-800 border-2 border-solid rounded-lg w-full p-2 outline-nonelg:p-2 bg-slate-800 focus:bg-slate-700 duration-200 mb-2 text-white font-semibold"
             placeholder="Enter Password"
           />
+          <div class="block mt-3 text-left">
+            <input type="checkbox" name="saveInfo" id="saveInfo" class=" h-3 w-4 mr-1 md:mr-2 md:h-4 md:w-4" />
+            <label for="saveInfo" class="text-gray-400 md:text-lg"
+              >Save Login Information</label
+            >
+          </div>
           <button
             type="submit"
             disabled
@@ -213,10 +203,48 @@
     </section>
   </body>
   <script>
-    var popup = document.querySelector("#popup");
-    function toggleError(visibility) {
-      popup.style.display = visibility;
+    var currentPopUpTimeoutID;
+    function showPopup(textMessage, type = "info", durartion = 5000) {
+     clearTimeout(currentPopUpTimeoutID);
+      if (type === "err") {
+        popup.style.backgroundColor = "rgb(153, 27, 27)";
+      } else if (type === "info") {
+        popup.style.backgroundColor = "rgb(29, 78, 216)";
+      } else if (type === "warn") {
+        popup.style.backgroundColor = "rgb(202, 138, 4)";
+      }
+      popup.textContent = textMessage;
+      popup.classList.add("mr-7");
+      popup.classList.remove("translate-x-100");
+
+      currentPopUpTimeoutID = setTimeout(() => {
+        popup.classList.remove("mr-7");
+        popup.classList.add("translate-x-100");
+      }, durartion);
     }
+  
+    fetch("/autologin", {
+      method: "GET",
+    }).then((res) => {
+      if (res.status === 202) {
+        showPopup("Attempting Auto Login", "info", 2000);
+      }
+    }).then(async () => {
+      setTimeout(() => {
+        fetch("/autologin", {
+        method: "POST",
+      }).then((res) => {
+        if (res.status === 406) {
+          showPopup("Auto Login Failed, Login and Select Save Login Information To Save Info Again", "err", 7500);
+        }
+        else if (res.status === 200) {
+          window.location.href = "/dashboard";
+        }
+      });
+      }, 2000);
+    
+    });
+
 
     function validateEmail(ele) {
       if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(ele.value)) {
@@ -236,23 +264,24 @@
 
     function submitForm() {
       var processedData = new URLSearchParams(new FormData(document.forms[0]));
+      processedData.append(
+        "saveLogin",
+        document.forms[0].querySelector("input[name='saveInfo']").checked
+      );
       fetch("/signin", {
         method: "POST",
         body: processedData,
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-      })
-        .then(async (res) => {
-          if (res.status == 401) {
-            popup.firstElementChild.textContent = await res.text();
-            toggleError("block");
-          } 
-          else  if (res.status == 404) {
-            popup.firstElementChild.textContent = await res.text();
-            toggleError("block");
-          } 
-        });
-    }
-  </script>
+      }).then(async (res) => {
+        if (res.status == 401) {
+          showPopup(await res.text(), "err", 7500);
+          toggleError("block");
+        } else if (res.status == 404) {
+          showPopup( await res.text(), "err", 7500);
+          toggleError("block");
+        }
+      });
+    }</script>
 </html>

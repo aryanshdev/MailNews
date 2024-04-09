@@ -65,8 +65,9 @@ app.set("view engine", "ejs");
 app.use(express.static("src"));
 
 let db = new sql.Database("mailNews.db", (err) => {});
+
 db.run(
-  "CREATE TABLE IF NOT EXISTS users (emailID TEXT PRIMARY KEY, name TEXT NOT NULL, password TEXT NOT NULL, dos TEXT NOT NULL, interests TEXT NOT NULL, emailslot INTEGER NOT NULL, googleUID TEXT UNIQUE )"
+  "CREATE TABLE IF NOT EXISTS users (emailID TEXT PRIMARY KEY, emailHash TEXT NOT NULL, name TEXT NOT NULL, password TEXT NOT NULL, dos TEXT NOT NULL, interests TEXT NOT NULL, emailslot INTEGER NOT NULL, googleUID TEXT UNIQUE )"
 );
 passport.use(
   new GoogleStrategy(
@@ -119,7 +120,7 @@ async function cronNews() {
 
 cron.schedule("0 */2 * * *", cronNews);
 
-function inSubscribing(req, res, next) {
+function inSubscribingProcessCheck(req, res, next) {
   if (req.session.currentSubs) {
     return next();
   } else {
@@ -127,6 +128,7 @@ function inSubscribing(req, res, next) {
   }
 }
 function ensureAuthenticated(req, res, next) {
+  console.log(req.isAuthenticated());
   if (req.isAuthenticated()) {
     return next();
   }
@@ -150,32 +152,45 @@ app.post("/signin", (req, res) => {
           crypto.createHash("sha256").update(req.body.pass).digest("hex")
         ) {
           req.session.loggedin = row.emailID;
+        
+          if (req.body.saveLogin) {
+            res.cookie(
+              "__logcred__",
+              crypto.createHash("sha256").update(req.body.email).digest("hex") +
+                "$" +
+                crypto.createHash("sha256").update(req.body.pass).digest("hex"),
+              { maxAge: 3600000 * 24 * 7, httpOnly: true }
+            );
+          }
           res.redirect("/dashboard");
         } else {
-          res.status(401).send("Wrong Password");
+          res.status(401).send("Wrong Password, Check Credentials And Try Again");
         }
       } else {
-        res.status(404).send("Account Not Found, Check Credentials And Try Again");
+        res
+          .status(404)
+          .send("Account Not Found, Check Credentials And Try Again");
       }
     }
   );
-})
+});
 
-app.get("/dashboard", ensureAuthenticated, (req, res) => {
-  let email = req.user.email || req.session.loggedin;
-  db.get(
-    `SELECT * FROM users WHERE emailID = "${email}"`,
-    (err, row) => {
-      if (row) {
-        res.render(__dirname + "/src/dashboard.ejs", {
-          email: row.emailID,
-          
-        });
-      } else {
-        res.status(404).send("Account Not Found");
-      }
-    }
-  );
+app.get("/dashboard", (req, res) => {
+  res.render(__dirname + "/src/dashboard.ejs");
+  // let email = req.user.email || req.session.loggedin;
+  // db.get(
+  //   `SELECT * FROM users WHERE emailID = "${email}"`,
+  //   (err, row) => {
+  //     if (row) {
+  //       res.render(__dirname + "/src/dashboard.ejs", {
+  //         email: row.emailID,
+
+  //       });
+  //     } else {
+  //       res.status(404).send("Account Not Found");
+  //     }
+  //   }
+  // );
 });
 
 app.post("/subscribe", (req, res) => {
@@ -210,15 +225,19 @@ app.post("/subscribe", (req, res) => {
   );
 });
 
-app.get("/verify", inSubscribing, (req, res) => {
+app.get("/verify", inSubscribingProcessCheck, (req, res) => {
   res.sendFile(__dirname + "/src/emailverify.html");
 });
 
-app.post("/verifyEmail", inSubscribing, async (req, res) => {
+app.post("/verifyEmail", inSubscribingProcessCheck, async (req, res) => {
   if (req.body.verificationCode == req.session.registrationCode) {
     db.run(
-      `INSERT INTO users (emailID, name, password, dos, interests, emailslot) VALUES(
+      `INSERT INTO users (emailID, emailHash, name, password, dos, interests, emailslot) VALUES(
         "${req.session.currentSubs.email}",
+        "${crypto
+          .createHash("sha256")
+          .update(req.session.currentSubs.email)
+          .digest("hex")}",
         "${req.session.currentSubs.name}",
         "${crypto
           .createHash("sha256")
@@ -244,7 +263,7 @@ app.post("/verifyEmail", inSubscribing, async (req, res) => {
 
 app.get(
   "/connect-google",
-  inSubscribing,
+  inSubscribingProcessCheck,
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
@@ -266,13 +285,10 @@ app.get("/google-auth-success", ensureAuthenticated, (req, res) => {
   res.redirect(
     req.session.currentSubs ? "/connect-google-success" : "/dashboard"
   );
+  delete req.session.currentSubs;
 });
 
 app.get("/connect-google-success", (req, res) => {
-  res.render(__dirname + "/src/google_auth_success.ejs", {
-    email: "req.user.email",
-  });
-  return;
   db.run(
     `UPDATE users SET googleUID = '${req.user.sub}' WHERE emailID = '${req.session.currentSubs.email}'`,
     (err) => {
@@ -288,7 +304,7 @@ app.get("/connect-google-success", (req, res) => {
   );
 });
 
-app.get("/registration-successful", inSubscribing, (req, res) => {
+app.get("/registration-successful", inSubscribingProcessCheck, (req, res) => {
   res.sendFile(__dirname + "/src/register_success.html");
 });
 app.get("/signup", (req, res) => {
@@ -296,10 +312,35 @@ app.get("/signup", (req, res) => {
 });
 
 app.get("/signin", (req, res) => {
-  res.sendFile(__dirname + "/src/signin.html");
+  res.redirect("/login");
 });
 app.get("/login", (req, res) => {
+  delete req.session.currentSubs;
   res.sendFile(__dirname + "/src/signin.html");
+});
+app.get("/autologin", (req, res) => {
+  if (req.cookies.__logcred__) {
+    res.sendStatus(202);
+  }
+});
+
+app.post("/autologin", (req, res) => {
+  var [hashedEmail, hashedPass] = req.cookies.__logcred__.split("$");
+  db.get(
+    `SELECT * FROM users WHERE emailHash = "${hashedEmail}"`,
+    (err, row) => {
+      if (row) {
+        if (row.password == hashedPass) {
+          req.session.loggedin = row.emailID;
+          res.status(200).redirect("/dashboard");
+        } else {
+          res.sendStatus(406);
+        }
+      } else {
+        res.sendStatus(406);
+      }
+    }
+  );
 });
 
 app.get("/news", (req, res) => {

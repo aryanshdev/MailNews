@@ -3,130 +3,227 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard | MailNews</title>
-    <link rel="stylesheet" href="./style.css" />
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2238125462513134"
-     crossorigin="anonymous"></script>
+    <title>News | MailNews</title>
+    <link href="style.css" rel="stylesheet" />
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoog5le.js?client=ca-pub-2238125462513134"
+      crossorigin="anonymous"
+    ></script>
   </head>
+  <style>
+    /* width */
+    @-moz-document url-prefix() {
+      div {
+        scrollbar-width: none;
+      }
+    }
 
-  <body
-    class="w-screen bg-gradient-to-b from-slate-950 to-black overflow-x-clip"
-  >
-    <nav class="sticky"></nav>
+    ::-webkit-scrollbar {
+      scrollbar-width: none;
+      display: none;
+    }
+  </style>
 
-    <section id="hero" class="h-screen w-full grid overflow-y-clip">
-      <div class="w-2/12 h-2/12 bg-gray-400 -z-20 absolute"></div>
+  <body class="bg-slate-950 flex w-screen h-screen scroll-smooth relative">
+    <div
+      class="bg-purple-700 -z-10 blur-3xl w-56 h-56 fixed -bottom-14 opacity-60 md:opacity-85 rounded-full -right-14 md:-right-2 md:-bottom-2 md:animate-pulse"
+    ></div>
+    <div
+      class="bg-green-400 -z-10 blur-3xl w-56 h-56 fixed -top-14 opacity-60 md:opacity-85 rounded-full -left-14 md:-left-7 md:-top-2 md:animate-pulse"
+    ></div>
 
-      <div
-        class="p-4 w-2/12 h-min shadow-md rounded-md border border-green-800 absolute right-0 z-0 animate-pulse hover:animate-none"
-      >
-        <div class="h-2 bg-blue-950 mb-5 pb-2 rounded-full"></div>
-        <div class="space-y-5">
-          <div class="h-1 bg-purple-600 rounded w-4/6"></div>
-          <div class="h-1 bg-green-900 rounded w-4/5"></div>
-          <div class="h-1 bg-yellow-600 rounded w-3/5"></div>
-          <div class="h-1 bg-blue-800 rounded w-4/6"></div>
-        </div>
-      </div>
-
-      <div
-        class="p-4 w-2/12 h-min shadow-md rounded-md border border-purple-800 absolute top-24 -left-14 z-0 animate-pulse hover:animate-none"
-      >
-        <div class="h-2 bg-blue-950 mb-5 pb-2 rounded-full"></div>
-        <div class="space-y-5">
-          <div class="h-1 bg-purple-600 rounded w-4/6"></div>
-          <div class="h-1 bg-green-900 rounded w-4/5"></div>
-          <div class="h-1 bg-yellow-600 rounded w-3/5"></div>
-          <div class="h-1 bg-blue-800 rounded w-4/6"></div>
-        </div>
-      </div>
-
-      <div
-        class="p-4 w-2/12 h-min shadow-md rounded-md border border-yellow-500 absolute -right-24 z-5 bottom-40 animate-pulse hover:animate-none"
-      >
-        <div class="h-2 bg-blue-950 mb-5 pb-2 rounded-full"></div>
-        <div class="space-y-5">
-          <div class="h-1 bg-purple-600 rounded w-4/6"></div>
-          <div class="h-1 bg-green-900 rounded w-4/5"></div>
-          <div class="h-1 bg-yellow-600 rounded w-3/5"></div>
-          <div class="h-1 bg-blue-800 rounded w-4/6"></div>
-        </div>
-      </div>
-
-      <div
-        class="p-4 w-2/12 h-min shadow-md rounded-md border border-green-600 absolute -left-40 bottom-20 z-0 animate-pulse hover:animate-none"
-      >
-        <div class="h-2 bg-blue-950 mb-5 pb-2 rounded-full"></div>
-        <div class="space-y-5">
-          <div class="h-1 bg-purple-600 rounded w-4/6"></div>
-          <div class="h-1 bg-green-900 rounded w-4/5"></div>
-          <div class="h-1 bg-yellow-600 rounded w-3/5"></div>
-          <div class="h-1 bg-blue-800 rounded w-4/6"></div>
-        </div>
-      </div>
-      <section class="flex z-30 top-0">
-        <div
-          class="bg-black bg-opacity-40 w-fit px-10 h-screen flex flex-col justify-evenly backdrop-blur-sm text-center"
-        >
-          <a
-            href="#Prefrences"
-            class="text-white px-4 py-2 font-semibold text-3xl tracking-wider"
-            >Prefrences
-          </a>
-          <a
-            href=""
-            class="text-white px-4 py-2 font-semibold text-3xl tracking-wider"
-            >Account</a
+    <nav
+      class="fixed bg-slate-950 bg-opacity-90 lg:bg-opacity-45 top-0 left-0 w-full px-4 py-0 backdrop-blur-lg text-white z-20 flex items-center h-12 justify-between"
+    >
+      <div class="w-screen flex flex-wrap items-center justify-between p-2">
+        <a href="/">
+          <span
+            class="self-center text-xl font-semibold whitespace-nowrap text-white"
+            >MailNews</span
           >
+        </a>
+        <button
+          id="navbar-solid-bg-btn"
+          data-collapse-toggle="navbar-solid-bg-btn"
+          type="button"
+          class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+          aria-controls="navbar-solid-bg"
+          aria-expanded="false"
+        >
+          <span class="sr-only">Open main menu</span>
+          <svg
+            class="w-5 h-5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 17 14"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M1 1h15M1 7h15M1 13h15"
+            />
+          </svg>
+        </button>
+        <div
+          id="mobile-menu"
+          class="hidden top-10 lg:hidden w-screen fixed text-center left-0 z-50 rounded-br-lg rounded-bl-lg bg-slate-950 backdrop-blur-2xl duration-500"
+        >
+          <a href="#" class="block text-white py-2 px-4">Home</a>
+          <a href="#" class="block text-white py-2 px-4">About</a>
+          <a href="#" class="block text-white py-2 px-4">Services</a>
+          <a href="#" class="block text-white py-2 px-4">Contact</a>
         </div>
-        <div class="px-10 overflow-y-scroll py-20">
-          <a name="Prefrences"></a>
-          <div><h1 class="text-white text-4xl">News Prefrences</h1></div>
-          <form action="/subscribe" class="text-white m-5" method="post">
-            <div class="grid grid-cols-3 grid-rows-3 gap-x-20 gap-y-5 text-2xl">
-              <label class="flex items-center">
-                <input
-                  type="checkbox"
-                  name="World"
-                  id="world"
-                  class="form-checkbox h-5 w-5"
-                />
-                <span class="ml-3 text-2xl">World News</span>
-              </label>
-              <label class="flex items-center">
-                <input
-                  type="checkbox"
-                  name="World"
-                  id="world"
-                  class="form-checkbox h-5 w-5"
-                />
-                <span class="ml-3 text-2xl">Science News</span>
-              </label>
-              <label class="flex items-center">
-                <input
-                  type="checkbox"
-                  name="World"
-                  id="world"
-                  class="form-checkbox h-5 w-5"
-                />
-                <span class="ml-3 text-2xl">Tech News</span>
-              </label>
-              <label class="flex items-center">
-                <input
-                  type="checkbox"
-                  name="World"
-                  id="world"
-                  class="form-checkbox h-5 w-5"
-                />
-                <span class="ml-3 text-2xl">Business News</span>
-              </label>
-            </div>
-          </form>
+        <div class="hidden w-full md:block md:w-auto" id="navbar-solid-bg">
+          <ul
+            class="flex flex-col font-medium mt-4 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent"
+          >
+            <li>
+              <a
+                href="/"
+                class="block py-2 px-3 md:p-0 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent"
+                aria-current="page"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent"
+                >Services</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent"
+                >Pricing</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent"
+                >Contact</a
+              >
+            </li>
+          </ul>
         </div>
-      </section>
-    </section>
+      </div>
+    </nav>
+
+    <!-- SIDE NAVBAR ON LARGE DISPLAY -->
+    <div
+      class="hidden lg:flex w-1/5 h-screen px-5 bg-slate-800 text-white font-semibold text-lg bg-opacity-35 backdrop-blur-lg flex-col justify-center text-center"
+    >
+      <h1 class="text-3xl font-extrabold">MailNews</h1>
+      <div class="flex-col flex justify-evenly text-center h-2/3">
+        <a href="#world" id="world-txt" class="duration-300">Prefrences</a>
+        <a href="#science" id="science-txt" class="duration-300"
+          >Account</a
+        >
+      </div>
+    </div>
+
+    <!-- TOP NAVBAR ON SMALL DISPLAY -->
+    <div
+      class="w-screen lg:w-4/5 h-auto overflow-x-scroll pt-12"
+      id="progressAttach"
+    >
+
+      <div
+        class="flex lg:hidden h-auto whitespace-nowrap overflow-y-scroll scroll-smooth top-0 pt-1 z-10 sticky bg-slate-800 text-white font-semibold text-lg bg-opacity-25 backdrop-blur-lg flex-row text-center"
+      >
+        <div
+          class="sticky py-2 flex text-center h-fit overflow-x-scroll flex-row flex-wrap w-screen"
+        >
+          <div class="w-1/2 text-center duration-300" id="Prefrences-btn">
+            <a>Prefrences</a>
+          </div>
+          <div class="w-1/2 text-cente duration-300" id="Account-btn" style="color:  rgb(100 116 139);">
+            <a>Account</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTENT -->
+      <div class="w-screen text-white px-4 py-2 lg:px-8 lg:py-4">
+        <h1 class="font-bold text-2xl">News Mail Prefrences</h1>
+        <fieldset
+        class="grid grid-cols-2 gap-2 mt-4 lg:grid-cols-3 lg:w-2/3 lg:gap-y-4 text-white text-lg align-middle justify-center lg:gap-1"
+      >
+        <div class="flex items-center">
+          <input
+            type="checkbox"
+            id="World"
+            name="World"
+            value="World"
+            onclick="javascript:this.parentElement.parentElement.parentElement.querySelector('h2').style.color = 'white';"
+            class="mr-3 checked:accent-green-500"
+          />
+          <label for="option1">World</label>
+        </div>
+        <div class="flex items-center">
+          <input
+            type="checkbox"
+            id="Science"
+            name="Science"
+            value="Science"
+            onclick="javascript:this.parentElement.parentElement.parentElement.querySelector('h2').style.color = 'white';"
+            class="mr-3 checked:accent-green-500"
+          />
+          <label for="option2">Science</label>
+        </div>
+        <div class="flex items-center">
+          <input
+            type="checkbox"
+            id="Tech"
+            name="Tech"
+            value="Tech"
+            onclick="javascript:this.parentElement.parentElement.parentElement.querySelector('h2').style.color = 'white';"
+            class="mr-3 checked:accent-green-500"
+          />
+          <label for="option3">Tech</label>
+        </div>
+        <div class="flex items-center">
+          <input
+            type="checkbox"
+            id="Business"
+            name="Business"
+            value="Business"
+            onclick="javascript:this.parentElement.parentElement.parentElement.querySelector('h2').style.color = 'white';"
+            class="mr-3 checked:accent-green-500"
+          />
+          <label for="option4">Business</label>
+        </div>
+        <div class="flex items-center">
+          <input
+            type="checkbox"
+            id="Sports"
+            name="Sports"
+            value="Sports"
+            onclick="javascript:this.parentElement.parentElement.parentElement.querySelector('h2').style.color = 'white';"
+            class="mr-3 checked:accent-green-500 checked:bg-green-600"
+          />
+          <label for="option5">Sports</label>
+        </div>
+        <div class="flex items-center w-full overflow-clip break-words">
+          <input
+            type="checkbox"
+            id="Entertainment"
+            name="Entertainment"
+            value="Entertainment"
+            onclick="javascript:this.parentElement.parentElement.parentElement.querySelector('h2').style.color = 'white';"
+            class="mr-3 checked:accent-green-500"
+          />
+          <label for="option6">Entertainment</label>
+        </div>
+      </fieldset>
+
+      </div>
+    </div>
   </body>
-  <script>
-    alert("<%= email %>")
-  </script>
 </html>
