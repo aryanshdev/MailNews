@@ -152,7 +152,7 @@ app.post("/signin", (req, res) => {
           crypto.createHash("sha256").update(req.body.pass).digest("hex")
         ) {
           req.session.loggedin = row.emailID;
-        
+
           if (req.body.saveLogin) {
             res.cookie(
               "__logcred__",
@@ -164,7 +164,9 @@ app.post("/signin", (req, res) => {
           }
           res.redirect("/dashboard");
         } else {
-          res.status(401).send("Wrong Password, Check Credentials And Try Again");
+          res
+            .status(401)
+            .send("Wrong Password, Check Credentials And Try Again");
         }
       } else {
         res
@@ -175,38 +177,33 @@ app.post("/signin", (req, res) => {
   );
 });
 
-app.get("/dashboard", (req, res) => {
-
- res.render(__dirname + "/src/dashboard.ejs",{selectedTopicsString :'World,Business,Tech'});
-  // let email = req.user.email || req.session.loggedin;
-  // db.get(
-  //   `SELECT * FROM users WHERE emailID = "${email}"`,
-  //   (err, row) => {
-  //     if (row) {
-  //       res.render(__dirname + "/src/dashboard.ejs", {
-  //         email: row.emailID,
-
-  //       });
-  //     } else {
-  //       res.status(404).send("Account Not Found");
-  //     }
-  //   }
-  // );
+app.get("/dashboard",ensureAuthenticated, (req, res) => {
+  let email = req.user.email || req.session.loggedin;
+  db.get(`SELECT * FROM users WHERE emailID = "${email}"`, (err, row) => {
+    if (row) {
+      res.render(__dirname + "/src/dashboard.ejs", {
+        selectedTopicsString: "World,Business,Tech",
+      });
+    } else {
+      res.status(404).send("Account Not Found");
+    }
+  });
 });
 
 app.post("/updateTopics", (req, res) => {
-  if(req.session.loggedin){
-  
-  db.run("UPDATE users SET interests = ? WHERE emailID = ?", [req.body.topics, req.session.loggedin], (err,a) => {
-
-    if (err) {
-      res.sendStatus(500);
-    }
-    else {
-      res.sendStatus(200);
-    }
-  })}
-  else{
+  if (req.session.loggedin) {
+    db.run(
+      "UPDATE users SET interests = ? WHERE emailID = ?",
+      [req.body.topics, req.session.loggedin],
+      (err, a) => {
+        if (err) {
+          res.sendStatus(500);
+        } else {
+          res.sendStatus(200);
+        }
+      }
+    );
+  } else {
     res.sendStatus(401);
   }
 });
