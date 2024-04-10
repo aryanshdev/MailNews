@@ -10,6 +10,7 @@ let newsWritter = require("./newsGetter");
 const sql = require("sqlite3").verbose();
 const fileSystem = require("fs");
 const crypto = require("crypto");
+const e = require("express");
 require("dotenv").config();
 
 const verificationMailBody = `
@@ -118,7 +119,7 @@ async function cronNews() {
   console.log("News Updated");
 }
 
-cron.schedule("0 */2 * * *", cronNews);
+cron.schedule("0 * * * *", cronNews);
 
 function inSubscribingProcessCheck(req, res, next) {
   if (req.session.currentSubs) {
@@ -128,11 +129,10 @@ function inSubscribingProcessCheck(req, res, next) {
   }
 }
 function ensureAuthenticated(req, res, next) {
-  console.log(req.isAuthenticated());
   if (req.isAuthenticated()) {
     return next();
   }
-  res.redirect("/signin");
+  res.status(401).redirect("/signin");
 }
 app.listen(10000, async () => {
   console.log("SERVER RUNNING ON PORT 10000 ");
@@ -176,7 +176,8 @@ app.post("/signin", (req, res) => {
 });
 
 app.get("/dashboard", (req, res) => {
-  res.render(__dirname + "/src/dashboard.ejs");
+
+ res.render(__dirname + "/src/dashboard.ejs",{selectedTopicsString :'World,Business,Tech'});
   // let email = req.user.email || req.session.loggedin;
   // db.get(
   //   `SELECT * FROM users WHERE emailID = "${email}"`,
@@ -193,7 +194,24 @@ app.get("/dashboard", (req, res) => {
   // );
 });
 
+app.post("/updateTopics", (req, res) => {
+  if(req.session.loggedin){
+  
+  db.run("UPDATE users SET interests = ? WHERE emailID = ?", [req.body.topics, req.session.loggedin], (err,a) => {
+
+    if (err) {
+      res.sendStatus(500);
+    }
+    else {
+      res.sendStatus(200);
+    }
+  })}
+  else{
+    res.sendStatus(401);
+  }
+});
 app.post("/subscribe", (req, res) => {
+  console.log(req.body);
   db.get(
     `SELECT * FROM users WHERE emailID = "${req.body.email}"`,
     async (err, row) => {
@@ -244,7 +262,7 @@ app.post("/verifyEmail", inSubscribingProcessCheck, async (req, res) => {
           .update(req.session.currentSubs.pass)
           .digest("hex")}",
         "${new Date().toISOString()}",
-        "${req.session.currentSubs.interests}",
+        "${req.session.currentSubs.topics}",
         ${req.session.currentSubs.slot})`,
       (err) => {
         console.log(err);

@@ -121,10 +121,8 @@
     >
       <h1 class="text-3xl font-extrabold">MailNews</h1>
       <div class="flex-col flex justify-evenly text-center h-2/3">
-        <a href="#world" id="world-txt" class="duration-300">Prefrences</a>
-        <a href="#science" id="science-txt" class="duration-300"
-          >Account</a
-        >
+        <a href="#Prefrences" id="prefs-txt" class="duration-300">Prefrences</a>
+        <a href="#Account" id="account-txt" class="duration-300">Account</a>
       </div>
     </div>
 
@@ -133,7 +131,6 @@
       class="w-screen lg:w-4/5 h-auto overflow-x-scroll pt-12"
       id="progressAttach"
     >
-
       <div
         class="flex lg:hidden h-auto whitespace-nowrap overflow-y-scroll scroll-smooth top-0 pt-1 z-10 sticky bg-slate-800 text-white font-semibold text-lg bg-opacity-25 backdrop-blur-lg flex-row text-center"
       >
@@ -143,87 +140,221 @@
           <div class="w-1/2 text-center duration-300" id="Prefrences-btn">
             <a>Prefrences</a>
           </div>
-          <div class="w-1/2 text-cente duration-300" id="Account-btn" style="color:  rgb(100 116 139);">
+          <div
+            class="w-1/2 text-cente duration-300"
+            id="Account-btn"
+            style="color: rgb(100 116 139)"
+          >
             <a>Account</a>
           </div>
         </div>
       </div>
 
+      <div
+        id="popup"
+        class="border-solid border-2 border-gray-400 w-auto p-3 top-10 bg-blue-700 translate-x-100 max-w-56 z-50 my-10 font-sans font-semibold fixed text-white right-0 rounded-md transition-all duration-300 md:text-lg md:p-4 md:max-w-72"
+      >
+        MESSAGE
+      </div>
+
       <!-- CONTENT -->
       <div class="w-screen text-white px-4 py-2 lg:px-8 lg:py-4">
-        <h1 class="font-bold text-2xl">News Mail Prefrences</h1>
-        <fieldset
-        class="grid grid-cols-2 gap-2 mt-4 lg:grid-cols-3 lg:w-2/3 lg:gap-y-4 text-white text-lg align-middle justify-center lg:gap-1"
-      >
-        <div class="flex items-center">
-          <input
-            type="checkbox"
-            id="World"
-            name="World"
-            value="World"
-            onclick="javascript:this.parentElement.parentElement.parentElement.querySelector('h2').style.color = 'white';"
-            class="mr-3 checked:accent-green-500"
-          />
-          <label for="option1">World</label>
-        </div>
-        <div class="flex items-center">
-          <input
-            type="checkbox"
-            id="Science"
-            name="Science"
-            value="Science"
-            onclick="javascript:this.parentElement.parentElement.parentElement.querySelector('h2').style.color = 'white';"
-            class="mr-3 checked:accent-green-500"
-          />
-          <label for="option2">Science</label>
-        </div>
-        <div class="flex items-center">
-          <input
-            type="checkbox"
-            id="Tech"
-            name="Tech"
-            value="Tech"
-            onclick="javascript:this.parentElement.parentElement.parentElement.querySelector('h2').style.color = 'white';"
-            class="mr-3 checked:accent-green-500"
-          />
-          <label for="option3">Tech</label>
-        </div>
-        <div class="flex items-center">
-          <input
-            type="checkbox"
-            id="Business"
-            name="Business"
-            value="Business"
-            onclick="javascript:this.parentElement.parentElement.parentElement.querySelector('h2').style.color = 'white';"
-            class="mr-3 checked:accent-green-500"
-          />
-          <label for="option4">Business</label>
-        </div>
-        <div class="flex items-center">
-          <input
-            type="checkbox"
-            id="Sports"
-            name="Sports"
-            value="Sports"
-            onclick="javascript:this.parentElement.parentElement.parentElement.querySelector('h2').style.color = 'white';"
-            class="mr-3 checked:accent-green-500 checked:bg-green-600"
-          />
-          <label for="option5">Sports</label>
-        </div>
-        <div class="flex items-center w-full overflow-clip break-words">
-          <input
-            type="checkbox"
-            id="Entertainment"
-            name="Entertainment"
-            value="Entertainment"
-            onclick="javascript:this.parentElement.parentElement.parentElement.querySelector('h2').style.color = 'white';"
-            class="mr-3 checked:accent-green-500"
-          />
-          <label for="option6">Entertainment</label>
-        </div>
-      </fieldset>
+        <h1 class="text-white text-2xl font-white font-bold">
+          Good <span id="greeting">Morning</span>
+        </h1>
+        <p class="capitalize">
+          Welcome to your personal MailNews Dashboard. Configure setttings to
+          continue Enjoying all services The Way You like
+        </p>
+        <div>
+          <h1 class="font-bold text-2xl mt-5">News E-Mail Prefrences</h1>
+          <h3 class="font-bold text-xl mt-3 text-white">Topics</h3>
+          <p class="mt-2">
+            Select the topics you want to receive news about in your daily
+            newsletter
+          </p>
+          <fieldset
+            class="grid grid-cols-2 gap-2 mt-4 lg:grid-cols-3 lg:w-2/3 lg:gap-y-4 text-white text-lg align-middle justify-center lg:gap-1"
+          >
+            <div class="flex items-center">
+              <input
+                type="checkbox"
+                id="World"
+                name="World"
+                value="World"
+                onclick="javascript:updateTopicList()"
+                class="mr-3 checked:accent-green-500"
+              />
+              <label for="option1">World</label>
+            </div>
+            <div class="flex items-center">
+              <input
+                type="checkbox"
+                id="Science"
+                name="Science"
+                value="Science"
+                onclick="javascript:updateTopicList()"
+                class="mr-3 checked:accent-green-500"
+              />
+              <label for="option2">Science</label>
+            </div>
+            <div class="flex items-center">
+              <input
+                type="checkbox"
+                id="Tech"
+                name="Tech"
+                value="Tech"
+                onclick="javascript:updateTopicList()"
+                class="mr-3 checked:accent-green-500"
+              />
+              <label for="option3">Tech</label>
+            </div>
+            <div class="flex items-center">
+              <input
+                type="checkbox"
+                id="Business"
+                name="Business"
+                value="Business"
+                onclick="javascript:updateTopicList()"
+                class="mr-3 checked:accent-green-500"
+              />
+              <label for="option4">Business</label>
+            </div>
+            <div class="flex items-center">
+              <input
+                type="checkbox"
+                id="Sports"
+                name="Sports"
+                value="Sports"
+                onclick="javascript:updateTopicList()"
+                class="mr-3 checked:accent-green-500 checked:bg-green-600"
+              />
+              <label for="option5">Sports</label>
+            </div>
+            <div class="flex items-center w-full overflow-clip break-words">
+              <input
+                type="checkbox"
+                id="Entertainment"
+                name="Entertainment"
+                value="Entertainment"
+                onclick="javascript:updateTopicList()"
+                class="mr-3 checked:accent-green-500"
+              />
+              <label for="option6">Entertainment</label>
+            </div>
+          </fieldset>
+          <button
+          id="topicUpdateButton"
+          class="!bg-slate-700 text-white rounded-full px-12 py-2 lg:px-7 lg:py-2 mt-5 font-semibold text-lg disabled:bg-opacity-70 disabled:text-gray-400 transition-all duration-300"
+          disabled="disabled"
+          onclick="javascript:updateTopics()"
+        >
+          Save
+        </button>
 
+        </div>
+        <h1 class="text-xl font-bold text-white mt-6 mb-2">Mailing Time</h1>
+<div class="flex justify-stretch align-middle ">
+
+  <label for="time" class="capitalize text-lg font-semibold col-auto content-center w-min min-w-32">receive Emails Everyday at:</label> 
+    <input type="time" name="time" id="time" class="ml-4 col-span-2 bg-slate-800 font-semibold text-xl px-5 py-2 rounded-full !accent-white !fill-white !shadow-none" step="3600" value="07:00"/>
+    
+  </div>
+  <button type="submit" class="!bg-slate-700 text-white rounded-full px-12 py-2 lg:px-7 lg:py-2 mt-5 font-semibold text-lg disabled:bg-opacity-70 disabled:text-gray-400 transition-all duration-300">Update</button>
+        <h1 class="font-bold text-2xl mt-5">Account Settings</h1>
       </div>
     </div>
+    <style>
+      input[type="time"]::-webkit-calendar-picker-indicator {
+        content: url('https://img.icons8.com/ios-glyphs/100/ffffff/clock--v1.png' );
+      }
+    </style>
+    <script>
+      var currentPopUpTimeoutID;
+      function showPopup(textMessage, type = "info", durartion = 5000) {
+        clearTimeout(currentPopUpTimeoutID);
+        if (type === "err") {
+          popup.style.backgroundColor = "rgb(153, 27, 27)";
+        } else if (type === "info") {
+          popup.style.backgroundColor = "rgb(29, 78, 216)";
+        } else if (type === "warn") {
+          popup.style.backgroundColor = "rgb(202, 138, 4)";
+        }
+        popup.textContent = textMessage;
+        popup.classList.add("mr-7");
+        popup.classList.remove("translate-x-100");
+
+        currentPopUpTimeoutID = setTimeout(() => {
+          popup.classList.remove("mr-7");
+          popup.classList.add("translate-x-100");
+        }, durartion);
+      }
+
+      document.getElementById("greeting").textContent =
+        new Date().getHours() < 12
+          ? "Morning"
+          : new Date().getHours() < 16
+          ? "Afternoon"
+          : "Evening";
+      var selectedTopicsList = "<%= selectedTopicsString %>".split(",");
+      selectedTopicsList.forEach((topic) => {
+        document.querySelector(`input[value="${topic}"]`).checked = true;
+      });
+
+      function updateTopicList(onlyReturn = false) {
+        var topicList = [];
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach((checkbox) => {
+          if (checkbox.checked) {
+            topicList.push(checkbox.value);
+          }
+        });
+
+        if (!onlyReturn) {
+          if (
+            topicList.sort().toString() !==
+              selectedTopicsList.sort().toString() &&
+            topicList.length > 0
+          ) {
+            console.log("enable");
+            document
+              .querySelector("#topicUpdateButton")
+              .removeAttribute("disabled");
+          } else {
+            console.log("disable");
+            document
+              .querySelector("#topicUpdateButton")
+              .setAttribute("disabled", "disabled");
+          }
+        } else {
+          return topicList;
+        }
+      }
+      function updateTopics() {
+        var topicList = updateTopicList(true).join(",");
+        fetch("/updateTopics", {
+          method: "POST",
+          body: new URLSearchParams({ topics: topicList }),
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }).then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            showPopup("News Topics Updated Successfully", "info");
+            document
+              .querySelector("#topicUpdateButton")
+              .setAttribute("disabled", "disabled");
+          } else if (res.status === 401) {
+            showPopup("Session Expired ! \nPlease Login Again", "warn");
+            setTimeout(() => {
+              window.location.href = "/login";
+            }, 2500);
+          } else {
+            showPopup("Failed to Update Topics", "err");
+          }
+        });
+      }
+    </script>
   </body>
 </html>
