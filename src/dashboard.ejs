@@ -121,8 +121,8 @@
     >
       <h1 class="text-3xl font-extrabold">MailNews</h1>
       <div class="flex-col flex justify-evenly text-center h-2/3">
-        <a href="#Prefrences" id="prefs-txt" class="duration-300">Prefrences</a>
-        <a href="#Account" id="account-txt" class="duration-300">Account</a>
+        <a href="#Prefrences" id="prefs-txt" onclick="javascript:this.classList.toggle('text-slate-500')" class="duration-300">Prefrences</a>
+        <a href="#Account" id="account-txt" onclick="javascript:this.classList.toggle('text-slate-500')" class="duration-300">Account</a>
       </div>
     </div>
 
@@ -137,15 +137,14 @@
         <div
           class="sticky py-2 flex text-center h-fit overflow-x-scroll flex-row flex-wrap w-screen"
         >
-          <div class="w-1/2 text-center duration-300" id="Prefrences-btn">
-            <a>Prefrences</a>
+          <div class="w-1/2 text-center duration-300" id="Prefrences-btn" >
+            <a href="#Prefrences" onclick="javascript:this.parentElement.classList.toggle('text-slate-500'); this.parentElement.parentElement.children[1].classList.toggle('text-slate-500');">Prefrences</a>
           </div>
           <div
-            class="w-1/2 text-cente duration-300"
-            id="Account-btn"
-            style="color: rgb(100 116 139)"
+            class="w-1/2 text-cente duration-300 text-slate-500"
+            id="Account-btn" 
           >
-            <a>Account</a>
+            <a href="#Account" onclick="javascript:this.parentElement.classList.toggle('text-slate-500'); this.parentElement.parentElement.children[0].classList.toggle('text-slate-500');" >Account</a>
           </div>
         </div>
       </div>
@@ -162,11 +161,14 @@
         <h1 class="text-white text-2xl font-white font-bold">
           Good <span id="greeting">Morning</span>
         </h1>
+        <a name="Prefrences"></a>
         <p class="capitalize">
           Welcome to your personal MailNews Dashboard. Configure setttings to
           continue Enjoying all services The Way You like
         </p>
         <div>
+          
+       
           <h1 class="font-bold text-2xl mt-5">News E-Mail Prefrences</h1>
           <h3 class="font-bold text-xl mt-3 text-white">Topics</h3>
           <p class="mt-2">
@@ -244,29 +246,63 @@
             </div>
           </fieldset>
           <button
-          id="topicUpdateButton"
-          class="!bg-slate-700 text-white rounded-full px-12 py-2 lg:px-7 lg:py-2 mt-5 font-semibold text-lg disabled:bg-opacity-70 disabled:text-gray-400 transition-all duration-300"
-          disabled="disabled"
-          onclick="javascript:updateTopics()"
-        >
-          Save
-        </button>
-
+            id="topicUpdateButton"
+            class="!bg-slate-700 text-white rounded-full px-12 py-2 lg:px-7 lg:py-2 mt-5 font-semibold text-lg disabled:bg-opacity-70 disabled:text-gray-400 transition-all duration-300"
+            disabled="disabled"
+            onclick="javascript:updateTopics()"
+          >
+            Save
+          </button>
         </div>
         <h1 class="text-xl font-bold text-white mt-6 mb-2">Mailing Time</h1>
-<div class="flex justify-stretch align-middle ">
-
-  <label for="time" class="capitalize text-lg font-semibold col-auto content-center w-min min-w-32">receive Emails Everyday at:</label> 
-    <input type="time" name="time" id="time" class="ml-4 col-span-2 bg-slate-800 font-semibold text-xl px-5 py-2 rounded-full !accent-white !fill-white !shadow-none" step="3600" value="07:00"/>
-    
-  </div>
-  <button type="submit" class="!bg-slate-700 text-white rounded-full px-12 py-2 lg:px-7 lg:py-2 mt-5 font-semibold text-lg disabled:bg-opacity-70 disabled:text-gray-400 transition-all duration-300">Update</button>
-        <h1 class="font-bold text-2xl mt-5">Account Settings</h1>
+        <div class="flex justify-stretch align-middle">
+          <label
+            for="time"
+            class="capitalize text-lg font-semibold col-auto content-center"
+            >receive Emails Everyday at:</label
+          >
+          <input
+            type="time"
+            name="time"
+            id="time"
+            class="ml-3 col-span-2 bg-slate-800 font-semibold text-xl px-5 py-2 rounded-full min-w-max mb-2"
+            step="3600"
+            value="00:00"
+            onchange="javascript:updateTimeButton()"
+          />
+         
+        </div>
+        Email timings are based on Server's UTC timing conversions, hence your selected time may vary a little.
+        <button
+          id="timeUpdateButton"
+          disabled="disabled"
+          type="submit"
+          onclick="javascript:updateTime()"
+          class="!bg-slate-700 text-white rounded-full px-12 py-2 lg:px-7 lg:py-2 mt-5 font-semibold text-lg disabled:bg-opacity-70 disabled:text-gray-400 transition-all duration-300 block"
+        >
+          Update
+        </button>
+        <div class="flex justify-center">
+          
+        <hr class="w-3/4 h-1 my-6 bg-slate-500 border-none rounded-full">
+        </div>
+        <a name="Account"></a>
+        <h1 class="font-bold text-2xl">Account Settings</h1>
+        <div class="mt-5">
+          <h3 class="font-bold text-xl mt-3 text-white">Change Name</h3>
+          <p class="mt-2">
+            Change your account password to keep your account secure
+          </p>
+          <button
+            class="!bg-slate-700 text-white rounded-full px-12 py-2 lg:px-7 lg:py-2 mt-5 font-semibold text-lg"
+          >
+            Change Password
+          </button>
       </div>
     </div>
     <style>
       input[type="time"]::-webkit-calendar-picker-indicator {
-        content: url('https://img.icons8.com/ios-glyphs/100/ffffff/clock--v1.png' );
+        content: url("https://img.icons8.com/ios-glyphs/100/ffffff/clock--v1.png");
       }
     </style>
     <script>
@@ -296,11 +332,55 @@
           : new Date().getHours() < 16
           ? "Afternoon"
           : "Evening";
+
+      var d = new Date();
+      d.setUTCHours(<%= timeSlot %>, 0, 0, 0);
+      document.getElementById("time").value = (d.getHours() > 9 ? d.getHours() : '0'+d.getHours()) + ":"+ (d.getUTCMinutes() > 9 ? d.getUTCMinutes() : '0'+d.getUTCMinutes());
+
+      function updateTimeButton() {
+        if (document.getElementById("time").value !== (d.getHours() > 9 ? d.getHours() : '0'+d.getHours()) + ":"+ (d.getUTCMinutes() > 9 ? d.getUTCMinutes() : '0'+d.getUTCMinutes()))
+       { document
+          .querySelector("#timeUpdateButton")
+          .removeAttribute("disabled");}
+      
+      else{
+        document
+          .querySelector("#timeUpdateButton")
+          .setAttribute("disabled", "disabled");
+      }}
+
       var selectedTopicsList = "<%= selectedTopicsString %>".split(",");
       selectedTopicsList.forEach((topic) => {
         document.querySelector(`input[value="${topic}"]`).checked = true;
       });
 
+      function updateTime() {
+        var time = document.getElementById("time").value;
+        var d = new Date();
+        d.setHours(time.split(":")[0], time.split(":")[1], 0, 0);
+        fetch("/updateSlot", {
+          method: "POST",
+          body: new URLSearchParams({ timeSlot: d.getUTCMinutes() >= 30 ? d.getUTCHours()+1 : d.getUTCHours() }),
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }).then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            showPopup("Mailing Time Updated Successfully", "info");
+            document
+              .querySelector("#timeUpdateButton")
+              .setAttribute("disabled", "disabled");
+          } else if (res.status === 401) {
+            showPopup("Session Expired! \nPlease Login Again", "warn");
+            setTimeout(() => {
+              window.location.href = "/login";
+            }, 2500);
+          } else {
+            showPopup("Failed to Update Mailing Time", "err");
+          }
+        });
+        }
       function updateTopicList(onlyReturn = false) {
         var topicList = [];
         var checkboxes = document.querySelectorAll('input[type="checkbox"]');

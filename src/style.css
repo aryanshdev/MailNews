@@ -134,10 +134,6 @@
   grid-column: span 2 / span 2;
 }
 
-.col-span-3 {
-  grid-column: span 3 / span 3;
-}
-
 .col-span-5 {
   grid-column: span 5 / span 5;
 }
@@ -166,6 +162,16 @@
   margin-bottom: auto;
 }
 
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.my-6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
 .mb-2 {
   margin-bottom: 0.5rem;
 }
@@ -182,16 +188,16 @@
   margin-bottom: 1.25rem;
 }
 
+.ml-3 {
+  margin-left: 0.75rem;
+}
+
 .mr-1 {
   margin-right: 0.25rem;
 }
 
 .mr-3 {
   margin-right: 0.75rem;
-}
-
-.mr-44 {
-  margin-right: 11rem;
 }
 
 .mr-7 {
@@ -228,14 +234,6 @@
 
 .mt-6 {
   margin-top: 1.5rem;
-}
-
-.ml-4 {
-  margin-left: 1rem;
-}
-
-.mr-12 {
-  margin-right: 3rem;
 }
 
 .block {
@@ -332,6 +330,10 @@
   width: 50%;
 }
 
+.w-1\/4 {
+  width: 25%;
+}
+
 .w-1\/5 {
   width: 20%;
 }
@@ -400,9 +402,8 @@
   width: 100vw;
 }
 
-.w-min {
-  width: -moz-min-content;
-  width: min-content;
+.w-3\/4 {
+  width: 75%;
 }
 
 .min-w-fit {
@@ -410,20 +411,9 @@
   min-width: fit-content;
 }
 
-.min-w-9 {
-  min-width: 2.25rem;
-}
-
-.min-w-28 {
-  min-width: 7rem;
-}
-
-.min-w-3 {
-  min-width: 0.75rem;
-}
-
-.min-w-32 {
-  min-width: 8rem;
+.min-w-max {
+  min-width: -moz-max-content;
+  min-width: max-content;
 }
 
 .max-w-56 {
@@ -620,6 +610,10 @@
   border-style: solid;
 }
 
+.border-none {
+  border-style: none;
+}
+
 .border-gray-400 {
   --tw-border-opacity: 1;
   border-color: rgb(156 163 175 / var(--tw-border-opacity));
@@ -745,6 +739,11 @@
   background-color: rgb(161 98 7 / var(--tw-bg-opacity));
 }
 
+.bg-slate-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(100 116 139 / var(--tw-bg-opacity));
+}
+
 .bg-opacity-20 {
   --tw-bg-opacity: 0.2;
 }
@@ -792,10 +791,6 @@
 
 .to-emerald-500 {
   --tw-gradient-to: #10b981 var(--tw-gradient-to-position);
-}
-
-.\!fill-white {
-  fill: #fff !important;
 }
 
 .fill-fuchsia-600 {
@@ -1044,8 +1039,9 @@
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
-.\!accent-white {
-  accent-color: #fff !important;
+.text-slate-500 {
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity));
 }
 
 .opacity-50 {
@@ -1054,12 +1050,6 @@
 
 .opacity-60 {
   opacity: 0.6;
-}
-
-.\!shadow-none {
-  --tw-shadow: 0 0 #0000 !important;
-  --tw-shadow-colored: 0 0 #0000 !important;
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
 }
 
 .shadow-md {

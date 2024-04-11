@@ -70,6 +70,7 @@ let db = new sql.Database("mailNews.db", (err) => {});
 db.run(
   "CREATE TABLE IF NOT EXISTS users (emailID TEXT PRIMARY KEY, emailHash TEXT NOT NULL, name TEXT NOT NULL, password TEXT NOT NULL, dos TEXT NOT NULL, interests TEXT NOT NULL, emailslot INTEGER NOT NULL, googleUID TEXT UNIQUE )"
 );
+
 passport.use(
   new GoogleStrategy(
     {
@@ -86,6 +87,7 @@ passport.use(
     }
   )
 );
+
 app.use(passport.initialize());
 app.use(passport.session());
 passport.serializeUser(function (user, done) {
@@ -110,13 +112,11 @@ let mailer = nodemailer.createTransport({
   },
 });
 
-async function cronNews() {
-  const currentDate = new Date();
-  const formattedDateTime = `${currentDate.toLocaleDateString()}, ${currentDate.toLocaleTimeString()}`;
+var slot = new Date().getHours();
 
-  console.log("Current date and time:", formattedDateTime);
+async function cronNews() {
   await newsWritter.generateNewsFiles();
-  console.log("News Updated");
+  
 }
 
 cron.schedule("0 * * * *", cronNews);
@@ -129,7 +129,7 @@ function inSubscribingProcessCheck(req, res, next) {
   }
 }
 function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
+  if (req.isAuthenticated() || req.session.loggedin ) {
     return next();
   }
   res.status(401).redirect("/signin");
@@ -178,11 +178,16 @@ app.post("/signin", (req, res) => {
 });
 
 app.get("/dashboard",ensureAuthenticated, (req, res) => {
-  let email = req.user.email || req.session.loggedin;
+  if(req.user){
+    req.session.loggedin = req.user.email;
+  }
+  let email =  req.session.loggedin;
+
   db.get(`SELECT * FROM users WHERE emailID = "${email}"`, (err, row) => {
     if (row) {
       res.render(__dirname + "/src/dashboard.ejs", {
-        selectedTopicsString: "World,Business,Tech",
+        selectedTopicsString: row.interests,
+        timeSlot : row.emailslot
       });
     } else {
       res.status(404).send("Account Not Found");
@@ -207,6 +212,27 @@ app.post("/updateTopics", (req, res) => {
     res.sendStatus(401);
   }
 });
+
+app.post("/updateSlot", (req, res) => {
+  if (req.session.loggedin) {
+    db.run(
+      "UPDATE users SET emailslot = ? WHERE emailID = ?",
+      [req.body.timeSlot, req.session.loggedin],
+      (err, a) => {
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+        } else {
+          res.sendStatus(200);
+        }
+      }
+    );
+  }
+  else {
+    res.sendStatus(401);
+  }
+});
+
 app.post("/subscribe", (req, res) => {
   console.log(req.body);
   db.get(
@@ -341,10 +367,12 @@ app.get("/autologin", (req, res) => {
 
 app.post("/autologin", (req, res) => {
   var [hashedEmail, hashedPass] = req.cookies.__logcred__.split("$");
+  console.log("DFG")
   db.get(
     `SELECT * FROM users WHERE emailHash = "${hashedEmail}"`,
     (err, row) => {
       if (row) {
+        console.log("SADf")
         if (row.password == hashedPass) {
           req.session.loggedin = row.emailID;
           res.status(200).redirect("/dashboard");
