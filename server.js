@@ -112,12 +112,33 @@ let mailer = nodemailer.createTransport({
   },
 });
 
-var slot = new Date().getHours();
-
+var slot = new Date().getUTCHours();
+console.log(slot)
 async function cronNews() {
   await newsWritter.generateNewsFiles();
-  
+  emailCurrentSlot();
 }
+
+async function emailCurrentSlot() {
+  db.get(`SELECT * FROM users WHERE emailslot = ${slot}`, async (err, rows) => {
+    rows.forEach(async (row) => {
+      await mailer.sendMail({
+        to: row.emailID,
+        from: `MailNews ${process.env.EMAIL}`,
+        subject: "MailNews | Your Daily News",
+        html: `<h1>MailNews</h1>
+        <p>Here Are Your Daily News</p>
+        `,
+      })
+    });
+  });
+  slot++
+  if(slot == 24){
+    slot = 0;
+  }
+}
+
+
 
 cron.schedule("0 * * * *", cronNews);
 
@@ -367,12 +388,10 @@ app.get("/autologin", (req, res) => {
 
 app.post("/autologin", (req, res) => {
   var [hashedEmail, hashedPass] = req.cookies.__logcred__.split("$");
-  console.log("DFG")
   db.get(
     `SELECT * FROM users WHERE emailHash = "${hashedEmail}"`,
     (err, row) => {
       if (row) {
-        console.log("SADf")
         if (row.password == hashedPass) {
           req.session.loggedin = row.emailID;
           res.status(200).redirect("/dashboard");

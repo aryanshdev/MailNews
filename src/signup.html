@@ -285,7 +285,7 @@
     function getSlot() {
       var d = new Date();
       d.setHours(7, 0, 0, 0);
-      return parseInt(d.getUTCHours() / 2);
+      return parseInt(d.getUTCHours());
     }
 
     document.querySelector('input[name="slot"]').value = getSlot();
