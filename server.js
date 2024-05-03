@@ -122,7 +122,6 @@ async function cronNews() {
 async function emailCurrentSlot() {
   db.get(`SELECT * FROM users WHERE emailslot = ${slot}`, async (err, rows) => {
     rows.forEach(async (row) => {
-      console.log(row.emailID);
       await mailer.sendMail({
         to: row.emailID,
         from: `MailNews ${process.env.EMAIL}`,
@@ -202,10 +201,10 @@ app.get("/dashboard", ensureAuthenticated, (req, res) => {
     req.session.loggedin = req.user.email;
   }
   let email = req.session.loggedin;
-  console.log(email);
   db.get(`SELECT * FROM users WHERE emailID = "${email}"`, (err, row) => {
     if (row) {
       res.render(__dirname + "/src/dashboard.ejs", {
+        isLoggedIn: true,
         selectedTopicsString: row.interests,
         timeSlot: row.emailslot,
         googleAuth: row.googleUID,
@@ -254,7 +253,6 @@ app.post("/updateSlot", (req, res) => {
 });
 
 app.post("/subscribe", (req, res) => {
-  console.log(req.body);
   db.get(
     `SELECT * FROM users WHERE emailID = "${req.body.email}"`,
     async (err, row) => {
@@ -452,6 +450,23 @@ app.post("/autologin", (req, res) => {
   );
 });
 
+app.post("/changeName", ensureAuthenticated, (req, res) => {
+  if (req.session.loggedin) {
+    db.run(
+      `UPDATE users SET name = '${req.body.name}' WHERE emailID = '${req.session.loggedin}'`,
+      (err) => {
+        if (err) {
+          res.sendStatus(500);
+        } else {
+          res.sendStatus(200);
+        }
+      }
+    );
+  } else {
+    res.sendStatus(401);
+  }
+});
+
 app.get("/news", (req, res) => {
   var business, entertainment, science, sports, tech, world;
 
@@ -489,6 +504,7 @@ app.get("/news", (req, res) => {
   );
 
   res.render(__dirname + "/src/news.ejs", {
+    isLoggedIn : req.isAuthenticated() || req.session.loggedin,
     businessNews: business,
     entertainmentNews: entertainment,
     scienceNews: science,

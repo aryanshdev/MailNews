@@ -1,312 +1,239 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>News | MailNews</title>
-    <link href="style.css" rel="stylesheet" />
-    <script
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoog5le.js?client=ca-pub-2238125462513134"
-      crossorigin="anonymous"
-    ></script>
-  </head>
-  <style>
-    /* width */
-    @-moz-document url-prefix() {
-      div {
-        scrollbar-width: none;
-      }
-    }
 
-    ::-webkit-scrollbar {
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>News | MailNews</title>
+  <link href="style.css" rel="stylesheet" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoog5le.js?client=ca-pub-2238125462513134"
+    crossorigin="anonymous"></script>
+</head>
+<style>
+  /* width */
+  @-moz-document url-prefix() {
+    div {
       scrollbar-width: none;
-      display: none;
     }
-  </style>
+  }
 
-  <body class="bg-slate-950 flex w-screen h-screen scroll-smooth relative">
-    <div
-      class="bg-purple-700 -z-10 blur-3xl w-56 h-56 fixed -bottom-14 opacity-60 md:opacity-85 rounded-full -right-14 md:-right-2 md:-bottom-2 md:animate-pulse"
-    ></div>
-    <div
-      class="bg-green-400 -z-10 blur-3xl w-56 h-56 fixed -top-14 opacity-60 md:opacity-85 rounded-full -left-14 md:-left-7 md:-top-2 md:animate-pulse"
-    ></div>
+  ::-webkit-scrollbar {
+    scrollbar-width: none;
+    display: none;
+  }
+</style>
 
-    <nav
-      class="fixed bg-slate-950 bg-opacity-90 lg:bg-opacity-45 top-0 left-0 w-full px-4 py-0 backdrop-blur-lg text-white z-20 flex items-center h-12 justify-between"
-    >
-      <div class="w-screen flex flex-wrap items-center justify-between p-2">
-        <a href="/">
-          <span
-            class="self-center text-xl font-semibold whitespace-nowrap text-white"
-            >MailNews</span
-          >
+<body class="bg-slate-950 flex w-screen h-screen scroll-smooth relative">
+  <div
+    class="bg-purple-700 -z-10 blur-3xl w-56 h-56 fixed -bottom-14 opacity-60 md:opacity-85 rounded-full -right-14 md:-right-2 md:-bottom-2 md:animate-pulse">
+  </div>
+  <div
+    class="bg-green-400 -z-10 blur-3xl w-56 h-56 fixed -top-14 opacity-60 md:opacity-85 rounded-full -left-14 md:-left-7 md:-top-2 md:animate-pulse">
+  </div>
+
+  <nav
+    class="fixed bg-slate-950 bg-opacity-90 lg:bg-opacity-45 top-0 left-0 w-full px-4 py-0 backdrop-blur-lg text-white z-20 flex items-center h-12 justify-between">
+    <div class="w-screen flex flex-wrap items-center justify-between p-2">
+      <a href="/">
+        <span class="self-center text-xl font-semibold whitespace-nowrap text-white">MailNews</span>
+      </a>
+      <button id="navbar-solid-bg-btn" data-collapse-toggle="navbar-solid-bg-btn" type="button"
+        class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+        aria-controls="navbar-solid-bg" aria-expanded="false">
+        <span class="sr-only">Open main menu</span>
+        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M1 1h15M1 7h15M1 13h15" />
+        </svg>
+      </button>
+      <div id="mobile-menu"
+        class="hidden top-10 lg:hidden w-screen fixed text-center left-0 z-50 rounded-br-lg rounded-bl-lg bg-slate-950 backdrop-blur-2xl duration-500">
+        <a href="/" class="block text-white py-2 px-4">Home</a>
+        <a href="/news" class="block text-white py-2 px-4">News</a>
+        <a href="<%= isLoggedIn ? '/dashboard' : '/login' %>" class="block text-white py-2 px-4">
+          <%= isLoggedIn ? "Account" : "Login" %>
         </a>
-        <button
-          id="navbar-solid-bg-btn"
-          data-collapse-toggle="navbar-solid-bg-btn"
-          type="button"
-          class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-          aria-controls="navbar-solid-bg"
-          aria-expanded="false"
-        >
-          <span class="sr-only">Open main menu</span>
-          <svg
-            class="w-5 h-5"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 17 14"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M1 1h15M1 7h15M1 13h15"
-            />
-          </svg>
-        </button>
-        <div
-          id="mobile-menu"
-          class="hidden top-10 lg:hidden w-screen fixed text-center left-0 z-50 rounded-br-lg rounded-bl-lg bg-slate-950 backdrop-blur-2xl duration-500"
-        >
-          <a href="#" class="block text-white py-2 px-4">Home</a>
-          <a href="#" class="block text-white py-2 px-4">About</a>
-          <a href="#" class="block text-white py-2 px-4">Services</a>
-          <a href="#" class="block text-white py-2 px-4">Contact</a>
-        </div>
-        <div class="hidden w-full md:block md:w-auto" id="navbar-solid-bg">
-          <ul
-            class="flex flex-col font-medium mt-4 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent"
-          >
-            <li>
-              <a
-                href="/"
-                class="block py-2 px-3 md:p-0 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent"
-                aria-current="page"
-                >Home</a
-              >
-            </li>
-            <li>
-              <a
-                href="#"
-                class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent"
-                >Services</a
-              >
-            </li>
-            <li>
-              <a
-                href="#"
-                class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent"
-                >Pricing</a
-              >
-            </li>
-            <li>
-              <a
-                href="#"
-                class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent"
-                >Contact</a
-              >
-            </li>
-          </ul>
-        </div>
       </div>
-    </nav>
+      <div class="hidden w-full md:block md:w-auto" id="navbar-solid-bg">
+        <ul
+          class="flex flex-col font-medium mt-4 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent">
+          <li>
+            <a href="/"
+              class="block py-2 px-3 md:p-0 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent"
+              aria-current="page">Home</a>
+          </li>
+          <li>
+            <a href="#"
+              class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent">Services</a>
+          </li>
+          <li>
+            <a href="#"
+              class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent">Pricing</a>
+          </li>
+          <li>
+            <a href="#"
+              class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-    <!-- SIDE NAVBAR ON LARGE DISPLAY -->
+  <!-- SIDE NAVBAR ON LARGE DISPLAY -->
+  <div
+    class="hidden lg:flex w-1/5 h-screen px-5 bg-slate-800 text-white font-semibold text-lg bg-opacity-35 backdrop-blur-lg flex-col justify-center text-center">
+    <h1 class="text-3xl font-extrabold">MailNews</h1>
+    <div class="flex-col flex justify-evenly text-center h-2/3">
+      <a href="#Prefrences" id="prefs-txt" onclick="javascript:this.classList.toggle('text-slate-500')"
+        class="duration-300">Prefrences</a>
+      <a href="#Account" id="account-txt" onclick="javascript:this.classList.toggle('text-slate-500')"
+        class="duration-300">Account</a>
+    </div>
+  </div>
+
+  <!-- TOP NAVBAR ON SMALL DISPLAY -->
+  <div class="w-screen lg:w-4/5 h-auto overflow-x-scroll pt-12" id="progressAttach">
     <div
-      class="hidden lg:flex w-1/5 h-screen px-5 bg-slate-800 text-white font-semibold text-lg bg-opacity-35 backdrop-blur-lg flex-col justify-center text-center"
-    >
-      <h1 class="text-3xl font-extrabold">MailNews</h1>
-      <div class="flex-col flex justify-evenly text-center h-2/3">
-        <a href="#Prefrences" id="prefs-txt" onclick="javascript:this.classList.toggle('text-slate-500')" class="duration-300">Prefrences</a>
-        <a href="#Account" id="account-txt" onclick="javascript:this.classList.toggle('text-slate-500')" class="duration-300">Account</a>
+      class="flex lg:hidden h-auto whitespace-nowrap overflow-y-scroll scroll-smooth top-0 pt-1 z-10 sticky bg-slate-800 text-white font-semibold text-lg bg-opacity-25 backdrop-blur-lg flex-row text-center">
+      <div class="sticky py-2 flex text-center h-fit overflow-x-scroll flex-row flex-wrap w-screen">
+        <div class="w-1/2 text-center duration-300" id="Prefrences-btn">
+          <a href="#Prefrences"
+            onclick="javascript:this.parentElement.classList.toggle('text-slate-500'); this.parentElement.parentElement.children[1].classList.toggle('text-slate-500');">Prefrences</a>
+        </div>
+        <div class="w-1/2 text-cente duration-300 text-slate-500" id="Account-btn">
+          <a href="#Account"
+            onclick="javascript:this.parentElement.classList.toggle('text-slate-500'); this.parentElement.parentElement.children[0].classList.toggle('text-slate-500');">Account</a>
+        </div>
       </div>
     </div>
 
-    <!-- TOP NAVBAR ON SMALL DISPLAY -->
-    <div
-      class="w-screen lg:w-4/5 h-auto overflow-x-scroll pt-12"
-      id="progressAttach"
-    >
-      <div
-        class="flex lg:hidden h-auto whitespace-nowrap overflow-y-scroll scroll-smooth top-0 pt-1 z-10 sticky bg-slate-800 text-white font-semibold text-lg bg-opacity-25 backdrop-blur-lg flex-row text-center"
-      >
-        <div
-          class="sticky py-2 flex text-center h-fit overflow-x-scroll flex-row flex-wrap w-screen"
-        >
-          <div class="w-1/2 text-center duration-300" id="Prefrences-btn" >
-            <a href="#Prefrences" onclick="javascript:this.parentElement.classList.toggle('text-slate-500'); this.parentElement.parentElement.children[1].classList.toggle('text-slate-500');">Prefrences</a>
-          </div>
-          <div
-            class="w-1/2 text-cente duration-300 text-slate-500"
-            id="Account-btn" 
-          >
-            <a href="#Account" onclick="javascript:this.parentElement.classList.toggle('text-slate-500'); this.parentElement.parentElement.children[0].classList.toggle('text-slate-500');" >Account</a>
-          </div>
-        </div>
-      </div>
+    <div id="popup"
+      class="border-solid border-2 border-gray-400 w-auto p-3 top-10 bg-blue-700 translate-x-100 max-w-56 z-50 my-10 font-sans font-semibold fixed text-white right-0 rounded-md transition-all duration-300 md:text-lg md:p-4 md:max-w-72">
+      MESSAGE
+    </div>
 
-      <div
-        id="popup"
-        class="border-solid border-2 border-gray-400 w-auto p-3 top-10 bg-blue-700 translate-x-100 max-w-56 z-50 my-10 font-sans font-semibold fixed text-white right-0 rounded-md transition-all duration-300 md:text-lg md:p-4 md:max-w-72"
-      >
-        MESSAGE
-      </div>
+    <!-- CONTENT -->
+    <div class="w-screen lg:w-full text-white px-4 py-2 lg:px-8 lg:py-4">
+      <h1 class="text-white text-2xl font-white font-bold">
+        Good <span id="greeting">Morning</span>
+      </h1>
+      <a name="Prefrences"></a>
+      <p class="capitalize">
+        Welcome to your personal MailNews Dashboard. Configure setttings to
+        continue Enjoying all services The Way You like
+      </p>
+      <div>
 
-      <!-- CONTENT -->
-      <div class="w-screen lg:w-full text-white px-4 py-2 lg:px-8 lg:py-4">
-        <h1 class="text-white text-2xl font-white font-bold">
-          Good <span id="greeting">Morning</span>
-        </h1>
-        <a name="Prefrences"></a>
-        <p class="capitalize">
-          Welcome to your personal MailNews Dashboard. Configure setttings to
-          continue Enjoying all services The Way You like
+
+        <h1 class="font-bold text-2xl mt-5">News E-Mail Prefrences</h1>
+        <h3 class="font-bold text-xl mt-3 text-white">Topics</h3>
+        <p class="mt-2">
+          Select the topics you want to receive news about in your daily
+          newsletter
         </p>
-        <div>
-          
-       
-          <h1 class="font-bold text-2xl mt-5">News E-Mail Prefrences</h1>
-          <h3 class="font-bold text-xl mt-3 text-white">Topics</h3>
-          <p class="mt-2">
-            Select the topics you want to receive news about in your daily
-            newsletter
-          </p>
-          <fieldset
-            class="grid grid-cols-2 gap-2 mt-4 lg:grid-cols-3 lg:w-2/3 lg:gap-y-4 text-white text-lg align-middle justify-center lg:gap-1"
-          >
-            <div class="flex items-center">
-              <input
-                type="checkbox"
-                id="World"
-                name="World"
-                value="World"
-                onclick="javascript:updateTopicList()"
-                class="mr-3 checked:accent-green-500"
-              />
-              <label for="option1">World</label>
-            </div>
-            <div class="flex items-center">
-              <input
-                type="checkbox"
-                id="Science"
-                name="Science"
-                value="Science"
-                onclick="javascript:updateTopicList()"
-                class="mr-3 checked:accent-green-500"
-              />
-              <label for="option2">Science</label>
-            </div>
-            <div class="flex items-center">
-              <input
-                type="checkbox"
-                id="Tech"
-                name="Tech"
-                value="Tech"
-                onclick="javascript:updateTopicList()"
-                class="mr-3 checked:accent-green-500"
-              />
-              <label for="option3">Tech</label>
-            </div>
-            <div class="flex items-center">
-              <input
-                type="checkbox"
-                id="Business"
-                name="Business"
-                value="Business"
-                onclick="javascript:updateTopicList()"
-                class="mr-3 checked:accent-green-500"
-              />
-              <label for="option4">Business</label>
-            </div>
-            <div class="flex items-center">
-              <input
-                type="checkbox"
-                id="Sports"
-                name="Sports"
-                value="Sports"
-                onclick="javascript:updateTopicList()"
-                class="mr-3 checked:accent-green-500 checked:bg-green-600"
-              />
-              <label for="option5">Sports</label>
-            </div>
-            <div class="flex items-center w-full overflow-clip break-words">
-              <input
-                type="checkbox"
-                id="Entertainment"
-                name="Entertainment"
-                value="Entertainment"
-                onclick="javascript:updateTopicList()"
-                class="mr-3 checked:accent-green-500"
-              />
-              <label for="option6">Entertainment</label>
-            </div>
-          </fieldset>
-          <button
-            id="topicUpdateButton"
-            class="!bg-slate-700 text-white rounded-full px-12 py-2 lg:px-7 lg:py-2 mt-5 font-semibold text-lg disabled:bg-opacity-70 disabled:text-gray-400 transition-all duration-300"
-            disabled="disabled"
-            onclick="javascript:updateTopics()"
-          >
-            Save
-          </button>
-        </div>
-        <h1 class="text-xl font-bold text-white mt-6 mb-2">Mailing Time</h1>
-        <div class="flex justify-stretch align-middle">
-          <label
-            for="time"
-            class="capitalize text-lg font-semibold col-auto content-center"
-            >receive Emails Everyday at:</label
-          >
-          <input
-            type="time"
-            name="time"
-            id="time"
-            class="ml-3 col-span-2 bg-slate-800 font-semibold text-xl px-5 py-2 rounded-full min-w-max mb-2"
-            step="3600"
-            value="00:00"
-            onchange="javascript:updateTimeButton()"
-          />
-         
-        </div>
-        Email timings are based on Server's UTC timing conversions, hence your selected time may vary a little.
-        <button
-          id="timeUpdateButton"
-          disabled="disabled"
-          type="submit" 
-          onclick="javascript:updateTime()"
-          class="!bg-slate-700 text-white rounded-full px-12 py-2 lg:px-7 lg:py-2 mt-5 font-semibold text-lg disabled:bg-opacity-70 disabled:text-gray-400 transition-all duration-300 block"
-        >
-          Update
+        <fieldset
+          class="grid grid-cols-2 gap-2 mt-4 lg:grid-cols-3 lg:w-2/3 lg:gap-y-4 text-white text-lg align-middle justify-center lg:gap-1">
+          <div class="flex items-center">
+            <input type="checkbox" id="World" name="World" value="World" onclick="javascript:updateTopicList()"
+              class="mr-3 checked:accent-green-500" />
+            <label for="option1">World</label>
+          </div>
+          <div class="flex items-center">
+            <input type="checkbox" id="Science" name="Science" value="Science" onclick="javascript:updateTopicList()"
+              class="mr-3 checked:accent-green-500" />
+            <label for="option2">Science</label>
+          </div>
+          <div class="flex items-center">
+            <input type="checkbox" id="Tech" name="Tech" value="Tech" onclick="javascript:updateTopicList()"
+              class="mr-3 checked:accent-green-500" />
+            <label for="option3">Tech</label>
+          </div>
+          <div class="flex items-center">
+            <input type="checkbox" id="Business" name="Business" value="Business" onclick="javascript:updateTopicList()"
+              class="mr-3 checked:accent-green-500" />
+            <label for="option4">Business</label>
+          </div>
+          <div class="flex items-center">
+            <input type="checkbox" id="Sports" name="Sports" value="Sports" onclick="javascript:updateTopicList()"
+              class="mr-3 checked:accent-green-500 checked:bg-green-600" />
+            <label for="option5">Sports</label>
+          </div>
+          <div class="flex items-center w-full overflow-clip break-words">
+            <input type="checkbox" id="Entertainment" name="Entertainment" value="Entertainment"
+              onclick="javascript:updateTopicList()" class="mr-3 checked:accent-green-500" />
+            <label for="option6">Entertainment</label>
+          </div>
+        </fieldset>
+        <button id="topicUpdateButton"
+          class="!bg-slate-700 text-white rounded-full px-12 py-2 lg:px-7 lg:py-2 mt-5 font-semibold text-lg disabled:bg-opacity-70 disabled:text-gray-400 transition-all duration-300"
+          disabled="disabled" onclick="javascript:updateTopics()">
+          Save
         </button>
-        <div class="flex justify-center w-full">
-          
+      </div>
+      <h1 class="text-xl font-bold text-white mt-6 mb-2">Mailing Time</h1>
+      <div class="flex justify-stretch align-middle">
+        <label for="time" class="capitalize text-lg font-semibold col-auto content-center">receive Emails Everyday
+          at:</label>
+        <input type="time" name="time" id="time"
+          class="ml-3 col-span-2 bg-slate-800 font-semibold text-xl px-5 py-2 rounded-full min-w-max mb-2" step="3600"
+          value="00:00" onchange="javascript:updateTimeButton()" />
+
+      </div>
+      Email timings are based on Server's UTC timing conversions, hence your selected time may vary a little.
+      <button id="timeUpdateButton" disabled="disabled" type="submit" onclick="javascript:updateTime()"
+        class="!bg-slate-700 text-white rounded-full px-12 py-2 lg:px-7 lg:py-2 mt-5 font-semibold text-lg disabled:bg-opacity-70 disabled:text-gray-400 transition-all duration-300 block">
+        Update
+      </button>
+      <div class="flex justify-center w-full">
+
         <hr class="w-3/4 md:w-1/2 h-1 my-6 bg-slate-500 border-none rounded-full">
-        </div>
-        <a name="Account"></a>
-        <h1 class="font-bold text-2xl">Account Settings</h1>
-        <div class="mt-5">
-          <h3 class="font-bold text-xl mt-3 text-white">Connect Google Account</h3>
-          <p class="mt-2">
-           Connected Google Account Makes It Easier To Sign In and Login Even If You Forget Your Password
-          </p>
-          <%- console.log("ID " + googleAuth) %>
+      </div>
+      <a name="Account"></a>
+      <h1 class="font-bold text-2xl">Account Settings</h1>
+      <div class="mt-5">
+        <h3 class="font-bold text-xl mt-3 text-white">Connect Google Account</h3>
+        <p class="mt-2">
+          Connected Google Account Makes It Easier To Sign In and Login Even If You Forget Your Password
+        </p>
+        <%- console.log("ID " + googleAuth) %>
           <button
-            class="!bg-slate-700 text-white rounded-full px-7 gap-5 py-2 lg:px-7 lg:py-2 mt-5 font-semibold text-lg flex justify-evenly items-center"
-            onclick="javascript:<%-  googleAuth  ? 'window.location.href=`/disconnect-google`' : 'window.location.href=`/connect-google-post`' %>"
-          >
+            class=" !bg-slate-700 text-white rounded-full px-7 gap-5 py-2 lg:px-7 lg:py-2 mt-5 font-semibold text-lg
+          flex justify-evenly items-center"
+          onclick="javascript:<%-  googleAuth  ? 'window.location.href=`/disconnect-google`' : 'window.location.href=`/connect-google-post`' %>">
           <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="35" height="35" viewBox="0 0 48 48">
-            <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path>
-            <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path>
-            <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"></path>
-            <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path>
+            <path fill="#FFC107"
+              d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z">
+            </path>
+            <path fill="#FF3D00"
+              d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z">
+            </path>
+            <path fill="#4CAF50"
+              d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z">
+            </path>
+            <path fill="#1976D2"
+              d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z">
+            </path>
           </svg>
-           <%-  googleAuth  ? 'Connected' : 'Connect' %>
-          </button>
-          <p class="mt-3">Click button to  <%-  googleAuth  ? 'Disconnect' : 'Connect' %> </p>
+          <%- googleAuth ? 'Connected' : 'Connect' %>
+            </button>
+            <p class="mt-3">Click button to <%- googleAuth ? 'Disconnect' : 'Connect' %> </p>
+
+            <h3 class="font-bold text-xl mt-3 text-white">Change Name </h3>
+            <form action="javascript:submitNameChange()">
+              <input type="text"
+                class="border-slate-800 border-2 border-solid rounded-lg mt-3 p-2 outline-nonelg:p-2 w-full md:w-1/2 bg-slate-800 focus:bg-slate-700 duration-200 mb-2 text-white font-semibold"
+                required
+                placeholder="Enter New Name">
+                <button type="submit" class="!bg-slate-700  text-white rounded-full px-9 py-2 lg:px-4 lg:py-2 mt-1 font-semibold text-lg disabled:opacity-75"
+                >Change</button>
+                
+
+            </form>
+            <div class="text-center m-1 p-2">
+
+              <button class="!bg-red-700 mt-16 mb-5 text-white rounded-full px-9 py-2 lg:px-4 lg:py-2  font-semibold text-lg disabled:opacity-75 self-center"
+            >Delete Account</button>
+            </div>
       </div>
     </div>
     <style>
@@ -315,6 +242,14 @@
       }
     </style>
     <script>
+      document
+        .getElementById("navbar-solid-bg-btn")
+        .addEventListener("click", function () {
+          document.getElementById("mobile-menu").classList.toggle("hidden");
+          document.getElementById("arrow-left").classList.toggle("hidden");
+          document.getElementById("arrow-right").classList.toggle("hidden");
+        });
+
       var currentPopUpTimeoutID;
       function showPopup(textMessage, type = "info", durartion = 5000) {
         clearTimeout(currentPopUpTimeoutID);
@@ -339,24 +274,26 @@
         new Date().getHours() < 12
           ? "Morning"
           : new Date().getHours() < 16
-          ? "Afternoon"
-          : "Evening";
+            ? "Afternoon"
+            : "Evening";
 
       var d = new Date();
       d.setUTCHours(<%= timeSlot %>, 0, 0, 0);
-      document.getElementById("time").value = (d.getHours() > 9 ? d.getHours() : '0'+d.getHours()) + ":"+ (d.getUTCMinutes() > 9 ? d.getUTCMinutes() : '0'+d.getUTCMinutes());
+      document.getElementById("time").value = (d.getHours() > 9 ? d.getHours() : '0' + d.getHours()) + ":" + (d.getUTCMinutes() > 9 ? d.getUTCMinutes() : '0' + d.getUTCMinutes());
 
       function updateTimeButton() {
-        if (document.getElementById("time").value !== (d.getHours() > 9 ? d.getHours() : '0'+d.getHours()) + ":"+ (d.getUTCMinutes() > 9 ? d.getUTCMinutes() : '0'+d.getUTCMinutes()))
-       { document
-          .querySelector("#timeUpdateButton")
-          .removeAttribute("disabled");}
-      
-      else{
-        document
-          .querySelector("#timeUpdateButton")
-          .setAttribute("disabled", "disabled");
-      }}
+        if (document.getElementById("time").value !== (d.getHours() > 9 ? d.getHours() : '0' + d.getHours()) + ":" + (d.getUTCMinutes() > 9 ? d.getUTCMinutes() : '0' + d.getUTCMinutes())) {
+          document
+            .querySelector("#timeUpdateButton")
+          .removeAttribute("disabled");
+        }
+
+        else {
+          document
+            .querySelector("#timeUpdateButton")
+            .setAttribute("disabled", "disabled");
+        }
+      }
 
       var selectedTopicsList = "<%= selectedTopicsString %>".split(",");
       selectedTopicsList.forEach((topic) => {
@@ -369,7 +306,7 @@
         d.setHours(time.split(":")[0], time.split(":")[1], 0, 0);
         fetch("/updateSlot", {
           method: "POST",
-          body: new URLSearchParams({ timeSlot: d.getUTCMinutes() >= 30 ? d.getUTCHours()+1 : d.getUTCHours() }),
+          body: new URLSearchParams({ timeSlot: d.getUTCMinutes() >= 30 ? d.getUTCHours() + 1 : d.getUTCHours() }),
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
           },
@@ -389,7 +326,8 @@
             showPopup("Failed to Update Mailing Time", "err");
           }
         });
-        }
+      }
+
       function updateTopicList(onlyReturn = false) {
         var topicList = [];
         var checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -402,7 +340,7 @@
         if (!onlyReturn) {
           if (
             topicList.sort().toString() !==
-              selectedTopicsList.sort().toString() &&
+            selectedTopicsList.sort().toString() &&
             topicList.length > 0
           ) {
             console.log("enable");
@@ -444,6 +382,35 @@
           }
         });
       }
-    </script>
-  </body>
+
+      function submitNameChange(){
+        var name = document.querySelector('input[type="text"]').value;
+        fetch("/changeName", {
+          method: "POST",
+          body: new URLSearchParams({ name: name }),
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }).then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            showPopup("Name Updated Successfully", "info");
+          } else if (res.status === 401) {
+            showPopup("Session Expired ! \nPlease Login Again", "warn");
+            setTimeout(() => {
+              window.location.href = "/login";
+            }, 2500);
+          } else {
+            showPopup("Failed to Update Name", "err");
+          }
+        });
+      }
+   
+      function DeleteAccountAskConfirm() {
+        
+      }
+   
+   </script>
+</body>
+
 </html>

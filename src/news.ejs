@@ -69,10 +69,11 @@
           id="mobile-menu"
           class="hidden top-10 lg:hidden w-screen fixed text-center left-0 z-50 rounded-br-lg rounded-bl-lg bg-slate-950 backdrop-blur-2xl duration-500"
         >
-          <a href="#" class="block text-white py-2 px-4">Home</a>
-          <a href="#" class="block text-white py-2 px-4">About</a>
-          <a href="#" class="block text-white py-2 px-4">Services</a>
-          <a href="#" class="block text-white py-2 px-4">Contact</a>
+        <a href="/" class="block text-white py-2 px-4">Home</a>
+        <a href="/news" class="block text-white py-2 px-4">News</a>
+        <a href="<%= isLoggedIn ? '/dashboard' : '/login' %>" class="block text-white py-2 px-4">
+          <%= isLoggedIn ? "Account" : "Login" %>
+        </a>
         </div>
         <div class="hidden w-full md:block md:w-auto" id="navbar-solid-bg">
           <ul
