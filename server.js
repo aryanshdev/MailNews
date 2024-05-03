@@ -112,7 +112,8 @@ let mailer = nodemailer.createTransport({
   },
 });
 
-var slot = new Date().getUTCHours();
+
+var slot = 9// new Date().getUTCHours();
 
 async function cronNews() {
   await newsWritter.generateNewsFiles();
@@ -120,19 +121,35 @@ async function cronNews() {
 }
 
 async function emailCurrentSlot() {
-  db.get(`SELECT * FROM users WHERE emailslot = ${slot}`, async (err, rows) => {
+  await db.all(`SELECT * FROM users WHERE emailslot = ${slot}`, async (err, rows) => {
+   if(rows){
     rows.forEach(async (row) => {
+      var body=  `<h1>MailNews</h1>
+      <p>Here Are Your Daily News</p>
+      `;
+      row.interests.split(",").forEach((topic) => {
+        body += `<h2>${topic}</h2>`;
+        var news = JSON.parse(
+          fileSystem.readFileSync(__dirname + `/${topic}News.json`, (error, data) => {})
+        );
+        news.slice(0,5).forEach((news) => {
+          body += `<h3>${news.title}</h3>
+          <p>${news.description}</p>
+          <a href="${news.url}">Read More</a>
+          <hr>`;
+        });
+        body+=`<a href='https://mailnews.onrender.com/news#${topic}' > Read All ${topic} News</a> <br>`;
+      });
       await mailer.sendMail({
         to: row.emailID,
         from: `MailNews ${process.env.EMAIL}`,
         subject: "MailNews | Your Daily News",
-        html: `<h1>MailNews</h1>
-        <p>Here Are Your Daily News</p>
-        `,
+        html:body,
       });
     });
+   }
   });
-  slot++;
+  slot = 9; //++
   if (slot == 24) {
     slot = 0;
   }
@@ -154,11 +171,11 @@ function ensureAuthenticated(req, res, next) {
   }
   res.status(401).redirect("/signin");
 }
-app.listen(10000, async () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log("SERVER RUNNING ON PORT 10000 ");
 });
 
-app.get("/", (req, res) => {
+app.get("/",  (req, res) => {
   res.sendFile(__dirname + "/src/index.html");
 });
 
