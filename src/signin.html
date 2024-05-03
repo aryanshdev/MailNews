@@ -288,6 +288,9 @@
         } else if (res.status == 404) {
           showPopup(await res.text(), "err", 7500);
         }
+        else if (res.status == 200) {
+          window.location.href = "/dashboard";
+        }
       });
     }
   </script>

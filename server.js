@@ -113,15 +113,16 @@ let mailer = nodemailer.createTransport({
 });
 
 var slot = new Date().getUTCHours();
-console.log(slot)
+
 async function cronNews() {
   await newsWritter.generateNewsFiles();
-  emailCurrentSlot();
+  await emailCurrentSlot();
 }
 
 async function emailCurrentSlot() {
   db.get(`SELECT * FROM users WHERE emailslot = ${slot}`, async (err, rows) => {
     rows.forEach(async (row) => {
+      console.log(row.emailID);
       await mailer.sendMail({
         to: row.emailID,
         from: `MailNews ${process.env.EMAIL}`,
@@ -129,16 +130,14 @@ async function emailCurrentSlot() {
         html: `<h1>MailNews</h1>
         <p>Here Are Your Daily News</p>
         `,
-      })
+      });
     });
   });
-  slot++
-  if(slot == 24){
+  slot++;
+  if (slot == 24) {
     slot = 0;
   }
 }
-
-
 
 cron.schedule("0 * * * *", cronNews);
 
@@ -149,8 +148,9 @@ function inSubscribingProcessCheck(req, res, next) {
     res.redirect("/signin");
   }
 }
+
 function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated() || req.session.loggedin ) {
+  if (req.isAuthenticated() || req.session.loggedin) {
     return next();
   }
   res.status(401).redirect("/signin");
@@ -173,8 +173,7 @@ app.post("/signin", (req, res) => {
           crypto.createHash("sha256").update(req.body.pass).digest("hex")
         ) {
           req.session.loggedin = row.emailID;
-
-          if (req.body.saveLogin) {
+          if (req.body.saveLogin === 'true') {
             res.cookie(
               "__logcred__",
               crypto.createHash("sha256").update(req.body.email).digest("hex") +
@@ -183,7 +182,7 @@ app.post("/signin", (req, res) => {
               { maxAge: 3600000 * 24 * 7, httpOnly: true }
             );
           }
-          res.redirect("/dashboard");
+          res.status(200).redirect("/dashboard");
         } else {
           res
             .status(401)
@@ -198,17 +197,18 @@ app.post("/signin", (req, res) => {
   );
 });
 
-app.get("/dashboard",ensureAuthenticated, (req, res) => {
-  if(req.user){
+app.get("/dashboard", ensureAuthenticated, (req, res) => {
+  if (req.user && !req.loggedin) {
     req.session.loggedin = req.user.email;
   }
-  let email =  req.session.loggedin;
-
+  let email = req.session.loggedin;
+  console.log(email);
   db.get(`SELECT * FROM users WHERE emailID = "${email}"`, (err, row) => {
     if (row) {
       res.render(__dirname + "/src/dashboard.ejs", {
         selectedTopicsString: row.interests,
-        timeSlot : row.emailslot
+        timeSlot: row.emailslot,
+        googleAuth: row.googleUID,
       });
     } else {
       res.status(404).send("Account Not Found");
@@ -248,8 +248,7 @@ app.post("/updateSlot", (req, res) => {
         }
       }
     );
-  }
-  else {
+  } else {
     res.sendStatus(401);
   }
 });
@@ -330,6 +329,26 @@ app.get(
 );
 
 app.get(
+  "/connect-google-post",
+  ensureAuthenticated,
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+app.get("/disconnect-google", ensureAuthenticated, (req, res) => {
+  req.logout(()=>{});
+  db.run(
+    `UPDATE users SET googleUID = NULL WHERE emailID = '${req.session.loggedin}'`,
+    (err) => {
+      if (err) {
+        res.sendStatus(500);
+      } else {
+        res.sendStatus(200);
+      }
+    }
+  );
+});
+
+app.get(
   "/google-login",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
@@ -344,9 +363,37 @@ app.get(
 );
 
 app.get("/google-auth-success", ensureAuthenticated, (req, res) => {
-  res.redirect(
-    req.session.currentSubs ? "/connect-google-success" : "/dashboard"
-  );
+  if (req.session.loggedin) {
+    db.run(
+      `UPDATE users SET googleUID = '${req.user.sub}' WHERE emailID = '${req.session.loggedin}'`,
+      (err) => {
+        if (err) {
+          res.status(500).send("Error");
+        } else {
+          res.redirect("/dashboard");
+          return;
+        }
+      }
+    );
+  }
+else{
+  if(req.session.currentSubs ){
+  res.redirect( "/connect-google-success");
+  }
+  else{
+    db.get(`SELECT * FROM users WHERE googleUID = '${req.user.sub}'`, (err, row) => {
+  
+      if (row) {
+        req.session.loggedin = row.emailID;
+        req.user.email = row.emailID;
+        res.redirect("/dashboard");
+      } else {
+        res.status(500).send("Error");
+      }
+    });
+  }
+
+}
   delete req.session.currentSubs;
 });
 
