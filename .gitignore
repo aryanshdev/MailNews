@@ -135,4 +135,4 @@ dist
 .pnp.*
 
 #custom
-/src/gh.html
+gh.html
