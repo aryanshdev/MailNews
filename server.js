@@ -50,6 +50,44 @@ const verificationMailBody = `
 </html>
 `;
 
+const tempPassMailBody = `
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+  body {
+    padding: 2.5%;
+  }
+    .container {
+      background-color: rgb(2, 6, 23);
+      text-align: center;
+      font-family: sans-serif;
+      color: white;
+      margin: 2.5%;
+      padding: 2.5%;
+      border-radius: 15px;
+      border: 2.7.5px solid #009999;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <p>MailNews</p>
+    <img src="cid:loder.png" width="35%" alt="Verification Code" />
+    <hr>
+    <h2>Your Temporary Password Is</h2>
+    <h1>TEMP_PASS</h1>
+    <p>
+    Use this Temporary password to login and then change password from dashboard. <br>
+    Dont't Share It With Anyone <br>
+      If You Did Not Request A Verification Code, Please Ignore This Email.
+    </p>
+  </div>
+</body>
+</html>
+`;
+
+
 const app = express();
 
 app.use(
@@ -400,10 +438,10 @@ async function cronNews() {
   await newsWritter.generateNewsFiles();
   await emailCurrentSlot();
 }
-
 async function emailCurrentSlot() {
+  console.log(slot);
   await db.all(
-    `SELECT * FROM users WHERE emailslot = 9`,
+    `SELECT * FROM users WHERE emailslot = ${slot}`,
     async (err, rows) => {
       if (rows) {
         rows.forEach(async (row) => {
@@ -599,6 +637,36 @@ app.get("/verify", inSubscribingProcessCheck, (req, res) => {
   res.sendFile(__dirname + "/src/emailverify.html");
 });
 
+app.get("/resetPass", (req, res) => {
+  res.sendFile(__dirname + "/src/passwordReset.html");
+});
+
+app.post("/resetPass", (req, res) => {
+  db.get("SELECT * FROM users WHERE emailID = ?", [req.body.email], (err, row) => {
+    if(row){
+      var tempPass = Math.random().toString(36).substring(2,9);
+      db.run("UPDATE users SET password = ? WHERE emailID = ?", [crypto.createHash("sha256").update(tempPass).digest("hex"), req.body.email], (err) => {
+        if(err){
+          res.status(500).send("Some Error Occured");
+        }
+        else{
+          mailer.sendMail({
+            to: req.body.email,
+            from: `MailNews ${process.env.EMAIL}`,
+            subject: "Temporary Password | MailNews",
+            html: tempPassMailBody.replace("TEMP_PASS", tempPass),
+          }).catch((err) => {
+            console.log(err);
+          });
+          res.status(200).send("Temporary Password Sent");
+        }
+      });
+    }
+    else{
+      res.status(404).send("Account Not Found");
+    }
+  });
+  });
 app.post("/verifyEmail", inSubscribingProcessCheck, async (req, res) => {
   if (req.body.verificationCode == req.session.registrationCode) {
     db.run(
