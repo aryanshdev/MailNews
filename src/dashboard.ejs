@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>News | MailNews</title>
-<link rel="shortcut icon" href="./MailNews.png" type="image/png">
+  <link rel="shortcut icon" href="./MailNews.png" type="image/png">
   <link href="style.css" rel="stylesheet" />
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoog5le.js?client=ca-pub-2238125462513134"
     crossorigin="anonymous"></script>
@@ -24,7 +24,7 @@
   }
 </style>
 
-<body class="bg-slate-950 flex w-screen h-screen scroll-smooth relative">
+ <body class="text-lg bg-slate-950 flex w-screen h-screen scroll-smooth relative text-lg">
   <div
     class="bg-purple-700 -z-10 blur-3xl w-56 h-56 fixed -bottom-14 opacity-60 md:opacity-85 rounded-full -right-14 md:-right-2 md:-bottom-2 md:animate-pulse">
   </div>
@@ -218,22 +218,34 @@
           <%- googleAuth ? 'Connected' : 'Connect' %>
             </button>
             <p class="mt-3">Click button to <%- googleAuth ? 'Disconnect' : 'Connect' %> </p>
-
             <h3 class="font-bold text-xl mt-3 text-white">Change Name </h3>
             <form action="javascript:submitNameChange()">
               <input type="text"
-                class="border-slate-800 border-2 border-solid rounded-lg mt-3 p-2 outline-nonelg:p-2 w-full md:w-1/2 bg-slate-800 focus:bg-slate-700 duration-200 mb-2 text-white font-semibold"
-                required
-                placeholder="Enter New Name">
-                <button type="submit" class="!bg-slate-700  text-white rounded-full px-9 py-2 lg:px-4 lg:py-2 mt-1 font-semibold text-lg disabled:opacity-75"
-                >Change</button>
-                
-
+                class="border-slate-800 border-2 border-solid rounded-lg mt-3 p-2 outline-none lg:p-2 w-full md:w-1/2 bg-slate-800 focus:bg-slate-700 duration-200 mb-2 text-white font-semibold"
+                required placeholder="Enter New Name">
+              <button type="submit"
+                class="!bg-slate-700 ml-3 text-white rounded-full px-9 py-2 lg:px-4 lg:py-2 mt-1 font-semibold text-lg disabled:opacity-75">Change</button>
             </form>
+
+            <h3 class="font-bold text-xl mt-3 text-white">Change Account Password </h3>
+            <form action="javascript:submitPasswordChange()">
+              <div class="w-full flex flex-row flex-wrap gap-2">
+                <input type="text"
+                  class="border-slate-800 inline border-2 border-solid  rounded-lg mt-3 p-2 outline-none lg:p-2 w-full md:w-1/2 bg-slate-800 focus:bg-slate-700 duration-200 mb-2 text-white font-semibold"
+                  required name="oldPass" placeholder="Enter Current Password">
+                <input type="text"
+                  class="border-slate-800 inline border-2 border-solid rounded-lg p-2 outline-none lg:p-2 w-full md:w-1/2 bg-slate-800 focus:bg-slate-700 duration-200 mb-2 text-white font-semibold"
+                  required name="newPass" placeholder="Enter New Password">
+              </div>
+              <button type="submit"
+                class="!bg-slate-700 ml-3 text-white rounded-full px-9 py-2 lg:px-4 lg:py-2 mt-1 font-semibold text-lg disabled:opacity-75">Change</button>
+            </form>
+
             <div class="text-center m-1 p-2">
 
-              <button class="!bg-red-700 mt-16 mb-5 text-white rounded-full px-9 py-2 lg:px-4 lg:py-2  font-semibold text-lg disabled:opacity-75 self-center"
-            >Delete Account</button>
+              <button onclick="javascript:DeleteAccountAskConfirm()" id="DeleteAccountButton"
+                class="!bg-red-700 mt-16 mb-5 text-white rounded-full px-9 py-2 lg:px-4 lg:py-2  font-semibold text-lg disabled:opacity-75 self-center">Delete
+                Account</button>
             </div>
       </div>
     </div>
@@ -286,7 +298,7 @@
         if (document.getElementById("time").value !== (d.getHours() > 9 ? d.getHours() : '0' + d.getHours()) + ":" + (d.getUTCMinutes() > 9 ? d.getUTCMinutes() : '0' + d.getUTCMinutes())) {
           document
             .querySelector("#timeUpdateButton")
-          .removeAttribute("disabled");
+            .removeAttribute("disabled");
         }
 
         else {
@@ -384,7 +396,7 @@
         });
       }
 
-      function submitNameChange(){
+      function submitNameChange() {
         var name = document.querySelector('input[type="text"]').value;
         fetch("/changeName", {
           method: "POST",
@@ -406,12 +418,39 @@
           }
         });
       }
-   
+
       function DeleteAccountAskConfirm() {
-        
+        showPopup("Are You Sure You Want To Delete Your Account ?! Select Delete Account Again To Delete", "warn", 10000);
+        document.getElementById("DeleteAccountButton").setAttribute("onclick", "javascript:DeleteAccount()");
+        setTimeout(() => {
+          document.getElementById("DeleteAccountButton").setAttribute("onclick", "javascript:DeleteAccountAskConfirm()");
+        }, 10000);
       }
-   
-   </script>
+      function DeleteAccount() {
+        fetch("/deleteAccount", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }).then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            showPopup("Account Deleted Successfully", "info");
+            setTimeout(() => {
+              window.location.href = "/login";
+            }, 2500);
+          } else if (res.status === 401) {
+            showPopup("Session Expired ! \nPlease Login Again", "warn");
+            setTimeout(() => {
+              window.location.href = "/login";
+            }, 2500);
+          } else {
+            showPopup("Failed to Delete Account", "err");
+          }
+        });
+      }
+
+    </script>
 </body>
 
 </html>

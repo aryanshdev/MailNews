@@ -51,6 +51,7 @@ const verificationMailBody = `
 `;
 
 const app = express();
+
 app.use(
   session({
     secret: "MailNews-Secret",
@@ -64,6 +65,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static("src"));
+
+var port = 10000;
 
 let db = new sql.Database("mailNews.db", (err) => {});
 
@@ -79,7 +82,7 @@ passport.use(
       callbackURL:
         process.env.NODE_ENV === "production"
           ? "https://mailnews.onrender.com/process-google-auth"
-          : "http://localhost:10000/process-google-auth",
+          : `http://localhost:${port}/process-google-auth`,
       scope: ["https://www.googleapis.com/auth/plus.login"],
     },
     function (accessToken, refreshToken, profile, done) {
@@ -189,7 +192,7 @@ async function emailCurrentSlot() {
            <p >${news[title].content}</p>
            </div>
            <a href="${news[title].link}">Read More</a>
-           <hr></div>`;
+          </div>`;
               count++;
               if (count == 5) break;
             }
@@ -228,8 +231,8 @@ function ensureAuthenticated(req, res, next) {
   }
   res.status(401).redirect("/signin");
 }
-app.listen(process.env.PORT || 3000, () => {
-  console.log("SERVER RUNNING ON PORT " + (process.env.PORT || 3000));
+app.listen(port || 10000, () => {
+  console.log("SERVER RUNNING ON PORT " + port);
 });
 
 app.get("/", async (req, res) => {
@@ -284,7 +287,10 @@ app.get("/dashboard", ensureAuthenticated, (req, res) => {
         googleAuth: row.googleUID,
       });
     } else {
-      res.status(404).send("Account Not Found");
+      res.status(404).render(__dirname + "/src/error.ejs", {
+        title: "Account Not Found",
+        message: `It seems like the account you are trying to access does not exist.`,
+      });
     }
   });
 });
@@ -459,7 +465,17 @@ app.get("/google-auth-success", ensureAuthenticated, (req, res) => {
             req.user.email = row.emailID;
             res.redirect("/dashboard");
           } else {
-            res.status(500).send("Error");
+            if (row == undefined) {
+              res.status(404).render(__dirname + "/src/error.ejs", {
+                title: "Account Not Found",
+                message: `It seems like the account you are trying to connect to does not exist.`,
+              });
+            } else {
+              res.status(500).render(__dirname + "/src/error.ejs", {
+                title: "Some Error Occured",
+                message: `Some Error Occured in Server. Please Try Again Later. DETAILS : ${500} - auth-success`,
+              });
+            }
           }
         }
       );
@@ -540,6 +556,61 @@ app.post("/changeName", ensureAuthenticated, (req, res) => {
   }
 });
 
+app.post("/changePass", ensureAuthenticated, (req, res) => {
+  db.get(
+    `SELECT password FROM users WHERE emailID = "${req.session.loggedin}"`,
+    (err, row) => {
+      if (
+        row.password ==
+        crypto.createHash("sha256").update(req.body.oldPass).digest("hex")
+      ) {
+        db.run(
+          `UPDATE users SET password = '${crypto
+            .createHash("sha256")
+            .update(req.body.newPass)
+            .digest("hex")}' WHERE emailID = '${req.session.loggedin}'`,
+          (err) => {
+            if (err) {
+              res.sendStatus(500);
+            } else {
+              res.sendStatus(200);
+            }
+          }
+        );
+      } else {
+        res.status(401).send("Wrong Password");
+      }
+    }
+  );
+});
+
+app.get("/logout", (req, res) => {
+  req.logout((err) => {
+    if (!err) {
+      res.redirect("/");
+    }
+  });
+});
+
+app.post("/deleteAccount", ensureAuthenticated, (req, res) => {
+  if (req.session.loggedin) {
+    db.run(
+      `DELETE FROM users WHERE emailID = '${req.session.loggedin}'`,
+      (err) => {
+        if (err) {
+          res.sendStatus(500);
+        } else {
+          req.logout(() => {
+            res.sendStatus(200);
+          });
+        }
+      }
+    );
+  } else {
+    res.sendStatus(401);
+  }
+});
+
 app.get("/news", (req, res) => {
   var business, entertainment, science, sports, tech, world;
 
@@ -593,5 +664,8 @@ app.get("/ping", (req, res) => {
 
 // At Last
 app.get("*", (req, res) => {
-  res.status(404).sendFile(__dirname + "/src/404.html");
+  res.status(404).render(__dirname + "/src/error.ejs", {
+    title: "Woops!! Are You Lost ?",
+    message: `It seems like you are lost. Let's get you back on track.`,
+  });
 });
