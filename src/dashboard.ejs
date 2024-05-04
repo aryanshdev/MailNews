@@ -232,9 +232,11 @@
               <div class="w-full flex flex-row flex-wrap gap-2">
                 <input type="text"
                   class="border-slate-800 inline border-2 border-solid  rounded-lg mt-3 p-2 outline-none lg:p-2 w-full md:w-1/2 bg-slate-800 focus:bg-slate-700 duration-200 mb-2 text-white font-semibold"
+                  name="oldPass"
                   required name="oldPass" placeholder="Enter Current Password">
                 <input type="text"
                   class="border-slate-800 inline border-2 border-solid rounded-lg p-2 outline-none lg:p-2 w-full md:w-1/2 bg-slate-800 focus:bg-slate-700 duration-200 mb-2 text-white font-semibold"
+                  name="newPass"
                   required name="newPass" placeholder="Enter New Password">
               </div>
               <button type="submit"
@@ -312,6 +314,32 @@
       selectedTopicsList.forEach((topic) => {
         document.querySelector(`input[value="${topic}"]`).checked = true;
       });
+
+      function submitPasswordChange(){
+        var oldPass = document.querySelector('input[name="oldPass"]').value;
+        var newPass = document.querySelector('input[name="newPass"]').value;
+        fetch("/changePass", {
+          method: "POST",
+          body: new URLSearchParams({ oldPass: oldPass, newPass: newPass }),
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }).then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            showPopup("Password Updated Successfully", "info");
+          } else if (res.status === 400) {
+            showPopup("Current Password Wrong ! \nPlease Check And Try Again", "warn");    
+          } else if (res.status === 401) {
+            showPopup("Session Expired ! \nPlease Login Again", "warn");
+            setTimeout(() => {
+              window.location.href = "/login";
+            }, 2500);}
+            else {
+            showPopup("Failed to Update Password", "err");
+          }
+        });
+      }
 
       function updateTime() {
         var time = document.getElementById("time").value;

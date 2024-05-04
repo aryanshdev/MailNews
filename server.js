@@ -556,7 +556,8 @@ app.post("/changeName", ensureAuthenticated, (req, res) => {
   }
 });
 
-app.post("/changePass", ensureAuthenticated, (req, res) => {
+app.post("/changePass", (req, res) => {
+if(req.session.loggedin){
   db.get(
     `SELECT password FROM users WHERE emailID = "${req.session.loggedin}"`,
     (err, row) => {
@@ -578,10 +579,14 @@ app.post("/changePass", ensureAuthenticated, (req, res) => {
           }
         );
       } else {
-        res.status(401).send("Wrong Password");
+        res.status(400).send("Wrong Password");
       }
     }
   );
+}
+else{
+  res.sendStatus(401).send("Not Logged In");
+}
 });
 
 app.get("/logout", (req, res) => {
