@@ -112,7 +112,7 @@ let mailer = nodemailer.createTransport({
   },
 });
 
-var slot = 9; // new Date().getUTCHours();
+var slot = new Date().getUTCHours();
 
 async function cronNews() {
   await newsWritter.generateNewsFiles();
@@ -125,8 +125,53 @@ async function emailCurrentSlot() {
     async (err, rows) => {
       if (rows) {
         rows.forEach(async (row) => {
-          var body = `<h1>MailNews</h1>
-       <p>Here Are Your Daily News</p>
+          var body = `
+          <style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 2.5%;
+    padding: 0;
+    background-color: rgb(2 6 23);
+    color: white;
+    text-align: center;
+  }
+  p {
+    text-align: left;
+    margin: 0;
+  }
+  .content {
+    border: 2px white solid;
+    border-radius: 10px;
+    padding: 5px;
+  }
+  .mainContent {
+    display: block;
+    align-items: center;
+    columns: 1;
+  }
+  .mainContent img {
+    display: block;
+    margin: 0 auto;
+    order: -1;
+  }
+  /* .mainContent p {
+  } */
+  @media (min-width: 765px) {
+    .mainContent {
+      columns: 3;
+      gap: 1rem;
+      display: grid; /* Ensure grid layout */
+    }
+    .mainContent p {
+      grid-column: 2;
+    }
+    .mainContent img {
+      grid-column: 1;
+    }
+  }
+</style>
+          <h1>MailNews</h1>
+       <h3>Here Are Your Daily News</h3>
        `;
           row.interests.split(",").forEach((topic) => {
             body += `<h2>${topic}</h2>`;
@@ -138,13 +183,15 @@ async function emailCurrentSlot() {
             );
             var count = 0;
             for (title in news) {
-              body += `<h3>${title}</h3>
+              body += `<div class='content'><h3>${title}</h3>
+              <div class='mainContent'>
               <img src="${news[title].img}" width="100%" alt="${title}" />
-           <p>${news[title].content}</p>
+           <p >${news[title].content}</p>
+           </div>
            <a href="${news[title].link}">Read More</a>
-           <hr>`;
-           count ++;
-           if (count == 5) break;
+           <hr></div>`;
+              count++;
+              if (count == 5) break;
             }
             body += `<a href='https://mailnews.onrender.com/news#1${topic}' > Read All ${topic} News</a> <br>`;
           });
@@ -159,7 +206,7 @@ async function emailCurrentSlot() {
     }
   );
 
-  slot = 9; //++
+  slot++;
   if (slot == 24) {
     slot = 0;
   }
@@ -518,7 +565,7 @@ app.get("/news", (req, res) => {
   );
 
   var sports = JSON.parse(
-    fileSystem.readFileSync(__dirname + "/sportNews.json", (error, data) => {})
+    fileSystem.readFileSync(__dirname + "/sportsNews.json", (error, data) => {})
   );
 
   var tech = JSON.parse(
