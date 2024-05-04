@@ -49,7 +49,7 @@ async function getWorldNews() {
       }
     });
 
-    const Summerizer = new node_summerizer.SummarizerManager(body, 5);
+    const Summerizer = new node_summerizer.SummarizerManager(body, 4);
     worldNewsData[heading] = {
       img: img,
       link: aLink.attribs["href"],
@@ -100,7 +100,7 @@ async function getTechNews() {
       }
     });
 
-    const Summerizer = new node_summerizer.SummarizerManager(body, 5);
+    const Summerizer = new node_summerizer.SummarizerManager(body, 4);
     techNewsData[heading] = {
       img: img,
       link:aLink.attribs["href"],
@@ -150,7 +150,7 @@ async function getScienceNews() {
       }
     });
 
-    const Summerizer = new node_summerizer.SummarizerManager(body, 5);
+    const Summerizer = new node_summerizer.SummarizerManager(body, 4);
     scienceNewsData[heading] = {
       img: img,
       link: "https://www.nature.com" + aLink.attribs["href"],
@@ -206,7 +206,7 @@ async function getBusinessNews() {
       }
     });
 
-    const Summerizer = new node_summerizer.SummarizerManager(body, 5);
+    const Summerizer = new node_summerizer.SummarizerManager(body, 4);
     businessNewsData[heading] = {
       img: img,
       link : "https://www.reuters.com" + aLink.attribs["href"],
@@ -261,7 +261,7 @@ async function getSportsNews() {
       }
     });
 
-    const Summerizer = new node_summerizer.SummarizerManager(body, 5);
+    const Summerizer = new node_summerizer.SummarizerManager(body, 4);
     sportsNewsData[heading] = {
       img: img,
       link :  "https://www.reuters.com" + aLink.attribs["href"],
@@ -270,7 +270,7 @@ async function getSportsNews() {
   }
 
   fileSystem.writeFile(
-    __dirname + "/sportNews.json",
+    __dirname + "/sportsNews.json",
     JSON.stringify(sportsNewsData),
     (error) => {}
   );
@@ -312,7 +312,7 @@ async function getEntertainmentNews() {
         body += text;
       }
     });
-    const Summerizer = new node_summerizer.SummarizerManager(body, 5);
+    const Summerizer = new node_summerizer.SummarizerManager(body, 4);
     entertainmentNewsData[heading] = {
       img: img,
       link :  "https://www.wionews.com" + aLink.attribs["href"],
@@ -330,9 +330,10 @@ async function getEntertainmentNews() {
 }
 
 async function generateNewsFiles() {
+  await   getTechNews();
   await Promise.all([
     getWorldNews(),
-    getTechNews(),
+  
     getScienceNews(),
     getBusinessNews(),
     getSportsNews(),

@@ -112,8 +112,7 @@ let mailer = nodemailer.createTransport({
   },
 });
 
-
-var slot = 9// new Date().getUTCHours();
+var slot = 9; // new Date().getUTCHours();
 
 async function cronNews() {
   await newsWritter.generateNewsFiles();
@@ -121,34 +120,45 @@ async function cronNews() {
 }
 
 async function emailCurrentSlot() {
-  await db.all(`SELECT * FROM users WHERE emailslot = ${slot}`, async (err, rows) => {
-   if(rows){
-    rows.forEach(async (row) => {
-      var body=  `<h1>MailNews</h1>
-      <p>Here Are Your Daily News</p>
-      `;
-      row.interests.split(",").forEach((topic) => {
-        body += `<h2>${topic}</h2>`;
-        var news = JSON.parse(
-          fileSystem.readFileSync(__dirname + `/${topic}News.json`, (error, data) => {})
-        );
-        news.slice(0,5).forEach((news) => {
-          body += `<h3>${news.title}</h3>
-          <p>${news.description}</p>
-          <a href="${news.url}">Read More</a>
-          <hr>`;
+  await db.all(
+    `SELECT * FROM users WHERE emailslot = ${slot}`,
+    async (err, rows) => {
+      if (rows) {
+        rows.forEach(async (row) => {
+          var body = `<h1>MailNews</h1>
+       <p>Here Are Your Daily News</p>
+       `;
+          row.interests.split(",").forEach((topic) => {
+            body += `<h2>${topic}</h2>`;
+            var news = JSON.parse(
+              fileSystem.readFileSync(
+                __dirname + `/${topic.toLowerCase()}News.json`,
+                (error, data) => {}
+              )
+            );
+            var count = 0;
+            for (title in news) {
+              body += `<h3>${title}</h3>
+              <img src="${news[title].img}" width="100%" alt="${title}" />
+           <p>${news[title].content}</p>
+           <a href="${news[title].link}">Read More</a>
+           <hr>`;
+           count ++;
+           if (count == 5) break;
+            }
+            body += `<a href='https://mailnews.onrender.com/news#1${topic}' > Read All ${topic} News</a> <br>`;
+          });
+          await mailer.sendMail({
+            to: row.emailID,
+            from: `MailNews ${process.env.EMAIL}`,
+            subject: "MailNews | Your Daily News",
+            html: body,
+          });
         });
-        body+=`<a href='https://mailnews.onrender.com/news#${topic}' > Read All ${topic} News</a> <br>`;
-      });
-      await mailer.sendMail({
-        to: row.emailID,
-        from: `MailNews ${process.env.EMAIL}`,
-        subject: "MailNews | Your Daily News",
-        html:body,
-      });
-    });
-   }
-  });
+      }
+    }
+  );
+
   slot = 9; //++
   if (slot == 24) {
     slot = 0;
@@ -172,10 +182,10 @@ function ensureAuthenticated(req, res, next) {
   res.status(401).redirect("/signin");
 }
 app.listen(process.env.PORT || 3000, () => {
-  console.log("SERVER RUNNING ON PORT 10000 ");
+  console.log("SERVER RUNNING ON PORT " + (process.env.PORT || 3000));
 });
 
-app.get("/",  (req, res) => {
+app.get("/", async (req, res) => {
   res.sendFile(__dirname + "/src/index.html");
 });
 
@@ -189,7 +199,7 @@ app.post("/signin", (req, res) => {
           crypto.createHash("sha256").update(req.body.pass).digest("hex")
         ) {
           req.session.loggedin = row.emailID;
-          if (req.body.saveLogin === 'true') {
+          if (req.body.saveLogin === "true") {
             res.cookie(
               "__logcred__",
               crypto.createHash("sha256").update(req.body.email).digest("hex") +
@@ -350,7 +360,7 @@ app.get(
 );
 
 app.get("/disconnect-google", ensureAuthenticated, (req, res) => {
-  req.logout(()=>{});
+  req.logout(() => {});
   db.run(
     `UPDATE users SET googleUID = NULL WHERE emailID = '${req.session.loggedin}'`,
     (err) => {
@@ -390,25 +400,24 @@ app.get("/google-auth-success", ensureAuthenticated, (req, res) => {
         }
       }
     );
+  } else {
+    if (req.session.currentSubs) {
+      res.redirect("/connect-google-success");
+    } else {
+      db.get(
+        `SELECT * FROM users WHERE googleUID = '${req.user.sub}'`,
+        (err, row) => {
+          if (row) {
+            req.session.loggedin = row.emailID;
+            req.user.email = row.emailID;
+            res.redirect("/dashboard");
+          } else {
+            res.status(500).send("Error");
+          }
+        }
+      );
+    }
   }
-else{
-  if(req.session.currentSubs ){
-  res.redirect( "/connect-google-success");
-  }
-  else{
-    db.get(`SELECT * FROM users WHERE googleUID = '${req.user.sub}'`, (err, row) => {
-  
-      if (row) {
-        req.session.loggedin = row.emailID;
-        req.user.email = row.emailID;
-        res.redirect("/dashboard");
-      } else {
-        res.status(500).send("Error");
-      }
-    });
-  }
-
-}
   delete req.session.currentSubs;
 });
 
@@ -521,7 +530,7 @@ app.get("/news", (req, res) => {
   );
 
   res.render(__dirname + "/src/news.ejs", {
-    isLoggedIn : req.isAuthenticated() || req.session.loggedin,
+    isLoggedIn: req.isAuthenticated() || req.session.loggedin,
     businessNews: business,
     entertainmentNews: entertainment,
     scienceNews: science,
