@@ -29,7 +29,7 @@ const verificationMailBody = `
       margin: 2.5%;
       padding: 2.5%;
       border-radius: 15px;
-      border: 2.5px solid #009999;
+      border: 2.7.5px solid #009999;
     }
   </style>
 </head>
@@ -90,6 +90,285 @@ passport.use(
     }
   )
 );
+var singleNewsBlock = `<table class="nl-container" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation"
+style="mso-table-lspace: 0; mso-table-rspace: 0; background-color: #020617; margin-top:7.5px; margin-bottom:7.5px; border: 2px white solid; padding: 1.5%; border-radius: 10px; width: 100%;">
+<tbody>
+   <tr>
+      <td class="pad">
+         <div class="alignment" align="center">
+            <!--[if mso]>
+<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" style="height:38px;width:110px;v-text-anchor:middle;" arcsize="11%" stroke="false" fillcolor="#3AAEE0">
+<w:anchorlock/>
+<v:textbox inset="0px,0px,0px,0px">
+<center style="color:#ffffff; font-family:Arial, sans-serif; font-size:14px">
+<![endif]-->
+            <h1 style="font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+            font-size:16px;
+            margin: 0;
+            color: #fff;">
+               $HEADING$
+            </h1>
+            <!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <td>
+         <table class="row row-1" align="center" width="100%" border="0" cellpadding="0" cellspacing="0"
+            role="presentation" style="
+     mso-table-lspace: 0;
+     mso-table-rspace: 0;
+     background-color: #020617;
+   ">
+            <tbody>
+               <tr class="reverse">
+                  <td class="column column-1 first" width="66.66666666666667%" style="
+         mso-table-lspace: 0;
+         mso-table-rspace: 0;
+         font-weight: 400;
+         text-align: left;
+         padding-bottom: 7.5px;
+         padding-left: 7.5px;
+         padding-right: 7.5px;
+         padding-top: 7.5px;
+         vertical-align: top;
+         border-top: 0;
+         border-right: 0;
+         border-bottom: 0;
+         border-left: 0;
+       ">
+                     <div class="border">
+                        <table class="text_block block-1" width="100%" border="0" cellpadding="10" cellspacing="0"
+                           role="presentation" style="
+             mso-table-lspace: 0;
+             mso-table-rspace: 0;
+             word-break: break-word;
+           ">
+                           <tbody>
+                              <tr>
+                                 <td class="pad">
+                                    <div style="font-family: sans-serif">
+                                       <div class="" style="
+                       font-size: 14px;
+                       font-family: Arial, Helvetica Neue, Helvetica,
+                         sans-serif;
+                       mso-line-height-alt: 16.8px;
+                       color: #fff;
+                       line-height: 1.2;
+                     ">
+                                          <p style="margin: 0; mso-line-height-alt: 16.8px">
+                                         $CONTENT$
+                                          </p>
+                                       </div>
+                                    </div>
+                                 </td>
+                              </tr>
+                           </tbody>
+                        </table>
+                     </div>
+                  </td>
+                  <td class="column column-2 last" width="33.333333333333336%" style="
+         mso-table-lspace: 0;
+         mso-table-rspace: 0;
+         vertical-align: middle;
+         font-weight: 400;
+         text-align: left;
+         border-top: 0;
+         border-right: 0;
+         border-bottom: 0;
+         border-left: 0;
+       ">
+                     <div class="border">
+                        <table class="image_block block-1" width="100%" border="0" cellpadding="0" cellspacing="0"
+                           role="presentation" style="mso-table-lspace: 0; mso-table-rspace: 0">
+                           <tbody>
+                              <tr>
+                                 <td class="pad" style="width: 100%">
+                                    <div class="alignment" align="center" style="line-height: 10px">
+                                       <div style="max-width: 298.66666666666663px">
+                                          <img
+                                             src="$IMG_SRC$"
+                                             style="
+                         display: block;
+                         height: auto;
+                         border: 0;
+                         width: 100%;
+                       " width="298.66666666666663" height="auto">
+                                       </div>
+                                    </div>
+                                 </td>
+                              </tr>
+                           </tbody>
+                        </table>
+                     </div>
+                  </td>
+               </tr>
+
+            </tbody>
+         </table>
+      </td>
+   </tr>
+
+   <tr>
+      <td class="pad">
+         <div class="alignment" align="center">
+            <!--[if mso]>
+<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" style="height:38px;width:110px;v-text-anchor:middle;" arcsize="11%" stroke="false" fillcolor="#3AAEE0">
+<w:anchorlock/>
+<v:textbox inset="0px,0px,0px,0px">
+<center style="color:#ffffff; font-family:Arial, sans-serif; font-size:14px">
+<![endif]-->
+            <a href="$NEWS_LINK$" style="text-decoration: none;">
+               <div style="
+               text-decoration: none;
+               display: inline-block;
+               color: #020617;
+               background-color: white;
+               border-radius: 99px;
+               width: auto;
+               border-top: 0 solid transparent;
+               font-weight: 600;
+               border-right: 0 solid transparent;
+               border-bottom: 0 solid transparent;
+               border-left: 0 solid transparent;
+               padding-top: 7.5px;
+               padding-bottom: 7.5px;
+               font-family: Arial, Helvetica Neue, Helvetica,
+                 sans-serif;
+               font-size: 14px;
+               text-align: center;
+               mso-border-alt: none;
+               word-break: keep-all;
+             ">
+       <span style="
+                 padding-left: 20px;
+                 padding-right: 20px;
+                 font-size: 14px;
+                 display: inline-block;
+                 letter-spacing: normal;
+               "><span style="
+                   word-break: break-word;
+                   line-height: 28px;
+                 ">Know More</span></span>
+    </div></a>
+            <!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
+         </div>
+      </td>
+   </tr>
+</tbody>
+</table>
+`;
+
+var newsEmailBodyStart = `<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
+
+<head>
+   <title></title>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <meta name="viewport" content="width=device-width,initial-scale=1">
+   <!--[if mso
+     ]><xml
+       ><o:OfficeDocumentSettings
+         ><o:PixelsPerInch>96</o:PixelsPerInch
+         ><o:AllowPNG /></o:OfficeDocumentSettings></xml
+   ><![endif]-->
+   <style>
+      * {
+         box-sizing: border-box;
+      }
+
+      body {
+         margin: 0;
+         background-color: #020617;
+         width: 100%;
+         padding: 7.5px;
+      }
+
+      a[x-apple-data-detectors] {
+         color: inherit !important;
+         text-decoration: inherit !important;
+      }
+
+      #MessageViewBody a {
+         color: inherit;
+         text-decoration: none;
+      }
+
+      p {
+         line-height: inherit;
+      }
+
+      .desktop_hide,
+      .desktop_hide table {
+         mso-hide: all;
+         display: none;
+         max-height: 0;
+         overflow: hidden;
+      }
+
+      .image_block img+div {
+         display: none;
+      }
+
+      @media (max-width: 600px) {
+         .mobile_hide {
+            display: none;
+         }
+
+         .row-content {
+            width: 100% !important;
+         }
+
+         .stack .column {
+            width: 100%;
+            display: block;
+         }
+
+         .mobile_hide {
+            min-height: 0;
+            max-height: 0;
+            max-width: 0;
+            overflow: hidden;
+            font-size: 0;
+         }
+
+         .desktop_hide,
+         .desktop_hide table {
+            display: table !important;
+            max-height: none !important;
+         }
+
+         .reverse {
+            display: table;
+            width: 100%;
+         }
+
+         .reverse .column.first {
+            display: table-footer-group !important;
+         }
+
+         .reverse .column.last {
+            display: table-header-group !important;
+         }
+
+         .row-2 td.column.first .border {
+            padding: 7.5px;
+            border-top: 0;
+            border-right: 0;
+            border-bottom: 0;
+            border-left: 0;
+         }
+
+         .row-2 td.column.last .border {
+            padding: 0;
+            border-top: 0;
+            border-right: 0;
+            border-bottom: 0;
+            border-left: 0;
+         }
+      }
+   </style>
+
+<body style="margin:0;padding:10px;-webkit-text-size-adjust:none;text-size-adjust:none">`;
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -124,60 +403,14 @@ async function cronNews() {
 
 async function emailCurrentSlot() {
   await db.all(
-    `SELECT * FROM users WHERE emailslot = ${slot}`,
+    `SELECT * FROM users WHERE emailslot = 9`,
     async (err, rows) => {
       if (rows) {
         rows.forEach(async (row) => {
-          var body = `
-          <style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 2.5%;
-    padding: 0;
-    background-color: rgb(2 6 23);
-    color: white;
-    text-align: center;
-  }
-  p {
-    text-align: left;
-    margin: 0;
-  }
-  .content {
-    border: 2px white solid;
-    border-radius: 10px;
-    padding: 5px;
-  }
-  .mainContent {
-    display: block;
-    align-items: center;
-    columns: 1;
-  }
-  .mainContent img {
-    display: block;
-    margin: 0 auto;
-    order: -1;
-  }
-  /* .mainContent p {
-  } */
-  @media (min-width: 765px) {
-    .mainContent {
-      columns: 3;
-      gap: 1rem;
-      display: grid; /* Ensure grid layout */
-    }
-    .mainContent p {
-      grid-column: 2;
-    }
-    .mainContent img {
-      grid-column: 1;
-    }
-  }
-</style>
-          <h1>MailNews</h1>
-       <h3>Here Are Your Daily News</h3>
-       `;
+          var body = newsEmailBodyStart;
+          body += `<div style="background-color:#020617; text-align:center; padding:12.5px 0px; margin:0px"><h1 style="font-size:21px">MailNews</h1><p style="font-weight:600">Your Daily Dose Of News And Information is Here!!</p><div>`;
           row.interests.split(",").forEach((topic) => {
-            body += `<h2>${topic}</h2>`;
+            body += `<div style="background-color:#020617; text-align:center; padding:12.5px 0px; margin:0px"><h2>${topic} News</h2>`;
             var news = JSON.parse(
               fileSystem.readFileSync(
                 __dirname + `/${topic.toLowerCase()}News.json`,
@@ -186,18 +419,17 @@ async function emailCurrentSlot() {
             );
             var count = 0;
             for (title in news) {
-              body += `<div class='content'><h3>${title}</h3>
-              <div class='mainContent'>
-              <img src="${news[title].img}" width="100%" alt="${title}" />
-           <p >${news[title].content}</p>
-           </div>
-           <a href="${news[title].link}">Read More</a>
-          </div>`;
+              body += singleNewsBlock
+                .replace("$CONTENT$", news[title].content)
+                .replace(`$IMG_SRC$`, news[title].img)
+                .replace("$NEWS_LINK$", news[title].link)
+                .replace("$HEADING$", title);
               count++;
               if (count == 5) break;
             }
-            body += `<a href='https://mailnews.onrender.com/news#1${topic}' > Read All ${topic} News</a> <br>`;
+            body += `<a href='https://mailnews.onrender.com/news#${topic}' > <button style="background:#020617;font-size:14px; font-weight:600;color:white; padding:8px 15px; border-radius:99px;"> Read All ${topic} News </button></a> </div> <br>`;
           });
+          body += `</body></html>`;
           await mailer.sendMail({
             to: row.emailID,
             from: `MailNews ${process.env.EMAIL}`,
@@ -208,7 +440,6 @@ async function emailCurrentSlot() {
       }
     }
   );
-
   slot++;
   if (slot == 24) {
     slot = 0;
@@ -557,36 +788,35 @@ app.post("/changeName", ensureAuthenticated, (req, res) => {
 });
 
 app.post("/changePass", (req, res) => {
-if(req.session.loggedin){
-  db.get(
-    `SELECT password FROM users WHERE emailID = "${req.session.loggedin}"`,
-    (err, row) => {
-      if (
-        row.password ==
-        crypto.createHash("sha256").update(req.body.oldPass).digest("hex")
-      ) {
-        db.run(
-          `UPDATE users SET password = '${crypto
-            .createHash("sha256")
-            .update(req.body.newPass)
-            .digest("hex")}' WHERE emailID = '${req.session.loggedin}'`,
-          (err) => {
-            if (err) {
-              res.sendStatus(500);
-            } else {
-              res.sendStatus(200);
+  if (req.session.loggedin) {
+    db.get(
+      `SELECT password FROM users WHERE emailID = "${req.session.loggedin}"`,
+      (err, row) => {
+        if (
+          row.password ==
+          crypto.createHash("sha256").update(req.body.oldPass).digest("hex")
+        ) {
+          db.run(
+            `UPDATE users SET password = '${crypto
+              .createHash("sha256")
+              .update(req.body.newPass)
+              .digest("hex")}' WHERE emailID = '${req.session.loggedin}'`,
+            (err) => {
+              if (err) {
+                res.sendStatus(500);
+              } else {
+                res.sendStatus(200);
+              }
             }
-          }
-        );
-      } else {
-        res.status(400).send("Wrong Password");
+          );
+        } else {
+          res.status(400).send("Wrong Password");
+        }
       }
-    }
-  );
-}
-else{
-  res.sendStatus(401).send("Not Logged In");
-}
+    );
+  } else {
+    res.sendStatus(401).send("Not Logged In");
+  }
 });
 
 app.get("/logout", (req, res) => {

@@ -24,7 +24,7 @@
   }
 </style>
 
- <body class="text-lg bg-slate-950 flex w-screen h-screen scroll-smooth relative text-lg">
+<body class="text-lg bg-slate-950 flex w-screen h-screen scroll-smooth relative ">
   <div
     class="bg-purple-700 -z-10 blur-3xl w-56 h-56 fixed -bottom-14 opacity-60 md:opacity-85 rounded-full -right-14 md:-right-2 md:-bottom-2 md:animate-pulse">
   </div>
@@ -196,7 +196,6 @@
         <p class="mt-2">
           Connected Google Account Makes It Easier To Sign In and Login Even If You Forget Your Password
         </p>
-        <%- console.log("ID " + googleAuth) %>
           <button
             class=" !bg-slate-700 text-white rounded-full px-7 gap-5 py-2 lg:px-7 lg:py-2 mt-5 font-semibold text-lg
           flex justify-evenly items-center"
@@ -232,21 +231,26 @@
               <div class="w-full flex flex-row flex-wrap gap-2">
                 <input type="text"
                   class="border-slate-800 inline border-2 border-solid  rounded-lg mt-3 p-2 outline-none lg:p-2 w-full md:w-1/2 bg-slate-800 focus:bg-slate-700 duration-200 mb-2 text-white font-semibold"
-                  name="oldPass"
-                  required name="oldPass" placeholder="Enter Current Password">
+                  onchange="javascript:updatePasswordButton()" required name="oldPass"
+                  placeholder="Enter Current Password">
                 <input type="text"
                   class="border-slate-800 inline border-2 border-solid rounded-lg p-2 outline-none lg:p-2 w-full md:w-1/2 bg-slate-800 focus:bg-slate-700 duration-200 mb-2 text-white font-semibold"
-                  name="newPass"
-                  required name="newPass" placeholder="Enter New Password">
+                  onchange="javascript:updatePasswordButton()" required name="newPass" placeholder="Enter New Password">
               </div>
-              <button type="submit"
-                class="!bg-slate-700 ml-3 text-white rounded-full px-9 py-2 lg:px-4 lg:py-2 mt-1 font-semibold text-lg disabled:opacity-75">Change</button>
+              <p class="mb-5 text-slate-300 font-light text-sm transition-all duration-200" id="password-hint">
+                Password Should Be Atleast 6 Characters And Contain Letters, Atleast
+                1 Symbol and 1 Number
+              </p>
+              <button type="submit" id="passwordUpdateButton" disabled="disabled"
+                class="!bg-slate-700  text-white rounded-full px-9 py-2 lg:px-4 lg:py-2 mt-1 font-semibold text-lg disabled:opacity-75">Change</button>
             </form>
-
-            <div class="text-center m-1 p-2">
-
+            <div class="text-center my-10"><button type="button" onclick="javascript:window.location.href='/logout'"
+                class="!bg-slate-700  text-white rounded-full px-9 py-2 lg:px-4 lg:py-2 mt-1 font-semibold text-lg disabled:opacity-75">Logout</button>
+            </div>
+            <div class="text-center mt-20 p-2">
+              <h1 class="font-bold text-2xl">Danger Zone</h1>
               <button onclick="javascript:DeleteAccountAskConfirm()" id="DeleteAccountButton"
-                class="!bg-red-700 mt-16 mb-5 text-white rounded-full px-9 py-2 lg:px-4 lg:py-2  font-semibold text-lg disabled:opacity-75 self-center">Delete
+                class="!bg-red-700 mt-5 mb-5 text-white rounded-full px-9 py-2 lg:px-4 lg:py-2  font-semibold text-lg disabled:opacity-75 self-center">Delete
                 Account</button>
             </div>
       </div>
@@ -315,7 +319,7 @@
         document.querySelector(`input[value="${topic}"]`).checked = true;
       });
 
-      function submitPasswordChange(){
+      function submitPasswordChange() {
         var oldPass = document.querySelector('input[name="oldPass"]').value;
         var newPass = document.querySelector('input[name="newPass"]').value;
         fetch("/changePass", {
@@ -329,13 +333,14 @@
           if (res.status === 200) {
             showPopup("Password Updated Successfully", "info");
           } else if (res.status === 400) {
-            showPopup("Current Password Wrong ! \nPlease Check And Try Again", "warn");    
+            showPopup("Current Password Wrong ! \nPlease Check And Try Again", "warn");
           } else if (res.status === 401) {
             showPopup("Session Expired ! \nPlease Login Again", "warn");
             setTimeout(() => {
               window.location.href = "/login";
-            }, 2500);}
-            else {
+            }, 2500);
+          }
+          else {
             showPopup("Failed to Update Password", "err");
           }
         });
@@ -422,6 +427,24 @@
             showPopup("Failed to Update Topics", "err");
           }
         });
+      }
+
+      function updatePasswordButton() {
+        var oldPass = document.querySelector('input[name="oldPass"]');
+        var newPass = document.querySelector('input[name="newPass"]');
+        if (oldPass.value.length > 6 && newPass.value.length > 6 && /(?=^.*[A-Za-z])(?=^.*\d)(?=^.*[!@#$%^&*+.-])^.+$/.test(newPass.value)) {
+          oldPass.style.border = "2px solid rgb(34, 197, 94)";
+          newPass.style.border = "2px solid rgb(34, 197, 94)";
+          document
+            .querySelector("#passwordUpdateButton")
+            .removeAttribute("disabled");
+        } else {
+          oldPass.style.border = "2px solid red";
+          newPass.style.border = "2px solid red";
+          document
+            .querySelector("#passwordUpdateButton")
+            .setAttribute("disabled", "disabled");
+        }
       }
 
       function submitNameChange() {
