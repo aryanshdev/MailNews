@@ -431,16 +431,18 @@ let mailer = nodemailer.createTransport({
   },
 });
 
-var slot = new Date().getUTCHours() + parseInt(new Date().getUTCMinutes() / 30);
-
+var slot = new Date().getUTCHours()*2 + Math.round(new Date().getUTCMinutes() / 30);
+console.log(slot)
 async function cronNews() {
   await newsWritter.generateNewsFiles();
 }
 async function emailCurrentSlot() {
-  console.log(slot);
+
+  console.log("INSDIE : "+slot)
   await db.all(
     `SELECT * FROM users WHERE emailslot = ${slot}`,
     async (err, rows) => {
+      console.log(rows);
       if (rows) {
         rows.forEach(async (row) => {
           var body = newsEmailBodyStart;
@@ -482,7 +484,7 @@ async function emailCurrentSlot() {
   }
 }
 
-cron.schedule("*/30 * * * *", async()=>{await cronNews(); await emailCurrentSlot()});
+cron.schedule("*/30 * * * *", async()=>{cronNews().then(()=>{emailCurrentSlot()})});
 
 function inSubscribingProcessCheck(req, res, next) {
   if (req.session.currentSubs) {
@@ -581,6 +583,7 @@ app.post("/updateTopics", (req, res) => {
 });
 
 app.post("/updateSlot", (req, res) => {
+  console.log(req.body.timeSlot)
   if (req.session.loggedin) {
     db.run(
       "UPDATE users SET emailslot = ? WHERE emailID = ?",
@@ -598,6 +601,7 @@ app.post("/updateSlot", (req, res) => {
     res.sendStatus(401);
   }
 });
+
 
 app.post("/subscribe", (req, res) => {
   db.get(
