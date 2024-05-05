@@ -431,7 +431,7 @@ let mailer = nodemailer.createTransport({
   },
 });
 
-var slot = new Date().getUTCHours();
+var slot = new Date().getUTCHours() + parseInt(new Date().getUTCMinutes() / 30);
 
 async function cronNews() {
   await newsWritter.generateNewsFiles();
@@ -482,7 +482,7 @@ async function emailCurrentSlot() {
   }
 }
 
-cron.schedule("*/2 * * * *", async()=>{cronNews(); await emailCurrentSlot()});
+cron.schedule("*/2 * * * *", async()=>{await cronNews(); await emailCurrentSlot()});
 
 function inSubscribingProcessCheck(req, res, next) {
   if (req.session.currentSubs) {
