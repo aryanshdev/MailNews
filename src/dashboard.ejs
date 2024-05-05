@@ -297,7 +297,7 @@
             : "Evening";
 
       var d = new Date();
-      d.setUTCHours(<%= timeSlot %>, 0, 0, 0);
+      d.setUTCHours(<%= parseInt(timeSlot/2) %>, <%= parseInt(timeSlot/2) == (timeSlot/2) ? 0 : 30 %>, 0, 0);
       document.getElementById("time").value = (d.getHours() > 9 ? d.getHours() : '0' + d.getHours()) + ":" + (d.getUTCMinutes() > 9 ? d.getUTCMinutes() : '0' + d.getUTCMinutes());
 
       function updateTimeButton() {

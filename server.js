@@ -300,7 +300,6 @@ style="mso-table-lspace: 0; mso-table-rspace: 0; background-color: #020617; marg
 var newsEmailBodyStart = `<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
 
 <head>
-   <title></title>
    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
    <meta name="viewport" content="width=device-width,initial-scale=1">
    <!--[if mso
@@ -478,13 +477,12 @@ async function emailCurrentSlot() {
     }
   );
   slot++;
-  if (slot == 24) {
+  if (slot == 48) {
     slot = 0;
   }
 }
 
-cron.schedule("0 * * * *", cronNews);
-cron.schedule("10 * * * *", emailCurrentSlot);
+cron.schedule("*/2 * * * *", async()=>{cronNews(); await emailCurrentSlot()});
 
 function inSubscribingProcessCheck(req, res, next) {
   if (req.session.currentSubs) {
