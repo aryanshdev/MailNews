@@ -298,7 +298,7 @@
 
       var d = new Date();
       console.log(<%= timeSlot %>);
-      d.setUTCHours(Math.round(<%= timeSlot %>/2) ,  Math.round(<%= timeSlot %>/2) == (<%= timeSlot %>/2) ? 0 : 30 , 0, 0);
+      d.setUTCHours(parseInt(<%= timeSlot %>/2) ,  parseInt(<%= timeSlot %>/2) == (<%= timeSlot %>/2) ? 0 : 30 , 0, 0);
       console.log(d);
       document.getElementById("time").value = (d.getHours() > 9 ? d.getHours() : '0' + d.getHours()) + ":" + (d.getMinutes() > 9 ? d.getMinutes() : '0' + d.getMinutes());
 
@@ -354,7 +354,7 @@
         d.setHours(time.split(":")[0], time.split(":")[1], 0, 0);
         fetch("/updateSlot", {
           method: "POST",
-          body: new URLSearchParams({ timeSlot: Math.round(d.getUTCHours()*2 + Math.round(d.getUTCMinutes() / 30)) }),
+          body: new URLSearchParams({ timeSlot: parseInt(d.getUTCHours()*2 + parseInt(d.getUTCMinutes() / 30)) }),
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
           },

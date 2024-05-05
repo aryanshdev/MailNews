@@ -431,7 +431,7 @@ let mailer = nodemailer.createTransport({
   },
 });
 
-var slot = new Date().getUTCHours()*2 + Math.round(new Date().getUTCMinutes() / 30);
+var slot = (new Date().getUTCHours()*2 + Math.round(new Date().getUTCMinutes() / 30))+1;
 console.log(slot)
 async function cronNews() {
   await newsWritter.generateNewsFiles();
