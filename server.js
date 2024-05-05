@@ -436,7 +436,6 @@ var slot = new Date().getUTCHours();
 
 async function cronNews() {
   await newsWritter.generateNewsFiles();
-  await emailCurrentSlot();
 }
 async function emailCurrentSlot() {
   console.log(slot);
@@ -485,6 +484,7 @@ async function emailCurrentSlot() {
 }
 
 cron.schedule("0 * * * *", cronNews);
+cron.schedule("10 * * * *", emailCurrentSlot);
 
 function inSubscribingProcessCheck(req, res, next) {
   if (req.session.currentSubs) {
@@ -803,6 +803,10 @@ app.get("/registration-successful", inSubscribingProcessCheck, (req, res) => {
   res.sendFile(__dirname + "/src/register_success.html");
 });
 app.get("/signup", (req, res) => {
+  if(req.session.loggedin){
+    res.redirect("/dashboard");
+    return;
+  }
   res.sendFile(__dirname + "/src/signup.html");
 });
 
@@ -811,6 +815,10 @@ app.get("/signin", (req, res) => {
 });
 app.get("/login", (req, res) => {
   delete req.session.currentSubs;
+  if(req.session.loggedin){
+    res.redirect("/dashboard");
+    return;
+  }
   res.sendFile(__dirname + "/src/signin.html");
 });
 app.get("/autologin", (req, res) => {
