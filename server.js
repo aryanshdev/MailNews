@@ -431,14 +431,11 @@ let mailer = nodemailer.createTransport({
   },
 });
 
-var slot = (new Date().getUTCHours()*2 + Math.round(new Date().getUTCMinutes() / 30))+1;
-console.log(slot)
+var slot = (new Date().getUTCHours()*2 + Math.round(new Date().getUTCMinutes() / 30));
 async function cronNews() {
   await newsWritter.generateNewsFiles();
 }
 async function emailCurrentSlot() {
-
-  console.log("INSDIE : "+slot)
   await db.all(
     `SELECT * FROM users WHERE emailslot = ${slot}`,
     async (err, rows) => {
