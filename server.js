@@ -483,7 +483,7 @@ cron.schedule("30 * * * *", async() => {
   await emailCurrentSlot();
 });
 cron.schedule("0 * * * *", async() => {
-   cronNews().then(()=>{emailCurrentSlot()});
+   await cronNews().then(async ()=>{ await emailCurrentSlot()});
 }
 );
 
