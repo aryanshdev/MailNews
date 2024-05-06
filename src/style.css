@@ -259,6 +259,18 @@
   display: inline-flex;
 }
 
+.table {
+  display: table;
+}
+
+.table-footer-group {
+  display: table-footer-group;
+}
+
+.table-header-group {
+  display: table-header-group;
+}
+
 .grid {
   display: grid;
 }
@@ -991,6 +1003,10 @@
 
 .text-center {
   text-align: center;
+}
+
+.text-right {
+  text-align: right;
 }
 
 .align-middle {

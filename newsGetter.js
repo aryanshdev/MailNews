@@ -11,12 +11,12 @@ let sportsNewsURL = "https://www.reuters.com/sports/";
 let entertainmentNewsURL = "https://www.wionews.com/entertainment";
 
 const reqHeaders = {
-  "User-Agent": "Chrome/111.0.0.0 (Macintosh; Intel Mac OS X 13_15) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
-  "Accept": "*/*",  // Accepts all MIME types
-  "Accept-Language": "en-IN;q=0.8,de;q=0.7",  // Prefers British English
-  "X-Requested-With": "XMLHttpRequest"  // Added header for AJAX requests
+  "User-Agent":
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:98.0) Gecko/20100101 Firefox/98.0",
+  Accept:
+    "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,/;q=0.8",
+  "Accept-Language": "en-US,en;q=0.5",
 };
-
 
 async function getWorldNews() {
   let worldNewsData = {};
@@ -330,9 +330,10 @@ async function getEntertainmentNews() {
 }
 
 async function generateNewsFiles() {
+  await   getTechNews();
   await Promise.all([
     getWorldNews(),
-    getTechNews(),
+  
     getScienceNews(),
     getBusinessNews(),
     getSportsNews(),

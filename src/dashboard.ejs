@@ -176,7 +176,7 @@
         <label for="time" class="capitalize text-lg font-semibold col-auto content-center">receive Emails Everyday
           at:</label>
         <input type="time" name="time" id="time"
-          class="ml-3 col-span-2 bg-slate-800 font-semibold text-xl px-5 py-2 rounded-full min-w-max mb-2" step="1800"
+          class="ml-3 col-span-2 bg-slate-800 font-semibold text-xl px-5 py-2 rounded-full min-w-max mb-2" step="3600"
           value="00:00" onchange="javascript:updateTimeButton()" />
 
       </div>
@@ -297,10 +297,8 @@
             : "Evening";
 
       var d = new Date();
-      console.log(<%= timeSlot %>);
-      d.setUTCHours(parseInt(<%= timeSlot %>/2) ,  parseInt(<%= timeSlot %>/2) == (<%= timeSlot %>/2) ? 0 : 30 , 0, 0);
-      console.log(d);
-      document.getElementById("time").value = (d.getHours() > 9 ? d.getHours() : '0' + d.getHours()) + ":" + (d.getMinutes() > 9 ? d.getMinutes() : '0' + d.getMinutes());
+      d.setUTCHours(<%= timeSlot %>, 0, 0, 0);
+      document.getElementById("time").value = (d.getHours() > 9 ? d.getHours() : '0' + d.getHours()) + ":" + (d.getUTCMinutes() > 9 ? d.getUTCMinutes() : '0' + d.getUTCMinutes());
 
       function updateTimeButton() {
         if (document.getElementById("time").value !== (d.getHours() > 9 ? d.getHours() : '0' + d.getHours()) + ":" + (d.getUTCMinutes() > 9 ? d.getUTCMinutes() : '0' + d.getUTCMinutes())) {
@@ -354,7 +352,7 @@
         d.setHours(time.split(":")[0], time.split(":")[1], 0, 0);
         fetch("/updateSlot", {
           method: "POST",
-          body: new URLSearchParams({ timeSlot: parseInt(d.getUTCHours()*2 + parseInt(d.getUTCMinutes() / 30)) }),
+          body: new URLSearchParams({ timeSlot: d.getUTCMinutes() >= 30 ? d.getUTCHours() + 1 : d.getUTCHours() }),
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
           },

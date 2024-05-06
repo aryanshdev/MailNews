@@ -87,6 +87,7 @@ const tempPassMailBody = `
 </html>
 `;
 
+
 const app = express();
 
 app.use(
@@ -299,6 +300,7 @@ style="mso-table-lspace: 0; mso-table-rspace: 0; background-color: #020617; marg
 var newsEmailBodyStart = `<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
 
 <head>
+   <title></title>
    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
    <meta name="viewport" content="width=device-width,initial-scale=1">
    <!--[if mso
@@ -430,62 +432,59 @@ let mailer = nodemailer.createTransport({
   },
 });
 
-var slot =
-  new Date().getUTCHours() * 2 + Math.round(new Date().getUTCMinutes() / 30);
+var slot = new Date().getUTCHours();
+
 async function cronNews() {
   await newsWritter.generateNewsFiles();
 }
 async function emailCurrentSlot() {
-  console.log("Emailing Slot " + slot);
-  db.all(`SELECT * FROM users WHERE emailslot = ${slot}`, async (err, rows) => {
-    console.log(rows);
-    if (rows) {
-      rows.forEach(async (row) => {
-        var body = newsEmailBodyStart;
-        body += `<div style="background-color:#020617; text-align:center; padding:12.5px 0px; margin:0px"><h1 style="font-size:21px">MailNews</h1><p style="font-weight:600">Your Daily Dose Of News And Information is Here!!</p><div>`;
-        row.interests.split(",").forEach((topic) => {
-          body += `<div style="background-color:#020617; text-align:center; padding:12.5px 0px; margin:0px"><h2>${topic} News</h2>`;
-          var news = JSON.parse(
-            fileSystem.readFileSync(
-              __dirname + `/${topic.toLowerCase()}News.json`,
-              (error, data) => {}
-            )
-          );
-          var count = 0;
-          for (title in news) {
-            body += singleNewsBlock
-              .replace("$CONTENT$", news[title].content)
-              .replace(`$IMG_SRC$`, news[title].img)
-              .replace("$NEWS_LINK$", news[title].link)
-              .replace("$HEADING$", title);
-            count++;
-            if (count == 5) break;
-          }
-          body += `<a href='https://mailnews.onrender.com/news#${topic}' > <button style="background:#020617;font-size:14px; font-weight:600;color:white; padding:8px 15px; border-radius:99px;"> Read All ${topic} News </button></a> </div> <br>`;
+  console.log(slot);
+  await db.all(
+    `SELECT * FROM users WHERE emailslot = ${slot}`,
+    async (err, rows) => {
+      if (rows) {
+        rows.forEach(async (row) => {
+          var body = newsEmailBodyStart;
+          body += `<div style="background-color:#020617; text-align:center; padding:12.5px 0px; margin:0px"><h1 style="font-size:21px">MailNews</h1><p style="font-weight:600">Your Daily Dose Of News And Information is Here!!</p><div>`;
+          row.interests.split(",").forEach((topic) => {
+            body += `<div style="background-color:#020617; text-align:center; padding:12.5px 0px; margin:0px"><h2>${topic} News</h2>`;
+            var news = JSON.parse(
+              fileSystem.readFileSync(
+                __dirname + `/${topic.toLowerCase()}News.json`,
+                (error, data) => {}
+              )
+            );
+            var count = 0;
+            for (title in news) {
+              body += singleNewsBlock
+                .replace("$CONTENT$", news[title].content)
+                .replace(`$IMG_SRC$`, news[title].img)
+                .replace("$NEWS_LINK$", news[title].link)
+                .replace("$HEADING$", title);
+              count++;
+              if (count == 5) break;
+            }
+            body += `<a href='https://mailnews.onrender.com/news#${topic}' > <button style="background:#020617;font-size:14px; font-weight:600;color:white; padding:8px 15px; border-radius:99px;"> Read All ${topic} News </button></a> </div> <br>`;
+          });
+          body += `</body></html>`;
+          await mailer.sendMail({
+            to: row.emailID,
+            from: `MailNews ${process.env.EMAIL}`,
+            subject: "MailNews | Your Daily News",
+            html: body,
+          });
         });
-        body += `</body></html>`;
-        await mailer.sendMail({
-          to: row.emailID,
-          from: `MailNews ${process.env.EMAIL}`,
-          subject: "MailNews | Your Daily News",
-          html: body,
-        });
-      });
+      }
     }
-  });
+  );
   slot++;
-  if (slot == 48) {
+  if (slot == 24) {
     slot = 0;
   }
 }
 
-cron.schedule("30 * * * *", async() => {
-  await emailCurrentSlot();
-});
-cron.schedule("0 * * * *", async() => {
-   await cronNews().then(async ()=>{ await emailCurrentSlot()});
-}
-);
+cron.schedule("0 * * * *", cronNews);
+cron.schedule("10 * * * *", emailCurrentSlot);
 
 function inSubscribingProcessCheck(req, res, next) {
   if (req.session.currentSubs) {
@@ -584,7 +583,6 @@ app.post("/updateTopics", (req, res) => {
 });
 
 app.post("/updateSlot", (req, res) => {
-  console.log(req.body.timeSlot);
   if (req.session.loggedin) {
     db.run(
       "UPDATE users SET emailslot = ? WHERE emailID = ?",
@@ -644,42 +642,31 @@ app.get("/resetPass", (req, res) => {
 });
 
 app.post("/resetPass", (req, res) => {
-  db.get(
-    "SELECT * FROM users WHERE emailID = ?",
-    [req.body.email],
-    (err, row) => {
-      if (row) {
-        var tempPass = Math.random().toString(36).substring(2, 9);
-        db.run(
-          "UPDATE users SET password = ? WHERE emailID = ?",
-          [
-            crypto.createHash("sha256").update(tempPass).digest("hex"),
-            req.body.email,
-          ],
-          (err) => {
-            if (err) {
-              res.status(500).send("Some Error Occured");
-            } else {
-              mailer
-                .sendMail({
-                  to: req.body.email,
-                  from: `MailNews ${process.env.EMAIL}`,
-                  subject: "Temporary Password | MailNews",
-                  html: tempPassMailBody.replace("TEMP_PASS", tempPass),
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-              res.status(200).send("Temporary Password Sent");
-            }
-          }
-        );
-      } else {
-        res.status(404).send("Account Not Found");
-      }
+  db.get("SELECT * FROM users WHERE emailID = ?", [req.body.email], (err, row) => {
+    if(row){
+      var tempPass = Math.random().toString(36).substring(2,9);
+      db.run("UPDATE users SET password = ? WHERE emailID = ?", [crypto.createHash("sha256").update(tempPass).digest("hex"), req.body.email], (err) => {
+        if(err){
+          res.status(500).send("Some Error Occured");
+        }
+        else{
+          mailer.sendMail({
+            to: req.body.email,
+            from: `MailNews ${process.env.EMAIL}`,
+            subject: "Temporary Password | MailNews",
+            html: tempPassMailBody.replace("TEMP_PASS", tempPass),
+          }).catch((err) => {
+            console.log(err);
+          });
+          res.status(200).send("Temporary Password Sent");
+        }
+      });
     }
-  );
-});
+    else{
+      res.status(404).send("Account Not Found");
+    }
+  });
+  });
 app.post("/verifyEmail", inSubscribingProcessCheck, async (req, res) => {
   if (req.body.verificationCode == req.session.registrationCode) {
     db.run(
@@ -816,7 +803,7 @@ app.get("/registration-successful", inSubscribingProcessCheck, (req, res) => {
   res.sendFile(__dirname + "/src/register_success.html");
 });
 app.get("/signup", (req, res) => {
-  if (req.session.loggedin) {
+  if(req.session.loggedin){
     res.redirect("/dashboard");
     return;
   }
@@ -828,7 +815,7 @@ app.get("/signin", (req, res) => {
 });
 app.get("/login", (req, res) => {
   delete req.session.currentSubs;
-  if (req.session.loggedin) {
+  if(req.session.loggedin){
     res.redirect("/dashboard");
     return;
   }
