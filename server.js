@@ -436,6 +436,7 @@ var slot = new Date().getUTCHours() * 2 + Math.round(new Date().getUTCMinutes() 
 
 async function cronNews() {
   await newsWritter.generateNewsFiles();
+  await emailCurrentSlot();
 }
 async function cronEmail() {
   await emailCurrentSlot();
