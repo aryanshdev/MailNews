@@ -296,9 +296,10 @@
             ? "Afternoon"
             : "Evening";
 
-      var d = new Date();
-      d.setUTCHours(<%= timeSlot %>, 0, 0, 0);
-      document.getElementById("time").value = (d.getHours() > 9 ? d.getHours() : '0' + d.getHours()) + ":" + (d.getUTCMinutes() > 9 ? d.getUTCMinutes() : '0' + d.getUTCMinutes());
+            var d = new Date();
+      console.log(<%= timeSlot %>);
+      d.setUTCHours(parseInt(<%= timeSlot %>/2) ,  parseInt(<%= timeSlot %>/2) == (<%= timeSlot %>/2) ? 0 : 30 , 0, 0);
+      document.getElementById("time").value = (d.getHours() > 9 ? d.getHours() : '0' + d.getHours()) + ":" + (d.getMinutes() > 9 ? d.getMinutes() : '0' + d.getMinutes());
 
       function updateTimeButton() {
         if (document.getElementById("time").value !== (d.getHours() > 9 ? d.getHours() : '0' + d.getHours()) + ":" + (d.getUTCMinutes() > 9 ? d.getUTCMinutes() : '0' + d.getUTCMinutes())) {
