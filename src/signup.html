@@ -318,11 +318,13 @@
             .setAttribute("disabled", "disabled");
       }
     }
+   
     function validatePasswordPattern(ele) {
       if (
         /(?=^.*[A-Za-z])(?=^.*\d)(?=^.*[!@#$%^&*+.-])^.+$/.test(ele.value) &&
         ele.value.length >= 6
       ) {
+        (ele.style.border = "2px solid rgb(34, 197, 94)"),
           document
             .querySelector("button[type='submit']")
             .removeAttribute("disabled");
@@ -334,6 +336,8 @@
         validateSamePassword(ele.form.conpass);
       }
     }
+
+   
     function validateSamePassword(ele) {
       if (ele.value == ele.form.pass.value && ele.value) {
         ele.style.border = "2px solid rgb(34, 197, 94)";
