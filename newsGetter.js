@@ -330,10 +330,9 @@ async function getEntertainmentNews() {
 }
 
 async function generateNewsFiles() {
-  await   getTechNews();
   await Promise.all([
     getWorldNews(),
-  
+    getTechNews(),
     getScienceNews(),
     getBusinessNews(),
     getSportsNews(),
