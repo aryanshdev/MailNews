@@ -435,8 +435,7 @@ let mailer = nodemailer.createTransport({
 var slot = new Date().getUTCHours() * 2 + Math.round(new Date().getUTCMinutes() / 30);
 
 async function cronNews() {
-  await newsWritter.generateNewsFiles();
-  await emailCurrentSlot();
+  await newsWritter.generateNewsFiles().then(async ()=>{await emailCurrentSlot()});
 }
 async function cronEmail() {
   await emailCurrentSlot();
