@@ -353,7 +353,7 @@
         d.setHours(time.split(":")[0], time.split(":")[1], 0, 0);
         fetch("/updateSlot", {
           method: "POST",
-          body: new URLSearchParams({ timeSlot: d.getUTCMinutes() >= 30 ? d.getUTCHours() + 1 : d.getUTCHours() }),
+          body: new URLSearchParams({ timeSlot: parseInt(d.getUTCHours()*2 + parseInt(d.getUTCMinutes() / 30)) }),
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
           },
