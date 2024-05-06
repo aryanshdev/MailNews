@@ -436,6 +436,7 @@ async function cronNews() {
   await newsWritter.generateNewsFiles();
 }
 async function emailCurrentSlot() {
+  console.log("Emailing Slot " + slot);
   db.all(`SELECT * FROM users WHERE emailslot = ${slot}`, async (err, rows) => {
     console.log(rows);
     if (rows) {
@@ -478,11 +479,13 @@ async function emailCurrentSlot() {
   }
 }
 
-cron.schedule("*/30 * * * *", () => {
-  cronNews().then(() => {
-    emailCurrentSlot();
-  });
+cron.schedule("30 * * * *", async() => {
+  await emailCurrentSlot();
 });
+cron.schedule("0 * * * *", async() => {
+   cronNews().then(()=>{emailCurrentSlot()});
+}
+);
 
 function inSubscribingProcessCheck(req, res, next) {
   if (req.session.currentSubs) {
