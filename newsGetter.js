@@ -2,6 +2,7 @@ const cheerio = require("cheerio");
 const axios = require("axios");
 const fileSystem = require("fs");
 const node_summerizer = require("node-summarizer");
+const { time } = require("console");
 
 let worldNewsURL = "https://www.ndtv.com/world-news";
 let techNewsURL = "https://techcrunch.com/";
@@ -183,6 +184,7 @@ async function getBusinessNews() {
     let rawArticleHTML = await axios.get(
       "https://www.reuters.com" + aLink.attribs["href"],
       {
+        timeout: 10000,
         headers: reqHeaders,
       }
     );
@@ -330,8 +332,9 @@ async function getEntertainmentNews() {
 
 async function generateNewsFiles() {
  try {
+  await  getBusinessNews(),
    await Promise.all([
-     getBusinessNews(),
+    
      getSportsNews(),
      getEntertainmentNews(),
      getWorldNews(), 

@@ -505,6 +505,11 @@ function ensureAuthenticated(req, res, next) {
   res.status(401).redirect("/signin");
 }
 app.listen(port || 10000, async() => {
+  var time = new Date()
+  await newsWritter.generateNewsFiles();
+  console.log(
+    new Date() - time
+  );
   console.log("SERVER RUNNING ON PORT " + port);
 });
 
