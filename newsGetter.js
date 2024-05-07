@@ -2,7 +2,6 @@ const cheerio = require("cheerio");
 const axios = require("axios");
 const fileSystem = require("fs");
 const node_summerizer = require("node-summarizer");
-const { time } = require("console");
 
 let worldNewsURL = "https://www.ndtv.com/world-news";
 let techNewsURL = "https://techcrunch.com/";
@@ -50,7 +49,7 @@ async function getWorldNews() {
       }
     });
 
-    const Summerizer = new node_summerizer.SummarizerManager(body, 4);
+    const Summerizer = new node_summerizer.SummarizerManager(body, 5);
     worldNewsData[heading] = {
       img: img,
       link: aLink.attribs["href"],
@@ -101,10 +100,10 @@ async function getTechNews() {
       }
     });
 
-    const Summerizer = new node_summerizer.SummarizerManager(body, 4);
+    const Summerizer = new node_summerizer.SummarizerManager(body, 5);
     techNewsData[heading] = {
       img: img,
-      link: aLink.attribs["href"],
+      link:aLink.attribs["href"],
       content: (await Summerizer.getSummaryByRank()).summary,
     };
   }
@@ -140,7 +139,8 @@ async function getScienceNews() {
     let articleHTML = cheerio.load(rawArticleHTML);
     let heading = articleHTML("h1.c-article-magazine-title").text();
     let img = articleHTML("figure.figure picture img")["0"]
-      ? "https:" + articleHTML("figure.figure picture img")["0"].attribs.src
+      ? "https:" +
+        articleHTML("figure.figure picture img")["0"].attribs.src
       : null; // articleHTML(".ytp-cued-thumbnail-overlay-image")[0].attribs.style.match(/https?:\/\/[^\\s]+/)[0];
     let body = "";
     articleHTML(".c-article-body.main-content p").each((index, para) => {
@@ -150,7 +150,7 @@ async function getScienceNews() {
       }
     });
 
-    const Summerizer = new node_summerizer.SummarizerManager(body, 4);
+    const Summerizer = new node_summerizer.SummarizerManager(body, 5);
     scienceNewsData[heading] = {
       img: img,
       link: "https://www.nature.com" + aLink.attribs["href"],
@@ -184,7 +184,6 @@ async function getBusinessNews() {
     let rawArticleHTML = await axios.get(
       "https://www.reuters.com" + aLink.attribs["href"],
       {
-        timeout: 10000,
         headers: reqHeaders,
       }
     );
@@ -196,7 +195,7 @@ async function getBusinessNews() {
     let img = articleHTML("div.styles__fill__3xCr1 img")["0"]
       ? articleHTML("div.styles__fill__3xCr1 img")["0"].attribs.src
       : null;
-    let body = "";
+      let body = "";
     articleHTML(
       ".text__text__1FZLe.text__dark-grey__3Ml43.text__regular__2N1Xr.text__small__1kGq2.body__full_width__ekUdw.body__small_body__2vQyf.article-body__paragraph__2-BtD"
     ).each((index, para) => {
@@ -207,10 +206,10 @@ async function getBusinessNews() {
       }
     });
 
-    const Summerizer = new node_summerizer.SummarizerManager(body, 4);
+    const Summerizer = new node_summerizer.SummarizerManager(body, 5);
     businessNewsData[heading] = {
       img: img,
-      link: "https://www.reuters.com" + aLink.attribs["href"],
+      link : "https://www.reuters.com" + aLink.attribs["href"],
       content: (await Summerizer.getSummaryByRank()).summary,
     };
   }
@@ -262,16 +261,16 @@ async function getSportsNews() {
       }
     });
 
-    const Summerizer = new node_summerizer.SummarizerManager(body, 4);
+    const Summerizer = new node_summerizer.SummarizerManager(body, 5);
     sportsNewsData[heading] = {
       img: img,
-      link: "https://www.reuters.com" + aLink.attribs["href"],
+      link :  "https://www.reuters.com" + aLink.attribs["href"],
       content: (await Summerizer.getSummaryByRank()).summary,
     };
   }
 
   fileSystem.writeFile(
-    __dirname + "/sportsNews.json",
+    __dirname + "/sportNews.json",
     JSON.stringify(sportsNewsData),
     (error) => {}
   );
@@ -313,10 +312,10 @@ async function getEntertainmentNews() {
         body += text;
       }
     });
-    const Summerizer = new node_summerizer.SummarizerManager(body, 4);
+    const Summerizer = new node_summerizer.SummarizerManager(body, 5);
     entertainmentNewsData[heading] = {
       img: img,
-      link: "https://www.wionews.com" + aLink.attribs["href"],
+      link :  "https://www.wionews.com" + aLink.attribs["href"],
       content: (await Summerizer.getSummaryByRank()).summary,
     };
   }
@@ -331,18 +330,14 @@ async function getEntertainmentNews() {
 }
 
 async function generateNewsFiles() {
- try {
-  await  getBusinessNews(),
-   await Promise.all([
-    
-     getSportsNews(),
-     getEntertainmentNews(),
-     getWorldNews(), 
-     getTechNews(),
-     getScienceNews()]);
- } catch (error) {
-    console.log(error);
- }
+  await Promise.all([
+    getWorldNews(),
+    getTechNews(),
+    getScienceNews(),
+    getBusinessNews(),
+    getSportsNews(),
+    getEntertainmentNews(),
+  ]);
 }
 
-module.exports = { generateNewsFiles, getBusinessNews };
+module.exports = { generateNewsFiles };

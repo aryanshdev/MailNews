@@ -50,7 +50,6 @@ const verificationMailBody = `
 </html>
 `;
 
-
 const tempPassMailBody = `
 <!DOCTYPE html>
 <html>
@@ -87,7 +86,6 @@ const tempPassMailBody = `
 </body>
 </html>
 `;
-
 
 const app = express();
 
@@ -433,10 +431,18 @@ let mailer = nodemailer.createTransport({
   },
 });
 
-var slot = new Date().getUTCHours() * 2 + Math.round(new Date().getUTCMinutes() / 30);
+var slot =
+  (new Date().getUTCHours() * 2 + Math.round(new Date().getUTCMinutes() / 30))+1;
 
 async function cronNews() {
-  await newsWritter.generateNewsFiles().then(async ()=>{await emailCurrentSlot()});
+  await newsWritter
+    .generateNewsFiles()
+    .then(async () => {
+      await emailCurrentSlot();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 async function cronEmail() {
   await emailCurrentSlot();
@@ -504,12 +510,7 @@ function ensureAuthenticated(req, res, next) {
   }
   res.status(401).redirect("/signin");
 }
-app.listen(port || 10000, async() => {
-  var time = new Date()
-  await newsWritter.generateNewsFiles();
-  console.log(
-    new Date() - time
-  );
+app.listen(port || 10000, async () => {
   console.log("SERVER RUNNING ON PORT " + port);
 });
 
@@ -651,31 +652,42 @@ app.get("/resetPass", (req, res) => {
 });
 
 app.post("/resetPass", (req, res) => {
-  db.get("SELECT * FROM users WHERE emailID = ?", [req.body.email], (err, row) => {
-    if(row){
-      var tempPass = Math.random().toString(36).substring(2,9);
-      db.run("UPDATE users SET password = ? WHERE emailID = ?", [crypto.createHash("sha256").update(tempPass).digest("hex"), req.body.email], (err) => {
-        if(err){
-          res.status(500).send("Some Error Occured");
-        }
-        else{
-          mailer.sendMail({
-            to: req.body.email,
-            from: `MailNews ${process.env.EMAIL}`,
-            subject: "Temporary Password | MailNews",
-            html: tempPassMailBody.replace("TEMP_PASS", tempPass),
-          }).catch((err) => {
-            console.log(err);
-          });
-          res.status(200).send("Temporary Password Sent");
-        }
-      });
+  db.get(
+    "SELECT * FROM users WHERE emailID = ?",
+    [req.body.email],
+    (err, row) => {
+      if (row) {
+        var tempPass = Math.random().toString(36).substring(2, 9);
+        db.run(
+          "UPDATE users SET password = ? WHERE emailID = ?",
+          [
+            crypto.createHash("sha256").update(tempPass).digest("hex"),
+            req.body.email,
+          ],
+          (err) => {
+            if (err) {
+              res.status(500).send("Some Error Occured");
+            } else {
+              mailer
+                .sendMail({
+                  to: req.body.email,
+                  from: `MailNews ${process.env.EMAIL}`,
+                  subject: "Temporary Password | MailNews",
+                  html: tempPassMailBody.replace("TEMP_PASS", tempPass),
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+              res.status(200).send("Temporary Password Sent");
+            }
+          }
+        );
+      } else {
+        res.status(404).send("Account Not Found");
+      }
     }
-    else{
-      res.status(404).send("Account Not Found");
-    }
-  });
-  });
+  );
+});
 app.post("/verifyEmail", inSubscribingProcessCheck, async (req, res) => {
   if (req.body.verificationCode == req.session.registrationCode) {
     db.run(
@@ -812,7 +824,7 @@ app.get("/registration-successful", inSubscribingProcessCheck, (req, res) => {
   res.sendFile(__dirname + "/src/register_success.html");
 });
 app.get("/signup", (req, res) => {
-  if(req.session.loggedin){
+  if (req.session.loggedin) {
     res.redirect("/dashboard");
     return;
   }
@@ -824,7 +836,7 @@ app.get("/signin", (req, res) => {
 });
 app.get("/login", (req, res) => {
   delete req.session.currentSubs;
-  if(req.session.loggedin){
+  if (req.session.loggedin) {
     res.redirect("/dashboard");
     return;
   }
