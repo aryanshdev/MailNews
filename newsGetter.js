@@ -10,9 +10,15 @@ let businessNewsURL = "https://www.reuters.com/business/";
 let sportsNewsURL = "https://www.reuters.com/sports/";
 let entertainmentNewsURL = "https://www.wionews.com/entertainment";
 
+user_agents = [
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36",
+  "Mozilla/5.0 (iPhone; CPU iPhone OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148",
+  "Mozilla/5.0 (Linux; Android 11; SM-G960U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Mobile Safari/537.36",
+];
 const reqHeaders = {
-  "User-Agent":
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:98.0) Gecko/20100101 Firefox/98.0",
+  "User-Agent": user_agents[Math.floor(Math.random() * user_agents.length)],
   Accept:
     "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,/;q=0.8",
   "Accept-Language": "en-US,en;q=0.5",
@@ -22,6 +28,7 @@ async function getWorldNews() {
   let worldNewsData = {};
   let rawMainHTML = await axios.get(worldNewsURL, {
     headers: reqHeaders,
+    timeout: 10000,
   });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
@@ -30,6 +37,7 @@ async function getWorldNews() {
   for (const aLink of newsLinks) {
     let rawArticleHTML = await axios.get(aLink.attribs["href"], {
       headers: reqHeaders,
+      timeout: 10000,
     });
 
     rawArticleHTML = rawArticleHTML.data;
@@ -70,6 +78,7 @@ async function getTechNews() {
 
   let rawMainHTML = await axios.get(techNewsURL, {
     headers: reqHeaders,
+    timeout: 10000,
   });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
@@ -78,6 +87,7 @@ async function getTechNews() {
   for (const aLink of newsLinks) {
     let rawArticleHTML = await axios.get(aLink.attribs["href"], {
       headers: reqHeaders,
+      timeout: 10000,
     });
 
     rawArticleHTML = rawArticleHTML.data;
@@ -103,7 +113,7 @@ async function getTechNews() {
     const Summerizer = new node_summerizer.SummarizerManager(body, 5);
     techNewsData[heading] = {
       img: img,
-      link:aLink.attribs["href"],
+      link: aLink.attribs["href"],
       content: (await Summerizer.getSummaryByRank()).summary,
     };
   }
@@ -120,6 +130,7 @@ async function getScienceNews() {
   let scienceNewsData = {};
   let rawMainHTML = await axios.get(scienceNewsURL, {
     headers: reqHeaders,
+    timeout: 10000,
   });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
@@ -132,6 +143,7 @@ async function getScienceNews() {
       "https://www.nature.com" + aLink.attribs["href"],
       {
         headers: reqHeaders,
+        timeout: 10000,
       }
     );
 
@@ -139,8 +151,7 @@ async function getScienceNews() {
     let articleHTML = cheerio.load(rawArticleHTML);
     let heading = articleHTML("h1.c-article-magazine-title").text();
     let img = articleHTML("figure.figure picture img")["0"]
-      ? "https:" +
-        articleHTML("figure.figure picture img")["0"].attribs.src
+      ? "https:" + articleHTML("figure.figure picture img")["0"].attribs.src
       : null; // articleHTML(".ytp-cued-thumbnail-overlay-image")[0].attribs.style.match(/https?:\/\/[^\\s]+/)[0];
     let body = "";
     articleHTML(".c-article-body.main-content p").each((index, para) => {
@@ -171,6 +182,7 @@ async function getBusinessNews() {
   let businessNewsData = {};
   let rawMainHTML = await axios.get(businessNewsURL, {
     headers: reqHeaders,
+    timeout: 10000,
   });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
@@ -185,6 +197,7 @@ async function getBusinessNews() {
       "https://www.reuters.com" + aLink.attribs["href"],
       {
         headers: reqHeaders,
+        timeout: 10000,
       }
     );
 
@@ -195,7 +208,7 @@ async function getBusinessNews() {
     let img = articleHTML("div.styles__fill__3xCr1 img")["0"]
       ? articleHTML("div.styles__fill__3xCr1 img")["0"].attribs.src
       : null;
-      let body = "";
+    let body = "";
     articleHTML(
       ".text__text__1FZLe.text__dark-grey__3Ml43.text__regular__2N1Xr.text__small__1kGq2.body__full_width__ekUdw.body__small_body__2vQyf.article-body__paragraph__2-BtD"
     ).each((index, para) => {
@@ -209,7 +222,7 @@ async function getBusinessNews() {
     const Summerizer = new node_summerizer.SummarizerManager(body, 5);
     businessNewsData[heading] = {
       img: img,
-      link : "https://www.reuters.com" + aLink.attribs["href"],
+      link: "https://www.reuters.com" + aLink.attribs["href"],
       content: (await Summerizer.getSummaryByRank()).summary,
     };
   }
@@ -227,6 +240,7 @@ async function getSportsNews() {
   let sportsNewsData = {};
   let rawMainHTML = await axios.get(sportsNewsURL, {
     headers: reqHeaders,
+    timeout: 10000,
   });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
@@ -241,6 +255,7 @@ async function getSportsNews() {
       "https://www.reuters.com" + aLink.attribs["href"],
       {
         headers: reqHeaders,
+        timeout: 10000,
       }
     );
 
@@ -264,7 +279,7 @@ async function getSportsNews() {
     const Summerizer = new node_summerizer.SummarizerManager(body, 5);
     sportsNewsData[heading] = {
       img: img,
-      link :  "https://www.reuters.com" + aLink.attribs["href"],
+      link: "https://www.reuters.com" + aLink.attribs["href"],
       content: (await Summerizer.getSummaryByRank()).summary,
     };
   }
@@ -281,6 +296,7 @@ async function getEntertainmentNews() {
   let entertainmentNewsData = {};
   let rawMainHTML = await axios.get(entertainmentNewsURL, {
     headers: reqHeaders,
+    timeout: 10000,
   });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
@@ -293,6 +309,7 @@ async function getEntertainmentNews() {
       "https://www.wionews.com" + aLink.attribs["href"],
       {
         headers: reqHeaders,
+        timeout: 10000,
       }
     );
 
@@ -315,7 +332,7 @@ async function getEntertainmentNews() {
     const Summerizer = new node_summerizer.SummarizerManager(body, 5);
     entertainmentNewsData[heading] = {
       img: img,
-      link :  "https://www.wionews.com" + aLink.attribs["href"],
+      link: "https://www.wionews.com" + aLink.attribs["href"],
       content: (await Summerizer.getSummaryByRank()).summary,
     };
   }
