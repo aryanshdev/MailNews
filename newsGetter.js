@@ -78,7 +78,6 @@ async function getTechNews() {
 
   let rawMainHTML = await axios.get(techNewsURL, {
     headers: reqHeaders,
-    timeout: 45000,
   });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
@@ -87,7 +86,6 @@ async function getTechNews() {
   for (const aLink of newsLinks) {
     let rawArticleHTML = await axios.get(aLink.attribs["href"], {
       headers: reqHeaders,
-      timeout: 45000,
     });
 
     rawArticleHTML = rawArticleHTML.data;
@@ -357,4 +355,4 @@ async function generateNewsFiles() {
   ]);
 }
 
-module.exports = { generateNewsFiles };
+module.exports = { generateNewsFiles,getTechNews };
