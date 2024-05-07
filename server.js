@@ -50,6 +50,7 @@ const verificationMailBody = `
 </html>
 `;
 
+
 const tempPassMailBody = `
 <!DOCTYPE html>
 <html>
@@ -481,7 +482,7 @@ async function emailCurrentSlot() {
     }
   );
   slot++;
-  if (slot == 24) {
+  if (slot == 49) {
     slot = 0;
   }
 }
@@ -503,7 +504,7 @@ function ensureAuthenticated(req, res, next) {
   }
   res.status(401).redirect("/signin");
 }
-app.listen(port || 10000, () => {
+app.listen(port || 10000, async() => {
   console.log("SERVER RUNNING ON PORT " + port);
 });
 

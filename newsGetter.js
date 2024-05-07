@@ -329,13 +329,17 @@ async function getEntertainmentNews() {
 }
 
 async function generateNewsFiles() {
-  await Promise.all([
-    getBusinessNews(),
-    getSportsNews(),
-    getEntertainmentNews(),
-    getWorldNews(), 
-    getTechNews(),
-    getScienceNews()]);
+ try {
+   await Promise.all([
+     getBusinessNews(),
+     getSportsNews(),
+     getEntertainmentNews(),
+     getWorldNews(), 
+     getTechNews(),
+     getScienceNews()]);
+ } catch (error) {
+    console.log(error);
+ }
 }
 
-module.exports = { generateNewsFiles };
+module.exports = { generateNewsFiles, getBusinessNews };
