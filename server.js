@@ -437,11 +437,10 @@ var slot =
 async function cronNews() {
   await newsWritter
     .generateNewsFiles()
-    .then(async () => {
-      await emailCurrentSlot();
-    })
     .catch((err) => {
       console.log(err);
+    }).finally(async () => {
+      await emailCurrentSlot();
     });
 }
 async function cronEmail() {
