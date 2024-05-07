@@ -355,4 +355,4 @@ async function generateNewsFiles() {
   ]);
 }
 
-module.exports = { generateNewsFiles,getTechNews };
+module.exports = { generateNewsFiles };

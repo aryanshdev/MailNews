@@ -437,9 +437,8 @@ var slot =
 async function cronNews() {
   await newsWritter
     .generateNewsFiles()
-    .catch((err) => {
-     
-    }).finally(async () => {
+    .catch((err) => { }).finally(async () => {
+    console.log("FINALLY CALLED");
       await emailCurrentSlot();
     });
 }
@@ -487,12 +486,12 @@ async function emailCurrentSlot() {
     }
   );
   slot++;
-  if (slot == 49) {
+  if (slot == 48) {
     slot = 0;
   }
 }
 
-cron.schedule("0 * * * *", cronNews);
+cron.schedule("0 * * * *", async()=>{ await cronNews() });
 cron.schedule("30 * * * *", cronEmail);
 
 function inSubscribingProcessCheck(req, res, next) {
