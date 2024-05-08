@@ -178,6 +178,7 @@ async function getBusinessNews() {
   let businessNewsData = {};
   let rawMainHTML = await axios.get(businessNewsURL, {
     headers: reqHeaders,
+    timeout:45000,
   });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
@@ -235,6 +236,7 @@ async function getSportsNews() {
   let sportsNewsData = {};
   let rawMainHTML = await axios.get(sportsNewsURL, {
     headers: reqHeaders,
+    timeout:45000,
   });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);

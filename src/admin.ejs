@@ -10,8 +10,8 @@
 
 <body class="bg-slate-950 text-xl flex w-screen min-h-screen text-white p-5 flex-row flex-wrap">
 
-    <div class="w-full flex flex-col gap-3">
-        <h1 class="text-3xl lg:text-xl font-semibold">Subscribers</h1>
+    <div class="w-full flex flex-col lg:flex-row gap-3 flex-wrap h-fit ">
+        <h1 class="text-3xl lg:text-xl font-semibold w-full ">Subscribers</h1>
         <div class="w-full lg:w-1/2 grid grid-cols-2 gap-3">
             <div class="w-full h-full bg-slate-800 bg-opacity-55 text-white rounded-lg p-2 font-semibold text-lg">
                 Total Subs: <%= totalSubscribers %>
@@ -19,8 +19,14 @@
             <div class="w-full h-full bg-slate-800 bg-opacity-55 text-white rounded-lg p-2 font-semibold text-lg">
                 Subs/Day: <span id="subperday"></span>
             </div>
+            <div class="w-full h-full bg-slate-800 bg-opacity-55 text-white rounded-lg p-2 font-semibold text-lg">
+                Subs/Day: <span id="subperday"></span>
+            </div>
+            <div class="w-full h-full bg-slate-800 bg-opacity-55 text-white rounded-lg p-2 font-semibold text-lg">
+                Subs/Day: <span id="subperday"></span>
+            </div>
         </div>
-        <div class="lg:w-1/2  w-full">
+        <div class="lg:w-1/2  w-full !min-h-96">
             <canvas id="myChart" class="w-1/2 h-1/2 fill-white"></canvas>
         </div>
     </div>
