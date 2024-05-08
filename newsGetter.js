@@ -31,6 +31,8 @@ async function getWorldNews() {
   let $ = cheerio.load(rawMainHTML);
 
   const newsLinks = $(".newsHdng a").toArray();
+  console.log("WORLD NEWS")
+  console.log(newsLinks)
   for (const aLink of newsLinks) {
     let rawArticleHTML = await axios.get(aLink.attribs["href"], {
       headers: reqHeaders,
@@ -40,6 +42,7 @@ async function getWorldNews() {
     rawArticleHTML = rawArticleHTML.data;
     let articleHTML = cheerio.load(rawArticleHTML);
     let heading = articleHTML("h1.sp-ttl").text();
+
     let img;
     try {
       img = articleHTML(".ins_instory_dv_cont img")["0"].attribs.src;
@@ -52,6 +55,8 @@ async function getWorldNews() {
       if (text !== null && text !== "Promoted") {
         body += text;
       }
+      console.log("WORLD NEWS")
+      console.log("GOT 1 ARTICLE")
     });
 
     const Summerizer = new node_summerizer.SummarizerManager(body, 5);
@@ -80,6 +85,8 @@ async function getTechNews() {
   let $ = cheerio.load(rawMainHTML);
 
   const newsLinks = $(".post-block__title__link").toArray();
+  console.log("TECH NEWS")
+  console.log(newsLinks)
   for (const aLink of newsLinks) {
     let rawArticleHTML = await axios.get(aLink.attribs["href"], {
       headers: reqHeaders,
@@ -103,6 +110,8 @@ async function getTechNews() {
       if (text !== null) {
         body += text;
       }
+      console.log("WORLD NEWS")
+      console.log("GOT 1 ARTICLE")
     });
 
     const Summerizer = new node_summerizer.SummarizerManager(body, 5);
@@ -187,6 +196,8 @@ async function getBusinessNews() {
   // newsLinks.unshift($(
   //   "a.link__inherit-line-height__2qjXx"
   // ))
+  console.log("BUSINESS NEWS")
+  console.log(newsLinks)
   for (const aLink of newsLinks) {
     let rawArticleHTML = await axios.get(
       "https://www.reuters.com" + aLink.attribs["href"],
