@@ -25,7 +25,7 @@ async function getWorldNews() {
   let worldNewsData = {};
   let rawMainHTML = await axios.get(worldNewsURL, {
     headers: reqHeaders,
-    timeout: 45000,
+    timeout: 60000,
   });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
@@ -36,7 +36,7 @@ async function getWorldNews() {
   for (const aLink of newsLinks) {
     let rawArticleHTML = await axios.get(aLink.attribs["href"], {
       headers: reqHeaders,
-      timeout: 45000,
+      timeout: 60000,
     });
 
     rawArticleHTML = rawArticleHTML.data;
@@ -139,7 +139,7 @@ async function getScienceNews() {
   let scienceNewsData = {};
   let rawMainHTML = await axios.get(scienceNewsURL, {
     headers: reqHeaders,
-    timeout: 45000,
+    timeout: 60000,
   });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
@@ -152,7 +152,7 @@ async function getScienceNews() {
       "https://www.nature.com" + aLink.attribs["href"],
       {
         headers: reqHeaders,
-        timeout: 45000,
+        timeout: 60000,
       }
     );
 
@@ -193,7 +193,7 @@ async function getBusinessNews() {
   try {
      rawMainHTML = await axios.get(businessNewsURL, {
       headers: reqHeaders,
-      timeout: 45000,
+      timeout: 60000,
     });
   } catch (error) {
     console.log("LEO BC BUSINESS")
@@ -213,7 +213,7 @@ async function getBusinessNews() {
       "https://www.reuters.com" + aLink.attribs["href"],
       {
         headers: reqHeaders,
-        timeout: 45000,
+        timeout: 60000,
       }
     );
 
@@ -256,7 +256,7 @@ async function getSportsNews() {
   let sportsNewsData = {};
   let rawMainHTML = await axios.get(sportsNewsURL, {
     headers: reqHeaders,
-    timeout: 45000,
+    timeout: 60000,
   });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
@@ -271,7 +271,7 @@ async function getSportsNews() {
       "https://www.reuters.com" + aLink.attribs["href"],
       {
         headers: reqHeaders,
-        timeout: 45000,
+        timeout: 60000,
       }
     );
 
@@ -312,7 +312,7 @@ async function getEntertainmentNews() {
   let entertainmentNewsData = {};
   let rawMainHTML = await axios.get(entertainmentNewsURL, {
     headers: reqHeaders,
-    timeout: 45000,
+    timeout: 60000,
   });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
@@ -325,7 +325,7 @@ async function getEntertainmentNews() {
       "https://www.wionews.com" + aLink.attribs["href"],
       {
         headers: reqHeaders,
-        timeout: 45000,
+        timeout: 60000,
       }
     );
 
