@@ -77,10 +77,15 @@ async function getWorldNews() {
 
 async function getTechNews() {
   let techNewsData = {};
-
-  let rawMainHTML = await axios.get(techNewsURL, {
+  let rawMainHTML;
+ try{
+   rawMainHTML= await axios.get(techNewsURL, {
     headers: reqHeaders,
   });
+ }
+ catch{
+console.log("LEO BC")
+ }
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
 
@@ -184,10 +189,15 @@ async function getScienceNews() {
 
 async function getBusinessNews() {
   let businessNewsData = {};
-  let rawMainHTML = await axios.get(businessNewsURL, {
-    headers: reqHeaders,
-    timeout: 45000,
-  });
+  let rawMainHTML;
+  try {
+     rawMainHTML = await axios.get(businessNewsURL, {
+      headers: reqHeaders,
+      timeout: 45000,
+    });
+  } catch (error) {
+    console.log("LEO BC BUSINESS")
+  }
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
   const newsLinks = $(
