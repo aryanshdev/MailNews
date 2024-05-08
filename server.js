@@ -493,7 +493,7 @@ async function emailCurrentSlot() {
   }
 }
 
-cron.schedule("*/15 * * * *", async () => {
+cron.schedule("0 * * * *", async () => {
   await cronNews();
 });
 cron.schedule("30 * * * *", cronEmail);

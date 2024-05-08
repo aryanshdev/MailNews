@@ -11,14 +11,15 @@ let sportsNewsURL = "https://www.reuters.com/sports/";
 let entertainmentNewsURL = "https://www.wionews.com/entertainment";
 
 user_agents = [
-"Mozilla/5.0 (Macintosh; Intel Mac OS X 9_2_2) AppleWebKit/534.2 (KHTML, like Gecko) Chrome/47.0.2852.148 Safari/537",
-"Mozilla/5.0 (compatible; MSIE 11.0; Windows NT 6.2; x64; en-US Trident/7.0)"
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 9_2_2) AppleWebKit/534.2 (KHTML, like Gecko) Chrome/47.0.2852.148 Safari/537",
+  "Mozilla/5.0 (compatible; MSIE 11.0; Windows NT 6.2; x64; en-US Trident/7.0)",
 ];
 const reqHeaders = {
-  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0",
+  "User-Agent":
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0",
   Accept:
     "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-  'Accept-Language': "en-US,en;q=0.9",
+  "Accept-Language": "en-US,en;q=0.9",
 };
 
 async function getWorldNews() {
@@ -31,8 +32,7 @@ async function getWorldNews() {
   let $ = cheerio.load(rawMainHTML);
 
   const newsLinks = $(".newsHdng a").toArray();
-  console.log("WORLD NEWS")
-  console.log(newsLinks)
+
   for (const aLink of newsLinks) {
     let rawArticleHTML = await axios.get(aLink.attribs["href"], {
       headers: reqHeaders,
@@ -55,8 +55,6 @@ async function getWorldNews() {
       if (text !== null && text !== "Promoted") {
         body += text;
       }
-      console.log("WORLD NEWS")
-      console.log("GOT 1 ARTICLE")
     });
 
     const Summerizer = new node_summerizer.SummarizerManager(body, 5);
@@ -78,30 +76,13 @@ async function getWorldNews() {
 async function getTechNews() {
   let techNewsData = {};
   let rawMainHTML;
- try{
-   rawMainHTML= await axios.get(techNewsURL);
- } catch (error) {
-  console.log("ERROR FROM TECH")
-  if (error.response) {
-    // The request was made and the server responded with a status code
-    // that falls out of the range of 2xx
-    console.error("Request failed with status code:", error.response.status);
-    console.error("Response data:", error.response.data);
-    console.error("Response headers:", error.response.headers);
-  } else if (error.request) {
-    // The request was made but no response was received
-    console.error("Request made but no response received:", error.request);
-  } else {
-    // Something happened in setting up the request that triggered an error
-    console.error("Error message:", error.message);
-  }
-}
+ 
+    rawMainHTML = await axios.get(techNewsURL);
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
 
   const newsLinks = $(".post-block__title__link").toArray();
-  console.log("TECH NEWS")
-  console.log(newsLinks)
+
   for (const aLink of newsLinks) {
     let rawArticleHTML = await axios.get(aLink.attribs["href"]);
 
@@ -123,8 +104,6 @@ async function getTechNews() {
       if (text !== null) {
         body += text;
       }
-      console.log("WORLD NEWS")
-      console.log("GOT 1 ARTICLE")
     });
 
     const Summerizer = new node_summerizer.SummarizerManager(body, 5);
@@ -199,11 +178,11 @@ async function getBusinessNews() {
   let businessNewsData = {};
   let rawMainHTML;
   try {
-     rawMainHTML = await axios.get(businessNewsURL, {
+    rawMainHTML = await axios.get(businessNewsURL, {
       headers: reqHeaders,
       timeout: 60000,
     });
-  }  catch (error) {
+  } catch (error) {
     if (error.response) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
@@ -226,8 +205,7 @@ async function getBusinessNews() {
   // newsLinks.unshift($(
   //   "a.link__inherit-line-height__2qjXx"
   // ))
-  console.log("BUSINESS NEWS")
-  console.log(newsLinks)
+
   for (const aLink of newsLinks) {
     let rawArticleHTML = await axios.get(
       "https://www.reuters.com" + aLink.attribs["href"],
@@ -388,20 +366,11 @@ async function generateNewsFiles() {
       getWorldNews(),
       getTechNews(),
       getScienceNews(),
+      getBusinessNews(),
+      getSportsNews(),
+      getEntertainmentNews(),
     ]);
-  } catch (error) {
-    console.log("WEEEWEW")
-  }
-try {
-  await Promise.all([
-    getBusinessNews(),
-    getSportsNews(),
-    getEntertainmentNews(),
-  ]);
-} catch (error) {
-  
-  console.log("WEEEWEW 34343")
-}
+  } catch (error) {}
 }
 
 module.exports = { generateNewsFiles };
