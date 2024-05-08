@@ -82,10 +82,22 @@ async function getTechNews() {
    rawMainHTML= await axios.get(techNewsURL, {
     headers: reqHeaders,
   });
- }
- catch{
-console.log("LEO BC")
- }
+ } catch (error) {
+  console.log("ERROR FROM TECH")
+  if (error.response) {
+    // The request was made and the server responded with a status code
+    // that falls out of the range of 2xx
+    console.error("Request failed with status code:", error.response.status);
+    console.error("Response data:", error.response.data);
+    console.error("Response headers:", error.response.headers);
+  } else if (error.request) {
+    // The request was made but no response was received
+    console.error("Request made but no response received:", error.request);
+  } else {
+    // Something happened in setting up the request that triggered an error
+    console.error("Error message:", error.message);
+  }
+}
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
 
@@ -195,8 +207,20 @@ async function getBusinessNews() {
       headers: reqHeaders,
       timeout: 60000,
     });
-  } catch (error) {
-    console.log("LEO BC BUSINESS")
+  }  catch (error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.error("Request failed with status code:", error.response.status);
+      console.error("Response data:", error.response.data);
+      console.error("Response headers:", error.response.headers);
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.error("Request made but no response received:", error.request);
+    } else {
+      // Something happened in setting up the request that triggered an error
+      console.error("Error message:", error.message);
+    }
   }
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
