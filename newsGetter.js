@@ -342,14 +342,25 @@ async function getEntertainmentNews() {
 }
 
 async function generateNewsFiles() {
+  try {
+    await Promise.all([
+      getWorldNews(),
+      getTechNews(),
+      getScienceNews(),
+    ]);
+  } catch (error) {
+    console.log("WEEEWEW")
+  }
+try {
   await Promise.all([
-    getWorldNews(),
-    getTechNews(),
-    getScienceNews(),
     getBusinessNews(),
     getSportsNews(),
     getEntertainmentNews(),
   ]);
+} catch (error) {
+  
+  console.log("WEEEWEW 34343")
+}
 }
 
 module.exports = { generateNewsFiles };
