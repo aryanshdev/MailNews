@@ -50,18 +50,3 @@ Sure, here's the time difference table with a serial number starting from 0:
 | 45      | 22:30    | 04:00    |
 | 46      | 23:00    | 04:30    |
 | 47      | 23:30    | 05:00    |
-
-
-
-
-ERROR FROM TECH
-Request failed with status code: 400
-ERRORResponse data: <html><head><title>Error</title></head><body>Bad Request</body></html>
-Response headers: Object [AxiosHeaders] {
-  connection: 'keep-alive',
-  server: 'guce',
-  'strict-transport-security': 'max-age=31536000; includeSubDomains',
-  'content-type': 'text/html;charset=UTF-8',
-  'content-length': '75',
-  date: 'Wed, 08 May 2024 19:30:04 GMT'
-}
