@@ -11,6 +11,7 @@ const sql = require("sqlite3").verbose();
 const fileSystem = require("fs");
 const crypto = require("crypto");
 const e = require("express");
+const { hasSubscribers, subscribe } = require("diagnostics_channel");
 require("dotenv").config();
 
 const verificationMailBody = `
@@ -432,13 +433,14 @@ let mailer = nodemailer.createTransport({
 });
 
 var slot =
-  (new Date().getUTCHours() * 2 + Math.round(new Date().getUTCMinutes() / 30));
+  new Date().getUTCHours() * 2 + Math.round(new Date().getUTCMinutes() / 30);
 
 async function cronNews() {
   await newsWritter
     .generateNewsFiles()
-    .catch((err) => { }).finally(async () => {
-    console.log("FINALLY CALLED");
+    .catch((err) => {})
+    .finally(async () => {
+      console.log("FINALLY CALLED");
       await emailCurrentSlot();
     });
 }
@@ -491,7 +493,9 @@ async function emailCurrentSlot() {
   }
 }
 
-cron.schedule("0 * * * *", async()=>{ await cronNews() });
+cron.schedule("0 * * * *", async () => {
+  await cronNews();
+});
 cron.schedule("30 * * * *", cronEmail);
 
 function inSubscribingProcessCheck(req, res, next) {
@@ -700,7 +704,7 @@ app.post("/verifyEmail", inSubscribingProcessCheck, async (req, res) => {
           .createHash("sha256")
           .update(req.session.currentSubs.pass)
           .digest("hex")}",
-        "${new Date().toISOString()}",
+        "${new Date().toISOString().split("T")[0]}",
         "${req.session.currentSubs.topics}",
         ${req.session.currentSubs.slot})`,
       (err) => {
@@ -919,6 +923,30 @@ app.get("/logout", (req, res) => {
     if (!err) {
       res.redirect("/");
     }
+  });
+});
+
+app.get("/admin", async (req, res) => {
+  db.all("SELECT * FROM users", async (err, rows) => {
+    res.render(__dirname + "/src/admin.ejs", {
+      totalSubscribers: rows.length,
+      emailslots: rows.reduce((acc, row) => {
+        if (acc[row.emailslot]) {
+          acc[row.emailslot]++;
+        } else {
+          acc[row.emailslot] = 1;
+        }
+        return acc;
+      }, {}),
+      subscribers: rows.reduce((acc, row) => {
+        if (acc[row.dos]) {
+          acc[row.dos]++;
+        } else {
+          acc[row.dos] = 1;
+        }
+        return acc;
+      }, {}),
+    });
   });
 });
 

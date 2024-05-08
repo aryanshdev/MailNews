@@ -345,14 +345,20 @@ async function getEntertainmentNews() {
 }
 
 async function generateNewsFiles() {
-  await Promise.all([
-    getWorldNews(),
-    getTechNews(),
-    getScienceNews(),
-    getBusinessNews(),
-    getSportsNews(),
-    getEntertainmentNews(),
-  ]);
+  try {
+    await Promise.all([
+      getWorldNews(),
+      getScienceNews(),
+      getBusinessNews(),
+      getSportsNews(),
+      getEntertainmentNews(), 
+    getTechNews()
+    ]);
+    console.log("All news fetched successfully");
+  } catch (error) {
+    console.error("Error fetching news:", error);
+    throw error; // Re-throw the error to be caught by the caller
+  }
 }
 
 module.exports = { generateNewsFiles };

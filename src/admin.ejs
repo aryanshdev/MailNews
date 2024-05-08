@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-slate-950 text-xl flex w-screen min-h-screen text-white p-5 flex-row flex-wrap">
+
+    <div class="w-full flex flex-col gap-3">
+        <h1 class="text-3xl lg:text-xl font-semibold">Subscribers</h1>
+        <div class="w-full lg:w-1/2 grid grid-cols-2 gap-3">
+            <div class="w-full h-full bg-slate-800 bg-opacity-55 text-white rounded-lg p-2 font-semibold text-lg">
+                Total Subs: <%= totalSubscribers %>
+            </div>
+            <div class="w-full h-full bg-slate-800 bg-opacity-55 text-white rounded-lg p-2 font-semibold text-lg">
+                Subs/Day: <span id="subperday"></span>
+            </div>
+        </div>
+        <div class="lg:w-1/2  w-full">
+            <canvas id="myChart" class="w-1/2 h-1/2 fill-white"></canvas>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var chartDisplay = document.getElementById('myChart');
+    var DateWiseSubs = {};
+
+
+    <% for(var dos in subscribers) { console.log(subscribers[dos]) %>
+             DateWiseSubs['<%= dos %>'] = <%=  subscribers[dos] %>;
+        <% }; %>
+
+    var currentDate = new Date();
+    var currentMonth = currentDate.getMonth() + 1;
+    var currentYear = currentDate.getFullYear();
+
+    var daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+
+    for (var i = 1; i <= daysInMonth; i++) {
+        var date = currentYear + '-' + (currentMonth > 9 ? currentMonth : '0' + currentMonth) + '-' + (i > 9 ? i : '0' + i);
+        if (currentDate.getDate() + 7 == i) {
+            break;
+        }
+        DateWiseSubs[date] = `${(DateWiseSubs[date] ? DateWiseSubs[date] : 0)}`;
+    }
+
+    DateWiseSubs = Object.keys(DateWiseSubs)
+        .sort()
+        .reduce((accumulator, key) => {
+            accumulator[key] = DateWiseSubs[key];
+
+            return accumulator;
+        }, {});
+
+    document.getElementById('subperday').innerText = (<%= totalSubscribers %> / Object.keys(DateWiseSubs).length).toFixed(2);
+    Chart.defaults.color = 'white';
+    Chart.defaults.font.style
+    var chart = new Chart(chartDisplay, {
+        type: 'line',
+
+        data:
+        {
+            options: {
+
+                legend: {
+                    labels: {
+
+                        fontColor: 'white'
+                    }
+                }
+            },
+            labels: Object.keys(DateWiseSubs),
+
+            datasets: [
+                {
+                    label: 'Subscribers',
+                    fill: true,
+                    lineTension: 0.25,
+                    backgroundColor: '#16a34a2a',
+                    borderColor: '#16a34a',
+                    data: Object.values(DateWiseSubs),
+                }]
+        },
+
+
+    })
+</script>
