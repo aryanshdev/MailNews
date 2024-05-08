@@ -11,14 +11,11 @@ let sportsNewsURL = "https://www.reuters.com/sports/";
 let entertainmentNewsURL = "https://www.wionews.com/entertainment";
 
 user_agents = [
-  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36",
-  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36",
-  "Mozilla/5.0 (iPhone; CPU iPhone OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148",
-  "Mozilla/5.0 (Linux; Android 11; SM-G960U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Mobile Safari/537.36",
+"Mozilla/5.0 (Macintosh; Intel Mac OS X 9_2_2) AppleWebKit/534.2 (KHTML, like Gecko) Chrome/47.0.2852.148 Safari/537",
+"Mozilla/5.0 (compatible; MSIE 11.0; Windows NT 6.2; x64; en-US Trident/7.0)"
 ];
 const reqHeaders = {
-  "User-Agent": user_agents[Math.floor(Math.random() * user_agents.length)],
+  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0",
   Accept:
     "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,/;q=0.8",
   "Accept-Language": "en-US,en;q=0.5",
