@@ -2,7 +2,6 @@ const cheerio = require("cheerio");
 const axios = require("axios");
 const fileSystem = require("fs");
 const node_summerizer = require("node-summarizer");
-const { get } = require("http");
 
 let worldNewsURL = "https://www.ndtv.com/world-news";
 let techNewsURL = "https://techcrunch.com/";
@@ -29,6 +28,7 @@ async function getWorldNews() {
   let worldNewsData = {};
   let rawMainHTML = await axios.get(worldNewsURL, {
     headers: reqHeaders,
+    timeout: 45000,
   });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
@@ -37,6 +37,7 @@ async function getWorldNews() {
   for (const aLink of newsLinks) {
     let rawArticleHTML = await axios.get(aLink.attribs["href"], {
       headers: reqHeaders,
+      timeout: 45000,
     });
 
     rawArticleHTML = rawArticleHTML.data;
@@ -127,6 +128,7 @@ async function getScienceNews() {
   let scienceNewsData = {};
   let rawMainHTML = await axios.get(scienceNewsURL, {
     headers: reqHeaders,
+    timeout: 45000,
   });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
@@ -178,7 +180,7 @@ async function getBusinessNews() {
   let businessNewsData = {};
   let rawMainHTML = await axios.get(businessNewsURL, {
     headers: reqHeaders,
-    timeout:45000,
+    timeout: 45000,
   });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
@@ -236,7 +238,7 @@ async function getSportsNews() {
   let sportsNewsData = {};
   let rawMainHTML = await axios.get(sportsNewsURL, {
     headers: reqHeaders,
-    timeout:45000,
+    timeout: 45000,
   });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
@@ -292,6 +294,7 @@ async function getEntertainmentNews() {
   let entertainmentNewsData = {};
   let rawMainHTML = await axios.get(entertainmentNewsURL, {
     headers: reqHeaders,
+    timeout: 45000,
   });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
@@ -342,20 +345,14 @@ async function getEntertainmentNews() {
 }
 
 async function generateNewsFiles() {
-  try {
-    await Promise.all([
-      getWorldNews(),
-      getScienceNews(),
-      getBusinessNews(),
-      getSportsNews(),
-      getEntertainmentNews(), 
-    getTechNews()
-    ]);
-    console.log("All news fetched successfully");
-  } catch (error) {
-    console.error("Error fetching news:", error);
-    throw error; // Re-throw the error to be caught by the caller
-  }
+  await Promise.all([
+    getWorldNews(),
+    getTechNews(),
+    getScienceNews(),
+    getBusinessNews(),
+    getSportsNews(),
+    getEntertainmentNews(),
+  ]);
 }
 
-module.exports = { generateNewsFiles, getWorldNews };
+module.exports = { generateNewsFiles };
