@@ -2,6 +2,7 @@ const cheerio = require("cheerio");
 const axios = require("axios");
 const fileSystem = require("fs");
 const node_summerizer = require("node-summarizer");
+const { get } = require("http");
 
 let worldNewsURL = "https://www.ndtv.com/world-news";
 let techNewsURL = "https://techcrunch.com/";
@@ -28,7 +29,6 @@ async function getWorldNews() {
   let worldNewsData = {};
   let rawMainHTML = await axios.get(worldNewsURL, {
     headers: reqHeaders,
-    timeout: 45000,
   });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
@@ -37,7 +37,6 @@ async function getWorldNews() {
   for (const aLink of newsLinks) {
     let rawArticleHTML = await axios.get(aLink.attribs["href"], {
       headers: reqHeaders,
-      timeout: 45000,
     });
 
     rawArticleHTML = rawArticleHTML.data;
@@ -128,7 +127,6 @@ async function getScienceNews() {
   let scienceNewsData = {};
   let rawMainHTML = await axios.get(scienceNewsURL, {
     headers: reqHeaders,
-    timeout: 45000,
   });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
@@ -180,7 +178,6 @@ async function getBusinessNews() {
   let businessNewsData = {};
   let rawMainHTML = await axios.get(businessNewsURL, {
     headers: reqHeaders,
-    timeout: 45000,
   });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
@@ -238,7 +235,6 @@ async function getSportsNews() {
   let sportsNewsData = {};
   let rawMainHTML = await axios.get(sportsNewsURL, {
     headers: reqHeaders,
-    timeout: 45000,
   });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
@@ -294,7 +290,6 @@ async function getEntertainmentNews() {
   let entertainmentNewsData = {};
   let rawMainHTML = await axios.get(entertainmentNewsURL, {
     headers: reqHeaders,
-    timeout: 45000,
   });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
@@ -361,4 +356,4 @@ async function generateNewsFiles() {
   }
 }
 
-module.exports = { generateNewsFiles };
+module.exports = { generateNewsFiles, getWorldNews };
