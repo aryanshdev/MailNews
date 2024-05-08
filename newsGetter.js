@@ -17,8 +17,8 @@ user_agents = [
 const reqHeaders = {
   "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0",
   Accept:
-    "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,/;q=0.8",
-  "Accept-Language": "en-US,en;q=0.5",
+    "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+  'Accept-Language': "en-US,en;q=0.9",
 };
 
 async function getWorldNews() {
@@ -79,9 +79,7 @@ async function getTechNews() {
   let techNewsData = {};
   let rawMainHTML;
  try{
-   rawMainHTML= await axios.get(techNewsURL, {
-    headers: reqHeaders,
-  });
+   rawMainHTML= await axios.get(techNewsURL);
  } catch (error) {
   console.log("ERROR FROM TECH")
   if (error.response) {
@@ -105,9 +103,7 @@ async function getTechNews() {
   console.log("TECH NEWS")
   console.log(newsLinks)
   for (const aLink of newsLinks) {
-    let rawArticleHTML = await axios.get(aLink.attribs["href"], {
-      headers: reqHeaders,
-    });
+    let rawArticleHTML = await axios.get(aLink.attribs["href"]);
 
     rawArticleHTML = rawArticleHTML.data;
     let articleHTML = cheerio.load(rawArticleHTML);
