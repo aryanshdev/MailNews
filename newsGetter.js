@@ -2,27 +2,12 @@ const cheerio = require("cheerio");
 const axios = require("axios");
 const fileSystem = require("fs");
 const node_summerizer = require("node-summarizer");
-const puppeteer = require('puppeteer-extra');
 
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
- 
-// // add stealth plugin and use defaults (all evasion techniques) 
-// const StealthPlugin = require('puppeteer-extra-plugin-stealth') 
-// puppeteer.use(StealthPlugin()) 
 
-// async function getBrowserContent(url){
-//  await puppeteer.launch({ headless: false}).then(async browser => { 
-//     const page = await browser.newPage() 
-// await page.setUserAgent("Mozilla/5.0 (compatible; MSIE 11.0; Windows NT 6.2; x64; en-US Trident/7.0)")
-//     await page.goto(url)
-//     await sleep(10000)
-//     let $ =  (await page.content());
-//     console.log($)
-//     return $;
-//   });
-// }
+
 
 let worldNewsURL = "https://www.ndtv.com/world-news";
 let techNewsURL = "https://techcrunch.com/";
@@ -96,15 +81,12 @@ async function getTechNews() {
   const newsLinks = $(".wp-block-post-title a").toArray();
 
   for (const aLink of newsLinks) {
-    console.log(aLink.attribs["data-destinationlink"])
     let rawArticleHTML = await axios.get(aLink.attribs["data-destinationlink"]);
 
     rawArticleHTML = rawArticleHTML.data;
     let articleHTML = cheerio.load(rawArticleHTML);
-    console.log(articleHTML(".wp-block-post-title").length)
-    let heading = (articleHTML(".wp-block-post-title").first()).text();
-    
-    console.log(heading)
+    let heading = articleHTML(".wp-block-post-title").first().text();
+
     let img;
     try {
       img = articleHTML(".wp-block-post-featured-image img")[0]
@@ -115,20 +97,20 @@ async function getTechNews() {
       img = null;
     }
     let body = "";
-    articleHTML(".wp-block-paragraph").filter((index, ele) => {
-      const classList = ele.attribs["class"] || '';
-      return !(
-        classList.includes("has-grey-500-color") ||
-        classList.includes("has-xsmall-font-size")
-      );
-    }).each((index, para) => {
-
+    articleHTML(".wp-block-paragraph")
+      .filter((index, ele) => {
+        const classList = ele.attribs["class"] || "";
+        return !(
+          classList.includes("has-grey-500-color") ||
+          classList.includes("has-xsmall-font-size")
+        );
+      })
+      .each((index, para) => {
         const text = articleHTML(para).text();
         if (text !== null) {
           body += text;
         }
-      }
-    );
+      });
     const Summerizer = new node_summerizer.SummarizerManager(body, 5);
     techNewsData[heading] = {
       img: img,
@@ -192,46 +174,46 @@ async function getScienceNews() {
 
 async function getBusinessNews() {
   let businessNewsData = {};
-  let rawMainHTML = await axios.get(businessNewsURL)
+  let rawMainHTML = await axios.get(businessNewsURL);
   let $ = cheerio.load(rawMainHTML.data);
   const newsLinks = $(
     "a.container__link.container__link--type-article.container_lead-plus-headlines-with-images__link"
   ).toArray();
+  
   for (const aLink of newsLinks) {
     let rawArticleHTML = await axios.get(
       "https://edition.cnn.com" + aLink.attribs["href"]
     );
+    await sleep(9000)
+    let articleHTML = cheerio.load(rawArticleHTML.data);
+    let heading = articleHTML(
+      "h1.headline__text.inline-placeholder.vossi-headline-primary-core-light"
+    ).text();
 
-    let articleHTML = cheerio.load(rawArticleHTML);
-    let heading = articleHTML("h1.headline__text.inline-placeholder.vossi-headline-primary-core-light").text();
-
-    let img = articleHTML("image__picture source")[0].attribs.srcset
-console.log(img, heading)
+    let img = articleHTML(".image__picture source")[0].attribs.srcset;
     let body = "";
     articleHTML(
-      ".text__text__1FZLe.text__dark-grey__3Ml43.text__regular__2N1Xr.text__small__1kGq2.body__full_width__ekUdw.body__small_body__2vQyf.article-body__paragraph__2-BtD"
+      "p.paragraph.inline-placeholder.vossi-paragraph-primary-core-light"
     ).each((index, para) => {
       const text = articleHTML(para).text();
-
       if (text !== null) {
         body += text;
       }
     });
-
+    
+    await sleep(9000)
     const Summerizer = new node_summerizer.SummarizerManager(body, 5);
     businessNewsData[heading] = {
       img: img,
-      link: "https://www.reuters.com" + aLink.attribs["href"],
+      link: "https://edition.cnn.com" + aLink.attribs["href"],
       content: (await Summerizer.getSummaryByRank()).summary,
     };
   }
-
   fileSystem.writeFile(
     __dirname + "/businessNews.json",
     JSON.stringify(businessNewsData),
     (error) => {}
   );
-
   console.log("GENERATED BUSINESS NEWS");
 }
 

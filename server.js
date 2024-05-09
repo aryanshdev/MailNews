@@ -433,7 +433,7 @@ let mailer = nodemailer.createTransport({
 });
 
 var slot =
-  new Date().getUTCHours() * 2 + Math.round(new Date().getUTCMinutes() / 30);
+  new Date().getUTCHours() * 2 + parseInt(new Date().getUTCMinutes() / 30);
 
 async function cronNews() {
   await newsWritter
@@ -512,8 +512,9 @@ function ensureAuthenticated(req, res, next) {
   }
   res.status(401).redirect("/signin");
 }
+
   app.listen(port || 10000, async () => {
-    await newsWritter.getBusinessNews()
+    console.log("STARTING WITH SLOT : "+slot)
     console.log("SERVER RUNNING ON PORT " + port);
 });
 
