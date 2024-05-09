@@ -448,9 +448,9 @@ async function cronEmail() {
   await emailCurrentSlot();
 }
 async function emailCurrentSlot() {
-  console.log(slot);
+  console.log("EMAILING SLOT : "+(slot+1));
   await db.all(
-    `SELECT * FROM users WHERE emailslot = ${slot}`,
+    `SELECT * FROM users WHERE emailslot = ${slot+1}`,
     async (err, rows) => {
       if (rows) {
         rows.forEach(async (row) => {
@@ -512,8 +512,9 @@ function ensureAuthenticated(req, res, next) {
   }
   res.status(401).redirect("/signin");
 }
-app.listen(port || 10000, async () => {
-  console.log("SERVER RUNNING ON PORT " + port);
+  app.listen(port || 10000, async () => {
+    await newsWritter.getBusinessNews()
+    console.log("SERVER RUNNING ON PORT " + port);
 });
 
 app.get("/", async (req, res) => {

@@ -2,11 +2,32 @@ const cheerio = require("cheerio");
 const axios = require("axios");
 const fileSystem = require("fs");
 const node_summerizer = require("node-summarizer");
+const puppeteer = require('puppeteer-extra');
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+ 
+// // add stealth plugin and use defaults (all evasion techniques) 
+// const StealthPlugin = require('puppeteer-extra-plugin-stealth') 
+// puppeteer.use(StealthPlugin()) 
+
+// async function getBrowserContent(url){
+//  await puppeteer.launch({ headless: false}).then(async browser => { 
+//     const page = await browser.newPage() 
+// await page.setUserAgent("Mozilla/5.0 (compatible; MSIE 11.0; Windows NT 6.2; x64; en-US Trident/7.0)")
+//     await page.goto(url)
+//     await sleep(10000)
+//     let $ =  (await page.content());
+//     console.log($)
+//     return $;
+//   });
+// }
 
 let worldNewsURL = "https://www.ndtv.com/world-news";
 let techNewsURL = "https://techcrunch.com/";
 let scienceNewsURL = "https://www.nature.com/latest-news";
-let businessNewsURL = "https://www.reuters.com/business/";
+let businessNewsURL = "https://edition.cnn.com/business";
 let sportsNewsURL = "https://www.reuters.com/sports/";
 let entertainmentNewsURL = "https://www.wionews.com/entertainment";
 
@@ -69,37 +90,45 @@ async function getWorldNews() {
 
 async function getTechNews() {
   let techNewsData = {};
-  let rawMainHTML;
- 
-    rawMainHTML = await axios.get(techNewsURL);
+  let rawMainHTML = await axios.get(techNewsURL);
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
-
-  const newsLinks = $(".post-block__title__link").toArray();
+  const newsLinks = $(".wp-block-post-title a").toArray();
 
   for (const aLink of newsLinks) {
-    let rawArticleHTML = await axios.get(aLink.attribs["href"]);
+    console.log(aLink.attribs["data-destinationlink"])
+    let rawArticleHTML = await axios.get(aLink.attribs["data-destinationlink"]);
 
     rawArticleHTML = rawArticleHTML.data;
     let articleHTML = cheerio.load(rawArticleHTML);
-    let heading = articleHTML("h1.article__title").text();
+    console.log(articleHTML(".wp-block-post-title").length)
+    let heading = (articleHTML(".wp-block-post-title").first()).text();
+    
+    console.log(heading)
     let img;
     try {
-      img = articleHTML(".article__featured-image")[0]
-        ? articleHTML(".article__featured-image")[0].attribs.src
+      img = articleHTML(".wp-block-post-featured-image img")[0]
+        ? articleHTML(".wp-block-post-featured-image img")[0].attribs.src
         : cheerio.load(aLink.parent.parent)(".post-block__media img")[0].attribs
             .src;
     } catch (error) {
       img = null;
     }
     let body = "";
-    articleHTML(".article-content p").each((index, para) => {
-      const text = articleHTML(para).text();
-      if (text !== null) {
-        body += text;
-      }
-    });
+    articleHTML(".wp-block-paragraph").filter((index, ele) => {
+      const classList = ele.attribs["class"] || '';
+      return !(
+        classList.includes("has-grey-500-color") ||
+        classList.includes("has-xsmall-font-size")
+      );
+    }).each((index, para) => {
 
+        const text = articleHTML(para).text();
+        if (text !== null) {
+          body += text;
+        }
+      }
+    );
     const Summerizer = new node_summerizer.SummarizerManager(body, 5);
     techNewsData[heading] = {
       img: img,
@@ -163,45 +192,21 @@ async function getScienceNews() {
 
 async function getBusinessNews() {
   let businessNewsData = {};
-  let rawMainHTML;
-  try {
-    rawMainHTML = await axios.get(businessNewsURL);
-  } catch (error) {
-    if (error.response) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx
-      console.error("Request failed with status code:", error.response.status);
-      console.error("Response data:", error.response.data);
-      console.error("Response headers:", error.response.headers);
-    } else if (error.request) {
-      // The request was made but no response was received
-      console.error("Request made but no response received:", error.request);
-    } else {
-      // Something happened in setting up the request that triggered an error
-      console.error("Error message:", error.message);
-    }
-  }
-  rawMainHTML = rawMainHTML.data;
-  let $ = cheerio.load(rawMainHTML);
+  let rawMainHTML = await axios.get(businessNewsURL)
+  let $ = cheerio.load(rawMainHTML.data);
   const newsLinks = $(
-    "a.text__text__1FZLe.text__dark-grey__3Ml43.text__heading_6__1qUJ5"
+    "a.container__link.container__link--type-article.container_lead-plus-headlines-with-images__link"
   ).toArray();
-  // newsLinks.unshift($(
-  //   "a.link__inherit-line-height__2qjXx"
-  // ))
-
   for (const aLink of newsLinks) {
     let rawArticleHTML = await axios.get(
-      "https://www.reuters.com" + aLink.attribs["href"]
+      "https://edition.cnn.com" + aLink.attribs["href"]
     );
 
-    rawArticleHTML = rawArticleHTML.data;
     let articleHTML = cheerio.load(rawArticleHTML);
-    let heading = articleHTML("h1.text__text__1FZLe").text();
+    let heading = articleHTML("h1.headline__text.inline-placeholder.vossi-headline-primary-core-light").text();
 
-    let img = articleHTML("div.styles__fill__3xCr1 img")["0"]
-      ? articleHTML("div.styles__fill__3xCr1 img")["0"].attribs.src
-      : null;
+    let img = articleHTML("image__picture source")[0].attribs.srcset
+console.log(img, heading)
     let body = "";
     articleHTML(
       ".text__text__1FZLe.text__dark-grey__3Ml43.text__regular__2N1Xr.text__small__1kGq2.body__full_width__ekUdw.body__small_body__2vQyf.article-body__paragraph__2-BtD"
@@ -243,7 +248,8 @@ async function getSportsNews() {
   // ))
   for (const aLink of newsLinks) {
     let rawArticleHTML = await axios.get(
-      "https://www.reuters.com" + aLink.attribs["href"])
+      "https://www.reuters.com" + aLink.attribs["href"]
+    );
 
     rawArticleHTML = rawArticleHTML.data;
     let articleHTML = cheerio.load(rawArticleHTML);
@@ -338,4 +344,4 @@ async function generateNewsFiles() {
   } catch (error) {}
 }
 
-module.exports = { generateNewsFiles };
+module.exports = { generateNewsFiles, getBusinessNews };
