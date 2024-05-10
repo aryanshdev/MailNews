@@ -514,7 +514,6 @@ function ensureAuthenticated(req, res, next) {
 
   app.listen(port || 10000, async () => {
     console.log("STARTING WITH SLOT : "+slot)
-    await newsWritter.generateNewsFiles();
     console.log("SERVER RUNNING ON PORT " + port);
 });
 

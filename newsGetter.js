@@ -11,7 +11,7 @@ let worldNewsURL = "https://www.ndtv.com/world-news";
 let techNewsURL = "https://techcrunch.com/";
 let scienceNewsURL = "https://www.nature.com/latest-news";
 let businessNewsURL = "https://edition.cnn.com/business";
-let sportsNewsURL = "https://www.reuters.com/sports/";
+let sportsNewsURL = "https://www.indiatoday.in/sports";
 let entertainmentNewsURL = "https://www.wionews.com/entertainment";
 
 user_agents = [
@@ -221,26 +221,30 @@ async function getSportsNews() {
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
   const newsLinks = $(
-    "a.text__text__1FZLe.text__dark-grey__3Ml43.text__heading_6__1qUJ5"
+    ".B1S3_content__wrap__9mSB6 h3 a"
   ).toArray();
   // newsLinks.unshift($(
   //   "a.link__inherit-line-height__2qjXx"
   // ))
   for (const aLink of newsLinks) {
-    let rawArticleHTML = await axios.get(
-      "https://www.reuters.com" + aLink.attribs["href"]
-    );
-
+   
+    let rawArticleHTML = await axios.get(aLink.attribs["href"]);
     rawArticleHTML = rawArticleHTML.data;
     let articleHTML = cheerio.load(rawArticleHTML);
-    let heading = articleHTML("h1.text__text__1FZLe").text();
-    let img = articleHTML("div.styles__fill__3xCr1 img")["0"]
-      ? articleHTML("div.styles__fill__3xCr1 img")["0"].attribs.src
-      : null; // articleHTML(".ytp-cued-thumbnail-overlay-image")[0].attribs.style.match(/https?:\/\/[^\\s]+/)[0];
+    let heading = articleHTML(".main__content h1").text();
+    let img ;
+try{
+  img = articleHTML("div.Story_associate__image__bYOH_.topImage img")[0] ? 
+  articleHTML("div.Story_associate__image__bYOH_.topImage img")[0].attribs.src : 
+  articleHTML('.LiveBlog_liveblog__body__GOT0F .LiveBlog_blogmos__UcOVK img')[0].attribs.src;
+}
+catch{
+return
+}
+   // articleHTML(".ytp-cued-thumbnail-overlay-image")[0].attribs.style.match(/https?:\/\/[^\\s]+/)[0];
     let body = "";
     articleHTML(
-      ".text__text__1FZLe.text__dark-grey__3Ml43.text__regular__2N1Xr.text__small__1kGq2.body__full_width__ekUdw.body__small_body__2vQyf.article-body__paragraph__2-BtD"
-    ).each((index, para) => {
+      "div.Story_description__fq_4S p").each((index, para) => {
       const text = articleHTML(para).text();
 
       if (text !== null) {
@@ -251,13 +255,13 @@ async function getSportsNews() {
     const Summerizer = new node_summerizer.SummarizerManager(body, 5);
     sportsNewsData[heading] = {
       img: img,
-      link: "https://www.reuters.com" + aLink.attribs["href"],
+      link:  aLink.attribs["href"],
       content: (await Summerizer.getSummaryByRank()).summary,
     };
   }
 
   fileSystem.writeFile(
-    __dirname + "/sportNews.json",
+    __dirname + "/sportsNews.json",
     JSON.stringify(sportsNewsData),
     (error) => {}
   );
@@ -317,6 +321,7 @@ async function generateNewsFiles() {
 
     await Promise.all([
       getBusinessNews(),
+      getSportsNews(),
       getEntertainmentNews(),
     ]);
   } catch (error) {
