@@ -10,8 +10,6 @@ let newsWritter = require("./newsGetter");
 const sql = require("sqlite3").verbose();
 const fileSystem = require("fs");
 const crypto = require("crypto");
-const e = require("express");
-const { hasSubscribers, subscribe } = require("diagnostics_channel");
 require("dotenv").config();
 
 const verificationMailBody = `

@@ -7,8 +7,6 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-
-
 let worldNewsURL = "https://www.ndtv.com/world-news";
 let techNewsURL = "https://techcrunch.com/";
 let scienceNewsURL = "https://www.nature.com/latest-news";
@@ -179,12 +177,12 @@ async function getBusinessNews() {
   const newsLinks = $(
     "a.container__link.container__link--type-article.container_lead-plus-headlines-with-images__link"
   ).toArray();
-  
+
   for (const aLink of newsLinks) {
     let rawArticleHTML = await axios.get(
       "https://edition.cnn.com" + aLink.attribs["href"]
     );
-    await sleep(9000)
+    await sleep(900);
     let articleHTML = cheerio.load(rawArticleHTML.data);
     let heading = articleHTML(
       "h1.headline__text.inline-placeholder.vossi-headline-primary-core-light"
@@ -200,8 +198,8 @@ async function getBusinessNews() {
         body += text;
       }
     });
-    
-    await sleep(9000)
+
+    await sleep(900);
     const Summerizer = new node_summerizer.SummarizerManager(body, 5);
     businessNewsData[heading] = {
       img: img,
@@ -315,10 +313,9 @@ async function getEntertainmentNews() {
 
 async function generateNewsFiles() {
   try {
+    await Promise.all([getWorldNews(), getTechNews(), getScienceNews()]);
+
     await Promise.all([
-      getWorldNews(),
-      getTechNews(),
-      getScienceNews(),
       getBusinessNews(),
       getSportsNews(),
       getEntertainmentNews(),
@@ -326,4 +323,4 @@ async function generateNewsFiles() {
   } catch (error) {}
 }
 
-module.exports = { generateNewsFiles, getBusinessNews };
+module.exports = { generateNewsFiles };
