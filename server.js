@@ -446,9 +446,13 @@ async function cronEmail() {
   await emailCurrentSlot();
 }
 async function emailCurrentSlot() {
-  console.log("EMAILING SLOT : "+(slot+1));
+  slot++;
+  if (slot == 48) {
+    slot = 0;
+  }
+  console.log("EMAILING SLOT : "+(slot));
   await db.all(
-    `SELECT * FROM users WHERE emailslot = ${slot+1}`,
+    `SELECT * FROM users WHERE emailslot = ${slot}`,
     async (err, rows) => {
       if (rows) {
         rows.forEach(async (row) => {
@@ -485,10 +489,7 @@ async function emailCurrentSlot() {
       }
     }
   );
-  slot++;
-  if (slot == 48) {
-    slot = 0;
-  }
+
 }
 
 cron.schedule("0 * * * *", async () => {
@@ -513,6 +514,7 @@ function ensureAuthenticated(req, res, next) {
 
   app.listen(port || 10000, async () => {
     console.log("STARTING WITH SLOT : "+slot)
+    await newsWritter.generateNewsFiles();
     console.log("SERVER RUNNING ON PORT " + port);
 });
 

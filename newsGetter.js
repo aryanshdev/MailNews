@@ -317,10 +317,11 @@ async function generateNewsFiles() {
 
     await Promise.all([
       getBusinessNews(),
-      getSportsNews(),
       getEntertainmentNews(),
     ]);
-  } catch (error) {}
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 module.exports = { generateNewsFiles };
