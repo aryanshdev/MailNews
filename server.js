@@ -406,7 +406,7 @@ var newsEmailBodyStart = `<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o=
       }
    </style>
 
-<body style="margin:0;padding:10px;-webkit-text-size-adjust:none;text-size-adjust:none">`;
+<body style="margin:0;padding:10px;-webkit-text-size-adjust:none;text-size-adjust:none;color:white">`;
 
 app.use(passport.initialize());
 app.use(passport.session());
