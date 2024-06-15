@@ -791,7 +791,7 @@ app.get("/google-auth-success", ensureAuthenticated, (req, res) => {
             if (row == undefined) {
               res.status(404).render(__dirname + "/src/error.ejs", {
                 title: "Account Not Found",
-                message: `It seems like the account you are trying to connect to does not exist.`,
+                message: `It seems like the account you are trying to login to does not exist.`,
               });
             } else {
               res.status(500).render(__dirname + "/src/error.ejs", {

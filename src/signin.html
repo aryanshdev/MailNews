@@ -16,87 +16,93 @@
   <body
     class="text-lg bg-slate-950 flex flex-wrap w-screen h-screen scroll-smooth overflow-x-hidden"
   >
-    <nav
-      class="fixed bg-slate-950 bg-opacity-90 lg:bg-opacity-45 top-0 left-0 w-full px-4 py-0 backdrop-blur-lg text-white z-20 flex items-center h-12 justify-between"
+  <nav
+  class="fixed bg-slate-950 bg-opacity-90 lg:bg-opacity-45 top-0 left-0 w-full px-4 py-0 backdrop-blur-lg text-white z-20 flex items-center h-12 justify-between"
+>
+  <div class="w-screen flex flex-wrap items-center justify-between p-2">
+    <a href="/">
+      <span
+        class="self-center text-xl font-semibold whitespace-nowrap text-white"
+        >MailNews</span
+      >
+    </a>
+    <button
+      id="navbar-solid-bg-btn"
+      data-collapse-toggle="navbar-solid-bg-btn"
+      type="button"
+      class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+      aria-controls="navbar-solid-bg"
+      aria-expanded="false"
     >
-      <div class="w-screen flex flex-wrap items-center justify-between p-2">
-        <a href="/">
-          <span
-            class="self-center text-xl font-semibold whitespace-nowrap text-white"
-            >MailNews</span
+      <span class="sr-only">Open main menu</span>
+      <svg
+        class="w-5 h-5"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 17 14"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M1 1h15M1 7h15M1 13h15"
+        />
+      </svg>
+    </button>
+    <div
+      id="mobile-menu"
+      class="hidden top-10 lg:hidden w-screen fixed text-center left-0 z-50 rounded-br-lg rounded-bl-lg bg-slate-950 backdrop-blur-2xl duration-500"
+    >
+      <a href="/" class="block text-white py-2 px-4">Home</a>
+      <a href="/news" class="block text-white py-2 px-4">News</a>
+      <a
+        href="/signup"
+        class="block text-white py-2 px-4 font-semibold"
+      >
+         Sign-Up
+      </a>
+      <a href="/contact" class="block text-white py-2 px-4">Contact</a>
+    </div>
+    <div class="hidden w-full md:block md:w-auto" id="navbar-solid-bg">
+      <ul
+        class="flex flex-col font-medium mt-4 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent"
+      >
+        <li>
+          <a
+            href="/"
+            class="block py-2 px-3 md:p-0 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent"
+            aria-current="page"
+            >Home</a
           >
-        </a>
-        <button
-          id="navbar-solid-bg-btn"
-          data-collapse-toggle="navbar-solid-bg-btn"
-          type="button"
-          class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-          aria-controls="navbar-solid-bg"
-          aria-expanded="false"
-        >
-          <span class="sr-only">Open main menu</span>
-          <svg
-            class="w-5 h-5"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 17 14"
+        </li>
+        <li>
+          <a
+            href="#"
+            class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent"
+            >News</a
           >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M1 1h15M1 7h15M1 13h15"
-            />
-          </svg>
-        </button>
-        <div
-          id="mobile-menu"
-          class="hidden top-10 lg:hidden w-screen fixed text-center left-0 z-50 rounded-br-lg rounded-bl-lg bg-slate-950 backdrop-blur-2xl duration-500"
-        >
-          <a href="/" class="block text-white py-2 px-4">Home</a>
-          <a href="/news" class="block text-white py-2 px-4">News</a>
-          <a href="#" class="block text-white py-2 px-4">Sign In</a>
-          <a href="#" class="block text-white py-2 px-4">Contact</a>
-        </div>
-        <div class="hidden w-full md:block md:w-auto" id="navbar-solid-bg">
-          <ul
-            class="flex flex-col font-medium mt-4 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent"
+        </li>
+        <li>
+          <a
+          href="/login"
+            class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent">
+           Sign Up
+          </a>
+        </li>
+        <li>
+          <a
+            href="/contact"
+            class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent"
+            >Contact</a
           >
-            <li>
-              <a
-                href="/"
-                class="block py-2 px-3 md:p-0 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent"
-                aria-current="page"
-                >Home</a
-              >
-            </li>
-            <li>
-              <a
-                href="#"
-                class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent"
-                >Services</a
-              >
-            </li>
-            <li>
-              <a
-                href="#"
-                class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent"
-                >Pricing</a
-              >
-            </li>
-            <li>
-              <a
-                href="#"
-                class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent"
-                >Contact</a
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
 
     <div
       id="popup"
