@@ -1,47 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Panel</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<body class="bg-slate-950 text-xl flex w-screen min-h-screen text-white p-5 flex-row flex-wrap">
+  <body
+    class="bg-slate-950 text-xl flex w-screen min-h-screen text-white p-5 flex-row flex-wrap"
+  >
+    <div
+      class="grid grid-flow-row md:grid-flow-col md:grid-cols-2 w-screen gap-8"
+    >
+      <div class="w-full flex flex-col gap-3 flex-wrap h-fit">
+        <h1 class="text-3xl font-semibold w-full">Subscribers</h1>
+        <div class="w-full grid grid-cols-2 gap-3">
+          <div
+            class="w-full h-full bg-slate-800 bg-opacity-55 text-white rounded-lg p-2 font-semibold text-lg"
+          >
+            Total Subs: <%= totalSubscribers %>
+          </div>
+          <div
+            class="w-full h-full bg-slate-800 bg-opacity-55 text-white rounded-lg p-2 font-semibold text-lg"
+          >
+            Subs/Day: <span id="subperday"></span>
+          </div>
+          <div
+            class="w-full h-full bg-slate-800 bg-opacity-55 text-white rounded-lg p-2 font-semibold text-lg"
+          >
+            Subs in 15 Days: <span id="last15"></span>
+          </div>
+          <div
+            class="w-full h-full bg-slate-800 bg-opacity-55 text-white rounded-lg p-2 font-semibold text-lg"
+          >
+            Subs/Day: <span id="subperday"></span>
+          </div>
+        </div>
+        <div class="w-full">
+          <canvas id="subsChart" class="w-1/2 h-1/2 fill-white"></canvas>
+        </div>
+      </div>
 
-    <div class="w-full flex flex-col lg:flex-row gap-3 flex-wrap h-fit ">
-        <h1 class="text-3xl lg:text-xl font-semibold w-full ">Subscribers</h1>
-        <div class="w-full lg:w-1/2 grid grid-cols-2 gap-3">
-            <div class="w-full h-full bg-slate-800 bg-opacity-55 text-white rounded-lg p-2 font-semibold text-lg">
-                Total Subs: <%= totalSubscribers %>
-            </div>
-            <div class="w-full h-full bg-slate-800 bg-opacity-55 text-white rounded-lg p-2 font-semibold text-lg">
-                Subs/Day: <span id="subperday"></span>
-            </div>
-            <div class="w-full h-full bg-slate-800 bg-opacity-55 text-white rounded-lg p-2 font-semibold text-lg">
-                Subs/Day: <span id="subperday"></span>
-            </div>
-            <div class="w-full h-full bg-slate-800 bg-opacity-55 text-white rounded-lg p-2 font-semibold text-lg">
-                Subs/Day: <span id="subperday"></span>
-            </div>
+      <div class="w-full flex flex-col gap-3 flex-wrap h-fit text-left">
+        <h1 class="text-3xl font-semibold block">Topics</h1>
+        <div class="w-11/12 max-h-full flex items-center justify-center">
+          <canvas id="topicTotalChart" class="w-max fill-white"></canvas>
         </div>
-        <div class="lg:w-1/2  w-full !min-h-96">
-            <canvas id="myChart" class="w-1/2 h-1/2 fill-white"></canvas>
-        </div>
+      </div>
     </div>
-
-
-</body>
-
+  </body>
 </html>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    var chartDisplay = document.getElementById('myChart');
+    var subsChartDisplay = document.getElementById('subsChart');
+    var topicPieChart = document.getElementById("topicTotalChart")
+
+    //Data Preperation For Subscribers Chart
+    //#region
     var DateWiseSubs = {};
-
-
-    <% for(var dos in subscribers) { console.log(subscribers[dos]) %>
+    <% for(var dos in subscribers) {  %>
              DateWiseSubs['<%= dos %>'] = <%=  subscribers[dos] %>;
         <% }; %>
 
@@ -53,7 +71,7 @@
 
     for (var i = 1; i <= daysInMonth; i++) {
         var date = currentYear + '-' + (currentMonth > 9 ? currentMonth : '0' + currentMonth) + '-' + (i > 9 ? i : '0' + i);
-        if (currentDate.getDate() + 7 == i) {
+        if (currentDate.getDate() + 2 == i) {
             break;
         }
         DateWiseSubs[date] = `${(DateWiseSubs[date] ? DateWiseSubs[date] : 0)}`;
@@ -68,9 +86,19 @@
         }, {});
 
     document.getElementById('subperday').innerText = (<%= totalSubscribers %> / Object.keys(DateWiseSubs).length).toFixed(2);
+      //#endregion
+
+      var Data = {}
+      <% for(var dos in topicsData) {  %>
+             Data['<%= dos %>'] = <%=  topicsData[dos] %>;
+        <% }; %>
+
+
+
+    // Setting Up Charts
+
     Chart.defaults.color = 'white';
-    Chart.defaults.font.style
-    var chart = new Chart(chartDisplay, {
+    var subsChart = new Chart(subsChartDisplay, {
         type: 'line',
 
         data:
@@ -98,5 +126,26 @@
         },
 
 
+    })
+    var topicsChart = new Chart(topicPieChart, {
+      type: "doughnut",
+      data: {
+          datasets : [{
+              data:Object.values(Data)
+          }],
+          labels: Object.keys(Data)
+      },
+      options: {
+      plugins: {
+          legend: {
+              display: true,
+              position: 'bottom',
+              labels: {
+                  usePointStyle: true
+              }
+          },
+
+      }
+  }
     })
 </script>

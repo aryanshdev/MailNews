@@ -947,6 +947,17 @@ app.get("/admin", async (req, res) => {
         }
         return acc;
       }, {}),
+      topicsData: rows.reduce((acc,row)=>{
+        for(var topic of row.interests.split(",")){
+           if(acc[topic]){
+            acc[topic]++
+           }
+           else{
+            acc[topic]=1;
+           }
+        }
+        return acc;
+      }, {})
     });
   });
 });
