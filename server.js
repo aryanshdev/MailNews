@@ -110,6 +110,10 @@ db.run(
   "CREATE TABLE IF NOT EXISTS users (emailID TEXT PRIMARY KEY, emailHash TEXT NOT NULL, name TEXT NOT NULL, password TEXT NOT NULL, dos TEXT NOT NULL, interests TEXT NOT NULL, emailslot INTEGER NOT NULL, googleUID TEXT UNIQUE )"
 );
 
+db.run(
+  "CREATE TABLE IF NOT EXISTS query_issues (id TEXT PRIMARY KEY, email TEXT NOT NULL, name TEXT NOT NULL, content TEXT NOT NULL, date TEXT NOT NULL)"
+);
+
 passport.use(
   new GoogleStrategy(
     {
@@ -406,6 +410,40 @@ var newsEmailBodyStart = `<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o=
 
 <body style="margin:0;padding:10px;-webkit-text-size-adjust:none;text-size-adjust:none;color:white">`;
 
+var queryReplyBody = `<!DOCTYPE html><html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en"><head><title></title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><!--[if mso]><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]--><style>
+*{box-sizing:border-box}body{margin:0;padding:0}a[x-apple-data-detectors]{color:inherit!important;text-decoration:inherit!important}#MessageViewBody a{color:inherit;text-decoration:none}p{line-height:inherit}.desktop_hide,.desktop_hide table{mso-hide:all;display:none;max-height:0;overflow:hidden}.image_block img+div{display:none} @media (max-width:720px){.social_block.desktop_hide .social-table{display:inline-block!important}.mobile_hide{display:none}.row-content{width:100%!important}.stack .column{width:100%;display:block}.mobile_hide{min-height:0;max-height:0;max-width:0;overflow:hidden;font-size:0}.desktop_hide,.desktop_hide table{display:table!important;max-height:none!important}}
+</style></head><body class="body" style="background-color:#fff;margin:0;padding:0;-webkit-text-size-adjust:none;text-size-adjust:none"><table class="nl-container" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace:0;mso-table-rspace:0;background-color:#fff"><tbody><tr><td><table class="row row-1" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td>
+<table class="row-content stack" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace:0;mso-table-rspace:0;border-radius:0;color:#000;width:700px;margin:0 auto" width="700"><tbody><tr><td class="column column-1" width="100%" style="mso-table-lspace:0;mso-table-rspace:0;font-weight:400;text-align:left;padding-bottom:5px;padding-top:5px;vertical-align:top;border-top:0;border-right:0;border-bottom:0;border-left:0"><table 
+class="paragraph_block block-1" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"><tr><td class="pad"><div style="color:#000;direction:ltr;font-family:Arial,Helvetica Neue,Helvetica,sans-serif;font-size:16px;font-weight:400;letter-spacing:0;line-height:120%;text-align:left;mso-line-height-alt:19.2px"><p style="margin:0">As you mentioned previously in your Query/Issue (#QUERY_ID)</p></div></td></tr>
+</table><table class="text_block block-2" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"><tr><td class="pad"><div style="font-family:Verdana,sans-serif"><div class style="font-size:14px;font-family:'Lucida Sans Unicode','Lucida Grande','Lucida Sans',Geneva,Verdana,sans-serif;mso-line-height-alt:16.8px;color:#555;line-height:1.2"><p style="margin:0;font-size:14px;mso-line-height-alt:16.8px">
+<span style="font-size:16px;"><em>“ QUERY_BODY ”</em></span></p></div></div></td></tr></table><table class="text_block block-3" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"><tr><td class="pad"><div style="font-family:sans-serif"><div class style="font-size:14px;font-family:Arial,Helvetica Neue,Helvetica,sans-serif;mso-line-height-alt:16.8px;color:#555;line-height:1.2"><p 
+style="margin:0;font-size:14px;mso-line-height-alt:16.8px"><span style="font-size:16px;">We would like to let you know that</span></p></div></div></td></tr></table><table class="text_block block-4" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"><tr><td class="pad"><div style="font-family:sans-serif"><div class 
+style="font-size:12px;font-family:Arial,Helvetica Neue,Helvetica,sans-serif;mso-line-height-alt:14.399999999999999px;color:#555;line-height:1.2"><p style="margin:0;font-size:12px;mso-line-height-alt:14.399999999999999px"><span style="font-size:16px;">REPLY_BODY</span></p></div></div></td></tr></table><table class="text_block block-5" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"><tr><td 
+class="pad"><div style="font-family:sans-serif"><div class style="font-size:14px;font-family:Arial,Helvetica Neue,Helvetica,sans-serif;mso-line-height-alt:21px;color:#555;line-height:1.5"><p style="margin:0;font-size:16px;mso-line-height-alt:24px"><span style="font-size:16px;">Thanks And Regards,</span></p><p style="margin:0;font-size:16px;mso-line-height-alt:24px"><strong><span style="font-size:16px;">MailNews</span></strong></p><p style="margin:0;font-size:16px;mso-line-height-alt:24px">
+<strong><em><span style="font-size:16px;">by Aryansh Gupta (<a href="https://github.com/aryanshdev" target="_blank" style="text-decoration: underline; color: #0068A5;" rel="noopener">AryanshDev</a>)</span></em></strong></p></div></div></td></tr></table><table class="social_block block-6" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace:0;mso-table-rspace:0"><tr><td class="pad"><div class="alignment" align="left"><table 
+class="social-table" width="208px" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace:0;mso-table-rspace:0;display:inline-block"><tr><td style="padding:0 20px 0 0"><a href="https://github.com/aryanshdev" target="_blank"><img src="https://d15k2d11r6t6rl.cloudfront.net/pub/r388/l239mmxz/bk8/lx7/2l3/github.jpeg" width="32" height="auto" alt="Github" title="Github" style="display:block;height:auto;border:0"></a></td><td 
+style="padding:0 20px 0 0"><a href="https://www.linkedin.com/in/aryanshdev/" target="_blank"><img src="https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/circle-color/linkedin@2x.png" width="32" height="auto" alt="LinkedIn" title="LinkedIn" style="display:block;height:auto;border:0"></a></td><td style="padding:0 20px 0 0"><a href="https://instagram.com/__aryansh._" target="_blank"><img 
+src="https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/circle-color/instagram@2x.png" width="32" height="auto" alt="Instagram" title="Instagram" style="display:block;height:auto;border:0"></a></td><td style="padding:0 20px 0 0"><a href="https://aryanshdev.medium.com/" target="_blank"><img src="https://d15k2d11r6t6rl.cloudfront.net/pub/r388/l239mmxz/xzh/ae3/r7m/60170ae2b92849127d67fb0f_medium-1693563-1442604.png" width="32" height="auto" alt="Medium" 
+title="Medium" style="display:block;height:auto;border:0"></a></td></tr></table></div></td></tr></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!-- End --><div style="background-color:transparent;">
+    <div style="Margin: 0 auto;min-width: 320px;max-width: 500px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;" class="block-grid ">
+        <div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="background-color:transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width: 500px;"><tr class="layout-full-width" style="background-color:transparent;"><![endif]-->
+            <!--[if (mso)|(IE)]><td align="center" width="500" style=" width:500px; padding-right: 0px; padding-left: 0px; padding-top:15px; padding-bottom:15px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><![endif]-->
+            <div class="col num12" style="min-width: 320px;max-width: 500px;display: table-cell;vertical-align: top;">
+                <div style="background-color: transparent; width: 100% !important;">
+                    <!--[if (!mso)&(!IE)]><!--><div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:15px; padding-bottom:15px; padding-right: 0px; padding-left: 0px;">
+                        <!--<![endif]-->
+
+
+                        <!--[if (!mso)&(!IE)]><!-->
+                    </div><!--<![endif]-->
+                </div>
+            </div>
+            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+        </div>
+    </div>
+</div></body></html>`;
+
 app.use(passport.initialize());
 app.use(passport.session());
 passport.serializeUser(function (user, done) {
@@ -450,7 +488,7 @@ async function emailCurrentSlot() {
   if (slot == 48) {
     slot = 0;
   }
-  console.log("EMAILING SLOT : "+(slot));
+  console.log("EMAILING SLOT : " + slot);
   await db.all(
     `SELECT * FROM users WHERE emailslot = ${slot}`,
     async (err, rows) => {
@@ -489,7 +527,6 @@ async function emailCurrentSlot() {
       }
     }
   );
-
 }
 
 cron.schedule("0 * * * *", async () => {
@@ -511,10 +548,16 @@ function ensureAuthenticated(req, res, next) {
   }
   res.status(401).redirect("/signin");
 }
+function ensureAdmin(req, res, next) {
+  if (req.session.isAdmin) {
+    return next();
+  }
+  res.status(401).redirect("/signin");
+}
 
-  app.listen(port || 10000, async () => {
-    console.log("STARTING WITH SLOT : "+slot)
-    console.log("SERVER RUNNING ON PORT " + port);
+app.listen(port || 10000, async () => {
+  console.log("STARTING WITH SLOT : " + slot);
+  console.log("SERVER RUNNING ON PORT " + port);
 });
 
 app.get("/", async (req, res) => {
@@ -928,10 +971,10 @@ app.get("/logout", (req, res) => {
 });
 
 app.get("/admin", async (req, res) => {
-  db.all("SELECT * FROM users", async (err, rows) => {
+  db.all("SELECT * FROM users ", async (err, rows) => {
     res.render(__dirname + "/src/admin.ejs", {
       totalSubscribers: rows.length,
-      emailslots: rows.reduce((acc, row) => {
+      emailSlots: rows.reduce((acc, row) => {
         if (acc[row.emailslot]) {
           acc[row.emailslot]++;
         } else {
@@ -947,17 +990,16 @@ app.get("/admin", async (req, res) => {
         }
         return acc;
       }, {}),
-      topicsData: rows.reduce((acc,row)=>{
-        for(var topic of row.interests.split(",")){
-           if(acc[topic]){
-            acc[topic]++
-           }
-           else{
-            acc[topic]=1;
-           }
+      topicsData: rows.reduce((acc, row) => {
+        for (var topic of row.interests.split(",")) {
+          if (acc[topic]) {
+            acc[topic]++;
+          } else {
+            acc[topic] = 1;
+          }
         }
         return acc;
-      }, {})
+      }, {}),
     });
   });
 });
@@ -973,6 +1015,36 @@ app.post("/deleteAccount", ensureAuthenticated, (req, res) => {
           req.logout(() => {
             res.sendStatus(200);
           });
+        }
+      }
+    );
+  } else {
+    res.sendStatus(401);
+  }
+});
+
+app.post("/reply", ensureAdmin, (req, res) => {
+  if (req.session.isAdmin) {
+    db.get(
+      `SELECT * FROM query_issues WHERE queryID = '${req.body.queryID}'`,
+      (err, row) => {
+        if (row) {
+          mailer
+            .sendMail({
+              to: row.email,
+              from: `MailNews ${process.env.EMAIL}`,
+              subject: "Reply Regarding Your Query/Issue | MailNews",
+              html: queryReplyBody
+                .replace("QUERY_BODY", row.content)
+                .replace("REPLY_BODY", req.body.reply)
+                .replace("QUERY_ID", req.body.queryID),
+            })
+            .catch((err) => {
+              res.status(500).send("Some Error Occured");
+            })
+            .then(() => {
+              res.status(200).send("Successfully Replied");
+            });
         }
       }
     );
