@@ -233,9 +233,7 @@ async function getBusinessNews() {
 
 async function getSportsNews() {
   let sportsNewsData = {};
-  let rawMainHTML = await axios.get(sportsNewsURL, {
-    headers: reqHeaders,
-  });
+  let rawMainHTML = await axios.get(sportsNewsURL);
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
   const newsLinks = $(".B1S3_content__wrap__9mSB6 h3 a").toArray();
@@ -243,9 +241,7 @@ async function getSportsNews() {
   //   "a.link__inherit-line-height__2qjXx"
   // ))
   for (const aLink of newsLinks) {
-    let rawArticleHTML = await axios.get(aLink.attribs["href"], {
-      headers: reqHeaders,
-    });
+    let rawArticleHTML = await axios.get(aLink.attribs["href"]);
     rawArticleHTML = rawArticleHTML.data;
     let articleHTML = cheerio.load(rawArticleHTML);
     let heading = articleHTML(".main__content h1").text();
