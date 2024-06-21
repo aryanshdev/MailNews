@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>News | MailNews</title>
+  <title>My Dashboard | MailNews</title>
   <link rel="shortcut icon" href="./MailNews.png" type="image/png">
   <link href="style.css" rel="stylesheet" />
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoog5le.js?client=ca-pub-2238125462513134"
@@ -224,6 +224,15 @@
         class="!bg-slate-700 text-white rounded-full px-12 py-2 lg:px-7 lg:py-2 mt-5 font-semibold text-lg disabled:bg-opacity-70 disabled:text-gray-400 transition-all duration-300 block">
         Update
       </button>
+      <div class="mt-6 mb-10">
+        <h1 class="text-xl font-bold text-white mt-10 mb-5">Issues and Queries Raised</h1>
+        <% if(queryIssueData.length == 0) { %>
+          <h1 class="font-semibold text-lg">No Unreplied Issue/Query</h1>
+        <% } for(var queryIssue of queryIssueData){ %>
+            <%-  include('QueryDisplay.ejs', {querytitle:queryIssue.content, id:queryIssue.id , date:queryIssue.data,
+            name:queryIssue.name, email:queryIssue.email, displayReply:"none"}) %>
+         <% } %>
+      </div>
       <div class="flex justify-center w-full">
 
         <hr class="w-3/4 md:w-1/2 h-1 my-6 bg-slate-500 border-none rounded-full">
@@ -452,7 +461,6 @@
             "Content-Type": "application/x-www-form-urlencoded",
           },
         }).then((res) => {
-          console.log(res);
           if (res.status === 200) {
             showPopup("News Topics Updated Successfully", "info");
             document

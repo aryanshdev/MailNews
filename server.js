@@ -415,11 +415,11 @@ var queryReplyBody = `<!DOCTYPE html><html xmlns:v="urn:schemas-microsoft-com:vm
 </style></head><body class="body" style="background-color:#fff;margin:0;padding:0;-webkit-text-size-adjust:none;text-size-adjust:none"><table class="nl-container" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace:0;mso-table-rspace:0;background-color:#fff"><tbody><tr><td><table class="row row-1" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td>
 <table class="row-content stack" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace:0;mso-table-rspace:0;border-radius:0;color:#000;width:700px;margin:0 auto" width="700"><tbody><tr><td class="column column-1" width="100%" style="mso-table-lspace:0;mso-table-rspace:0;font-weight:400;text-align:left;padding-bottom:5px;padding-top:5px;vertical-align:top;border-top:0;border-right:0;border-bottom:0;border-left:0"><table 
 class="paragraph_block block-1" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"><tr><td class="pad"><div style="color:#000;direction:ltr;font-family:Arial,Helvetica Neue,Helvetica,sans-serif;font-size:16px;font-weight:400;letter-spacing:0;line-height:120%;text-align:left;mso-line-height-alt:19.2px"><p style="margin:0">As you mentioned previously in your Query/Issue (#QUERY_ID)</p></div></td></tr>
-</table><table class="text_block block-2" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"><tr><td class="pad"><div style="font-family:Verdana,sans-serif"><div class style="font-size:14px;font-family:'Lucida Sans Unicode','Lucida Grande','Lucida Sans',Geneva,Verdana,sans-serif;mso-line-height-alt:16.8px;color:#555;line-height:1.2"><p style="margin:0;font-size:14px;mso-line-height-alt:16.8px">
+</table><table class="text_block block-2" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"><tr><td class="pad"><div style="font-family:sans-serif"><div class style="font-size:14px;font-family:'Lucida Sans Unicode','Lucida Grande','Lucida Sans',Geneva,Verdana,sans-serif;mso-line-height-alt:16.8px;color:#555;line-height:1.2"><p style="margin:0;font-size:14px;mso-line-height-alt:16.8px">
 <span style="font-size:16px;"><em>“ QUERY_BODY ”</em></span></p></div></div></td></tr></table><table class="text_block block-3" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"><tr><td class="pad"><div style="font-family:sans-serif"><div class style="font-size:14px;font-family:Arial,Helvetica Neue,Helvetica,sans-serif;mso-line-height-alt:16.8px;color:#555;line-height:1.2"><p 
-style="margin:0;font-size:14px;mso-line-height-alt:16.8px"><span style="font-size:16px;">We would like to let you know that</span></p></div></div></td></tr></table><table class="text_block block-4" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"><tr><td class="pad"><div style="font-family:sans-serif"><div class 
+style="margin:0;font-size:14px;mso-line-height-alt:16.8px"><span style="font-size:16px;color:black">We would like to let you know that</span></p></div></div></td></tr></table><table class="text_block block-4" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"><tr><td class="pad"><div style="font-family:sans-serif"><div class 
 style="font-size:12px;font-family:Arial,Helvetica Neue,Helvetica,sans-serif;mso-line-height-alt:14.399999999999999px;color:#555;line-height:1.2"><p style="margin:0;font-size:12px;mso-line-height-alt:14.399999999999999px"><span style="font-size:16px;">REPLY_BODY</span></p></div></div></td></tr></table><table class="text_block block-5" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"><tr><td 
-class="pad"><div style="font-family:sans-serif"><div class style="font-size:14px;font-family:Arial,Helvetica Neue,Helvetica,sans-serif;mso-line-height-alt:21px;color:#555;line-height:1.5"><p style="margin:0;font-size:16px;mso-line-height-alt:24px"><span style="font-size:16px;">Thanks And Regards,</span></p><p style="margin:0;font-size:16px;mso-line-height-alt:24px"><strong><span style="font-size:16px;">MailNews</span></strong></p><p style="margin:0;font-size:16px;mso-line-height-alt:24px">
+class="pad"><div style="font-family:sans-serif"><div class style="font-size:14px;font-family:Arial,Helvetica Neue,Helvetica,sans-serif;mso-line-height-alt:21px;color:#555;line-height:1.5"><p style="margin:0;font-size:16px; color:black;mso-line-height-alt:24px"><span style="font-size:16px;">Thanks And Regards,</span></p><p style="margin:0;font-size:16px;mso-line-height-alt:24px"><strong><span style="font-size:16px;">MailNews</span></strong></p><p style="margin:0;font-size:16px;mso-line-height-alt:24px">
 <strong><em><span style="font-size:16px;">by Aryansh Gupta (<a href="https://github.com/aryanshdev" target="_blank" style="text-decoration: underline; color: #0068A5;" rel="noopener">AryanshDev</a>)</span></em></strong></p></div></div></td></tr></table><table class="social_block block-6" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace:0;mso-table-rspace:0"><tr><td class="pad"><div class="alignment" align="left"><table 
 class="social-table" width="208px" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace:0;mso-table-rspace:0;display:inline-block"><tr><td style="padding:0 20px 0 0"><a href="https://github.com/aryanshdev" target="_blank"><img src="https://d15k2d11r6t6rl.cloudfront.net/pub/r388/l239mmxz/bk8/lx7/2l3/github.jpeg" width="32" height="auto" alt="Github" title="Github" style="display:block;height:auto;border:0"></a></td><td 
 style="padding:0 20px 0 0"><a href="https://www.linkedin.com/in/aryanshdev/" target="_blank"><img src="https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/circle-color/linkedin@2x.png" width="32" height="auto" alt="LinkedIn" title="LinkedIn" style="display:block;height:auto;border:0"></a></td><td style="padding:0 20px 0 0"><a href="https://instagram.com/__aryansh._" target="_blank"><img 
@@ -549,6 +549,7 @@ function ensureAuthenticated(req, res, next) {
   res.status(401).redirect("/signin");
 }
 function ensureAdmin(req, res, next) {
+  req.session.isAdmin = true;
   if (req.session.isAdmin) {
     return next();
   }
@@ -574,6 +575,8 @@ app.post("/signin", (req, res) => {
           crypto.createHash("sha256").update(req.body.pass).digest("hex")
         ) {
           req.session.loggedin = row.emailID;
+          req.session.loggedinName = row.name;
+          console.log(req.session)
           if (req.body.saveLogin === "true") {
             res.cookie(
               "__logcred__",
@@ -603,11 +606,14 @@ app.get("/dashboard", ensureAuthenticated, (req, res) => {
     req.session.loggedin = req.user.email;
   }
   let email = req.session.loggedin;
-  db.get(`SELECT * FROM users WHERE emailID = "${email}"`, (err, row) => {
+  db.get(`SELECT * FROM users WHERE emailID = "${email}"`, async (err, row) => {
     if (row) {
       res.render(__dirname + "/src/dashboard.ejs", {
         isLoggedIn: true,
         selectedTopicsString: row.interests,
+        queryIssueData: await fetchData(
+          `SELECT * FROM query_issues WHERE email = "${email}"`
+        ),
         timeSlot: row.emailslot,
         googleAuth: row.googleUID,
       });
@@ -697,6 +703,12 @@ app.get("/resetPass", (req, res) => {
   res.sendFile(__dirname + "/src/passwordReset.html");
 });
 
+app.get("/contact", (req, res) => {
+  res.render(__dirname + "/src/contact.ejs", {
+    isLoggedIn: req.session.loggedin,
+  });
+});
+
 app.post("/resetPass", (req, res) => {
   db.get(
     "SELECT * FROM users WHERE emailID = ?",
@@ -734,6 +746,22 @@ app.post("/resetPass", (req, res) => {
     }
   );
 });
+
+app.post("/addQuery", ensureAuthenticated, (req, res)=>{
+  var queryID = parseInt(Math.random()*10000000000).toString()
+    db.run(`INSERT INTO query_issues (id, email, name, content, date) VALUES ('${queryID}', '${req.session.loggedin}', '${req.session.loggedinName}', '${req.body.message}', '${req.body.date}');
+`,
+(err) => {
+  if (err) {
+    res.sendStatus(500)
+  }
+  else{
+    res.status(200).send(queryID)
+  }
+}
+)
+});
+
 app.post("/verifyEmail", inSubscribingProcessCheck, async (req, res) => {
   if (req.body.verificationCode == req.session.registrationCode) {
     db.run(
@@ -902,6 +930,7 @@ app.post("/autologin", (req, res) => {
       if (row) {
         if (row.password == hashedPass) {
           req.session.loggedin = row.emailID;
+          req.session.loggedinName = row.name;
           res.status(200).redirect("/dashboard");
         } else {
           res.sendStatus(406);
@@ -969,9 +998,20 @@ app.get("/logout", (req, res) => {
     }
   });
 });
+async function fetchData(command) {
+  return new Promise((resolve, reject) => {
+    db.all(command, (err, rows) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(rows); // Resolve the promise with `rows`
+    });
+  });
+}
 
 app.get("/admin", async (req, res) => {
-  db.all("SELECT * FROM users ", async (err, rows) => {
+  var queryData = await fetchData("SELECT * FROM query_issues");
+  db.all("SELECT * FROM users", async (err, rows) => {
     res.render(__dirname + "/src/admin.ejs", {
       totalSubscribers: rows.length,
       emailSlots: rows.reduce((acc, row) => {
@@ -1000,6 +1040,7 @@ app.get("/admin", async (req, res) => {
         }
         return acc;
       }, {}),
+      queryIssueData: queryData,
     });
   });
 });
@@ -1026,7 +1067,7 @@ app.post("/deleteAccount", ensureAuthenticated, (req, res) => {
 app.post("/reply", ensureAdmin, (req, res) => {
   if (req.session.isAdmin) {
     db.get(
-      `SELECT * FROM query_issues WHERE queryID = '${req.body.queryID}'`,
+      `SELECT * FROM query_issues WHERE id = '${req.body.queryID}'`,
       (err, row) => {
         if (row) {
           mailer
@@ -1043,6 +1084,9 @@ app.post("/reply", ensureAdmin, (req, res) => {
               res.status(500).send("Some Error Occured");
             })
             .then(() => {
+              db.run(
+                `DELETE  FROM query_issues WHERE id = '${req.body.queryID}'`
+              );
               res.status(200).send("Successfully Replied");
             });
         }

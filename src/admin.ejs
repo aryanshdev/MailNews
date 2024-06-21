@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 
-<body class="bg-slate-950 text-xl flex w-full min-h-screen text-white p-7 flex-row flex-wrap">
+<body class="bg-slate-950 text-xl flex w-full min-h-screen text-white p-4 md:p-7 flex-row flex-wrap">
   <div id="popup"
     class="border-solid border-2 border-gray-400 w-auto p-3 top-10 bg-blue-700 translate-x-100 max-w-56 z-50 my-10 font-sans font-semibold fixed text-white right-0 rounded-md transition-all duration-300 md:text-lg md:p-4 md:max-w-72">
     MESSAGE
@@ -89,8 +89,12 @@
   <!-- GRID 3 -->
   <div class="w-full my-12">
     <h1 class="text-3xl font-semibold mb-6 ">Querys and Issues Raised</h1>
-    <%- include('QueryDisplay.ejs', {querytitle:'Mereko EMail Nhi Aa Raha Sir', id:"82990010" , date:"2024-05-5",
-      name:"Aryansh", email:"aryansh@dd.ss"}) %>
+    <% if(queryIssueData.length==0) { %>
+      <h1 class="font-semibold text-xl">No New or Unreplied Issue/Query</h1>
+      <% } for(var queryIssue of queryIssueData){ %>
+        <%- include('QueryDisplay.ejs', {querytitle:queryIssue.content, id:queryIssue.id , date:queryIssue.date,
+          name:queryIssue.name, email:queryIssue.email, displayReply:"*/"}) %>
+          <% } %>
   </div>
 </body>
 
@@ -300,23 +304,26 @@
 
   // Reply JS 
 
-  function submitReply(id){
+  function submitReply(id) {
+    document.getElementById(id).querySelector("button").setAttribute("disabled","disabled")
     fetch("/reply", {
       method: "POST",
-          body: new URLSearchParams({ queryID: id}),
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-    }).then(res=>{
-      if(res.status == 200){
+      body: new URLSearchParams({ queryID: id, reply: document.getElementById(id).querySelector("input").value }),
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    }).then(res => {
+      if (res.status == 200) {
         showPopup("Replied Successfully", "info");
+        document.getElementById(id).remove();
       }
-      else if(res.status == 404){
-        showPopup("Complaint With This ID Not Found", "err")
+      else if (res.status == 404) {
+        showPopup("Complaint With This ID Not Found, Please Refresh The Page Once", "err")
       }
-      else if(res.status == 500){
+      else if (res.status == 500) {
         showPopup("Some Error Occurred in Server", "err")
-      }   else if(res.status == 401){
+        document.getElementById(id).querySelector("button").removeAttribute("disabled")
+      } else if (res.status == 401) {
         setTimeout(() => {
           showPopup("Re-Login", "warn")
         }, 2000);
