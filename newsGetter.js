@@ -28,14 +28,18 @@ const reqHeaders = {
 
 async function getWorldNews() {
   let worldNewsData = {};
-  let rawMainHTML = await axios.get(worldNewsURL);
+  let rawMainHTML = await axios.get(worldNewsURL, {
+    headers: reqHeaders,
+  });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
 
   const newsLinks = $(".newsHdng a").toArray();
 
   for (const aLink of newsLinks) {
-    let rawArticleHTML = await axios.get(aLink.attribs["href"]);
+    let rawArticleHTML = await axios.get(aLink.attribs["href"], {
+      headers: reqHeaders,
+    });
 
     rawArticleHTML = rawArticleHTML.data;
     let articleHTML = cheerio.load(rawArticleHTML);
@@ -73,13 +77,17 @@ async function getWorldNews() {
 
 async function getTechNews() {
   let techNewsData = {};
-  let rawMainHTML = await axios.get(techNewsURL);
+  let rawMainHTML = await axios.get(techNewsURL, {
+    headers: reqHeaders,
+  });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
   const newsLinks = $(".wp-block-post-title a").toArray();
 
   for (const aLink of newsLinks) {
-    let rawArticleHTML = await axios.get(aLink.attribs["data-destinationlink"]);
+    let rawArticleHTML = await axios.get(aLink.attribs["data-destinationlink"], {
+      headers: reqHeaders,
+    });
 
     rawArticleHTML = rawArticleHTML.data;
     let articleHTML = cheerio.load(rawArticleHTML);
@@ -127,7 +135,9 @@ async function getTechNews() {
 
 async function getScienceNews() {
   let scienceNewsData = {};
-  let rawMainHTML = await axios.get(scienceNewsURL);
+  let rawMainHTML = await axios.get(scienceNewsURL, {
+    headers: reqHeaders,
+  });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
 
@@ -136,7 +146,9 @@ async function getScienceNews() {
     .slice(0, 10);
   for (const aLink of newsLinks) {
     let rawArticleHTML = await axios.get(
-      "https://www.nature.com" + aLink.attribs["href"]
+      "https://www.nature.com" + aLink.attribs["href"], {
+        headers: reqHeaders,
+      }
     );
 
     rawArticleHTML = rawArticleHTML.data;
@@ -172,7 +184,9 @@ async function getScienceNews() {
 
 async function getBusinessNews() {
   let businessNewsData = {};
-  let rawMainHTML = await axios.get(businessNewsURL);
+  let rawMainHTML = await axios.get(businessNewsURL, {
+    headers: reqHeaders,
+  });
   let $ = cheerio.load(rawMainHTML.data);
   const newsLinks = $(
     "a.container__link.container__link--type-article.container_lead-plus-headlines-with-images__link"
@@ -180,7 +194,9 @@ async function getBusinessNews() {
 
   for (const aLink of newsLinks) {
     let rawArticleHTML = await axios.get(
-      "https://edition.cnn.com" + aLink.attribs["href"]
+      "https://edition.cnn.com" + aLink.attribs["href"], {
+        headers: reqHeaders,
+      }
     );
     await sleep(900);
     let articleHTML = cheerio.load(rawArticleHTML.data);
@@ -217,34 +233,36 @@ async function getBusinessNews() {
 
 async function getSportsNews() {
   let sportsNewsData = {};
-  let rawMainHTML = await axios.get(sportsNewsURL);
+  let rawMainHTML = await axios.get(sportsNewsURL, {
+    headers: reqHeaders,
+  });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
-  const newsLinks = $(
-    ".B1S3_content__wrap__9mSB6 h3 a"
-  ).toArray();
+  const newsLinks = $(".B1S3_content__wrap__9mSB6 h3 a").toArray();
   // newsLinks.unshift($(
   //   "a.link__inherit-line-height__2qjXx"
   // ))
   for (const aLink of newsLinks) {
-   
-    let rawArticleHTML = await axios.get(aLink.attribs["href"]);
+    let rawArticleHTML = await axios.get(aLink.attribs["href"], {
+      headers: reqHeaders,
+    });
     rawArticleHTML = rawArticleHTML.data;
     let articleHTML = cheerio.load(rawArticleHTML);
     let heading = articleHTML(".main__content h1").text();
-    let img ;
-try{
-  img = articleHTML("div.Story_associate__image__bYOH_.topImage img")[0] ? 
-  articleHTML("div.Story_associate__image__bYOH_.topImage img")[0].attribs.src : 
-  articleHTML('.LiveBlog_liveblog__body__GOT0F .LiveBlog_blogmos__UcOVK img')[0].attribs.src;
-}
-catch{
-return
-}
-   // articleHTML(".ytp-cued-thumbnail-overlay-image")[0].attribs.style.match(/https?:\/\/[^\\s]+/)[0];
+    let img;
+    try {
+      img = articleHTML("div.Story_associate__image__bYOH_.topImage img")[0]
+        ? articleHTML("div.Story_associate__image__bYOH_.topImage img")[0]
+            .attribs.src
+        : articleHTML(
+            ".LiveBlog_liveblog__body__GOT0F .LiveBlog_blogmos__UcOVK img"
+          )[0].attribs.src;
+    } catch {
+      return;
+    }
+    // articleHTML(".ytp-cued-thumbnail-overlay-image")[0].attribs.style.match(/https?:\/\/[^\\s]+/)[0];
     let body = "";
-    articleHTML(
-      "div.Story_description__fq_4S p").each((index, para) => {
+    articleHTML("div.Story_description__fq_4S p").each((index, para) => {
       const text = articleHTML(para).text();
 
       if (text !== null) {
@@ -255,7 +273,7 @@ return
     const Summerizer = new node_summerizer.SummarizerManager(body, 5);
     sportsNewsData[heading] = {
       img: img,
-      link:  aLink.attribs["href"],
+      link: aLink.attribs["href"],
       content: (await Summerizer.getSummaryByRank()).summary,
     };
   }
@@ -270,7 +288,9 @@ return
 
 async function getEntertainmentNews() {
   let entertainmentNewsData = {};
-  let rawMainHTML = await axios.get(entertainmentNewsURL);
+  let rawMainHTML = await axios.get(entertainmentNewsURL, {
+    headers: reqHeaders,
+  });
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
   const newsLinks = $(".article-list-txt h2 a").toArray();
@@ -279,7 +299,9 @@ async function getEntertainmentNews() {
   // ))
   for (const aLink of newsLinks) {
     let rawArticleHTML = await axios.get(
-      "https://www.wionews.com" + aLink.attribs["href"]
+      "https://www.wionews.com" + aLink.attribs["href"], {
+        headers: reqHeaders,
+      }
     );
 
     rawArticleHTML = rawArticleHTML.data;
@@ -325,7 +347,7 @@ async function generateNewsFiles() {
       getEntertainmentNews(),
     ]);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 
