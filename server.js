@@ -567,7 +567,6 @@ function ensureAdmin(req, res, next) {
 }
 
 app.listen(port || 10000, async () => {
-  await newsWritter.getSportsNews();
   console.log("STARTING WITH SLOT : " + slot);
   console.log("SERVER RUNNING ON PORT " + port);
 });

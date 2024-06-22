@@ -349,4 +349,4 @@ async function generateNewsFiles() {
   }
 }
 
-module.exports = { generateNewsFiles,getSportsNews };
+module.exports = { generateNewsFiles };
