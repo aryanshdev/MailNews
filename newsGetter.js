@@ -233,6 +233,7 @@ async function getBusinessNews() {
 
 async function getSportsNews() {
   let sportsNewsData = {};
+  
   let rawMainHTML = await axios.get(sportsNewsURL);
   rawMainHTML = rawMainHTML.data;
   let $ = cheerio.load(rawMainHTML);
@@ -241,6 +242,7 @@ async function getSportsNews() {
   //   "a.link__inherit-line-height__2qjXx"
   // ))
   for (const aLink of newsLinks) {
+    console.log(aLink)
     let rawArticleHTML = await axios.get(aLink.attribs["href"]);
     rawArticleHTML = rawArticleHTML.data;
     let articleHTML = cheerio.load(rawArticleHTML);
@@ -254,7 +256,7 @@ async function getSportsNews() {
             ".LiveBlog_liveblog__body__GOT0F .LiveBlog_blogmos__UcOVK img"
           )[0].attribs.src;
     } catch {
-      return;
+      continue;
     }
     // articleHTML(".ytp-cued-thumbnail-overlay-image")[0].attribs.style.match(/https?:\/\/[^\\s]+/)[0];
     let body = "";
@@ -347,4 +349,4 @@ async function generateNewsFiles() {
   }
 }
 
-module.exports = { generateNewsFiles };
+module.exports = { generateNewsFiles,getSportsNews };

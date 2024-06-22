@@ -7,7 +7,7 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const nodemailer = require("nodemailer");
 let newsWritter = require("./newsGetter");
-const sql = require("sqlite3").verbose();
+const sql1 = require("sqlite3").verbose();
 const fileSystem = require("fs");
 const crypto = require("crypto");
 require("dotenv").config();
@@ -104,14 +104,23 @@ app.use(express.static("src"));
 
 var port = 10000;
 
-let db = new sql.Database("mailNews.db", (err) => {});
+
+const sql = require("sqlite3").verbose();               //Import Adapter
+
+let db = new sql.Database("mailNews.db", (err) => {});  //Connect Database
+
+//DDL Commands
 
 db.run(
-  "CREATE TABLE IF NOT EXISTS users (emailID TEXT PRIMARY KEY, emailHash TEXT NOT NULL, name TEXT NOT NULL, password TEXT NOT NULL, dos TEXT NOT NULL, interests TEXT NOT NULL, emailslot INTEGER NOT NULL, googleUID TEXT UNIQUE )"
+  `CREATE TABLE IF NOT EXISTS users (emailID TEXT PRIMARY KEY, emailHash TEXT NOT NULL, 
+   name TEXT NOT NULL, password TEXT NOT NULL, dos TEXT NOT NULL, interests TEXT NOT NULL, 
+   emailslot INTEGER NOT NULL, googleUID TEXT UNIQUE )`
 );
 
 db.run(
-  "CREATE TABLE IF NOT EXISTS query_issues (id TEXT PRIMARY KEY, email TEXT NOT NULL, name TEXT NOT NULL, content TEXT NOT NULL, date TEXT NOT NULL)"
+  `CREATE TABLE IF NOT EXISTS query_issues (id TEXT PRIMARY KEY, 
+   email TEXT NOT NULL, name TEXT NOT NULL, content TEXT NOT NULL,
+   date TEXT NOT NULL)`
 );
 
 passport.use(
@@ -486,7 +495,8 @@ async function cronEmail() {
 async function emailCurrentSlot() {
   slot++;
   if (slot == 48) {
-    slot = 0;
+    slot = 0;           //MidNight 12 AM (New Day Starts)
+    db.run("COMMIT;")   //TCL, Saves ALl Changes In DB Made On Previous Day
   }
   console.log("EMAILING SLOT : " + slot);
   await db.all(
@@ -557,6 +567,7 @@ function ensureAdmin(req, res, next) {
 }
 
 app.listen(port || 10000, async () => {
+  await newsWritter.getSportsNews();
   console.log("STARTING WITH SLOT : " + slot);
   console.log("SERVER RUNNING ON PORT " + port);
 });
@@ -576,7 +587,7 @@ app.post("/signin", (req, res) => {
         ) {
           req.session.loggedin = row.emailID;
           req.session.loggedinName = row.name;
-          console.log(req.session)
+          console.log(req.session);
           if (req.body.saveLogin === "true") {
             res.cookie(
               "__logcred__",
@@ -747,19 +758,31 @@ app.post("/resetPass", (req, res) => {
   );
 });
 
-app.post("/addQuery", ensureAuthenticated, (req, res)=>{
-  var queryID = parseInt(Math.random()*10000000000).toString()
-    db.run(`INSERT INTO query_issues (id, email, name, content, date) VALUES ('${queryID}', '${req.session.loggedin}', '${req.session.loggedinName}', '${req.body.message}', '${req.body.date}');
+app.post("/addQuery", ensureAuthenticated, (req, res) => {
+  var queryID = parseInt(Math.random() * 10000000000).toString();
+  console.log( `\n\n\nINSERT INTO query_issues (id, email, name, content, date) 
+    VALUES ('${queryID}', 
+    '${req.session.loggedin}',
+    '${req.session.loggedinName}',
+    '${req.body.message}',
+    '${req.body.date}');\n\n\n
+`)
+  db.run(
+    `INSERT INTO query_issues (id, email, name, content, date) 
+    VALUES ('${queryID}', 
+    '${req.session.loggedin}',
+    '${req.session.loggedinName}',
+    '${req.body.message}',
+    '${req.body.date}');
 `,
-(err) => {
-  if (err) {
-    res.sendStatus(500)
-  }
-  else{
-    res.status(200).send(queryID)
-  }
-}
-)
+    (err) => {
+      if (err) {
+        res.sendStatus(500);
+      } else {
+        res.status(200).send(queryID);
+      }
+    }
+  );
 });
 
 app.post("/verifyEmail", inSubscribingProcessCheck, async (req, res) => {
