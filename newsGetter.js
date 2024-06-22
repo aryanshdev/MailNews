@@ -242,7 +242,6 @@ async function getSportsNews() {
   //   "a.link__inherit-line-height__2qjXx"
   // ))
   for (const aLink of newsLinks) {
-    console.log(aLink)
     let rawArticleHTML = await axios.get(aLink.attribs["href"]);
     rawArticleHTML = rawArticleHTML.data;
     let articleHTML = cheerio.load(rawArticleHTML);
