@@ -59,96 +59,80 @@
       </div>
     </section>
     <nav
-    class="sticky bg-slate-950 bg-opacity-90 lg:bg-opacity-45 top-0 left-0 w-full px-4 py-0 backdrop-blur-lg text-white z-20 flex items-center h-12 justify-between"
-  >
-    <div class="w-screen flex flex-wrap items-center justify-between p-2">
-      <a href="/">
-        <span
-          class="self-center text-xl font-semibold whitespace-nowrap text-white"
-          >MailNews</span
-        >
-      </a>
-      <button
-        id="navbar-solid-bg-btn"
-        data-collapse-toggle="navbar-solid-bg-btn"
-        type="button"
-        class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-        aria-controls="navbar-solid-bg"
-        aria-expanded="false"
-      >
-        <span class="sr-only">Open main menu</span>
-        <svg
-          class="w-5 h-5"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 17 14"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M1 1h15M1 7h15M1 13h15"
-          />
-        </svg>
-      </button>
-      <div
-        id="mobile-menu"
-        class="hidden top-10 lg:hidden w-screen fixed text-center left-0 z-50 rounded-br-lg rounded-bl-lg bg-slate-950 backdrop-blur-2xl duration-500"
-      >
-        <a href="/" class="block text-white py-2 px-4">Home</a>
-        <a href="/news" class="block text-white py-2 px-4">News</a>
-        <a href="/logout" class="block text-white py-2 px-4 font-semibold">
-          Logout
+      id="nav"
+      class="sticky mx-auto z-50 -top-1 flex text-xl w-[95vw] bg-opacity-5 backdrop-blur-xl rounded-full bg-slate-700 left-0 px-4 py-0 text-white \ items-center h-12 justify-between"
+    >  <div class="w-screen flex flex-wrap items-center justify-between p-0">
+        <a href="/">
+          <span
+            id="titleName"
+            class="self-center text-2xl font-semibold whitespace-nowrap text-white md:hidden ml-3"
+            >MailNews</span
+          >
         </a>
-        <a href="/contact" class="block text-white py-2 px-4">Contact</a>
-      </div>
-      <div class="hidden w-full md:block md:w-auto" id="navbar-solid-bg">
-        <ul
-          class="flex flex-col font-medium mt-4 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent"
+        <button
+          id="navbar-solid-bg-btn"
+          data-collapse-toggle="navbar-solid-bg-btn"
+          type="button"
+          class="inline-flex items-center p-2 justify-center text-base font-bold text-w-500 rounded-lg md:hidden hover:bg-transparent text-gray-400 focus:outline-none focus:bg-transparent"
+          aria-controls="navbar-solid-bg"
+          aria-expanded="false"
         >
-          <li>
-            <a
-              href="/"
-              class="block py-2 px-3 md:p-0 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent"
-              aria-current="page"
-              >Home</a
-            >
-          </li>
-          <li>
-            <a
-              href="#"
-              class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent"
-              >News</a
-            >
-          </li>
-          <li>
-            <a
-              href="/login"
-              class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent"
-            >
-              Login
-            </a>
-          </li>
-          <li>
-            <a
-              href="/contact"
-              class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent"
-              >Contact</a
-            >
-          </li>
-        </ul>
+          <span class="sr-only">Open main menu</span>
+          Explore
+        </button>
+        <div
+          id="mobile-menu"
+          class="hidden top-10 lg:hidden w-screen fixed text-center left-0 z-50 rounded-br-lg rounded-bl-lg bg-slate-950 backdrop-blur-2xl duration-500"
+        >
+          <a href="/" class="block text-white py-2 px-4">Home</a>
+          <a href="/news" class="block text-white py-2 px-4">News</a>
+          <a href="/logout" class="block text-white py-2 px-4 font-semibold">
+            Logout
+          </a>
+          <a href="/contact" class="block text-white py-2 px-4">Contact</a>
+        </div>
+        <div class="hidden w-full md:block md:w-auto" id="navbar-solid-bg">
+          <ul
+            class="flex flex-col w-screen transition-all duration-500 !text-center justify-evenly font-medium mt-4 rounded-lg bg-gray-50 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent"
+          >
+            <li>
+              <a
+                href="/"
+                class="block hover:text-pink-500 duration-300 text-yellow-400 py-2 px-3 md:p-0 md:bg-transparent md:dark:bg-transparent"
+                aria-current="page"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="block py-2 px-3 md:p-0 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 hover:text-pink-500 duration-300 text-yellow-400 md:dark:hover:bg-transparent"
+                >News</a
+              >
+            </li>
+            <li>
+              <a
+                href="/login"
+                class="block py-2 px-3 md:p-0 hover:text-pink-500 duration-300 text-yellow-400  rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent"
+              >
+                Login
+              </a>
+            </li>
+            <li>
+              <a
+                href="/contact"
+                class="block py-2 px-3 md:p-0  rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 hover:text-pink-500 duration-300 text-yellow-400 md:dark:hover:bg-transparent"
+                >Contact</a
+              >
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-  </nav>
+    </nav>
     <section
-      class="w-screen min-h-screen  flex justify-center items-center bg-slate-950 py-5 text-center flex-col "
+      class="w-screen min-h-screen flex justify-center items-center bg-slate-950 py-5 text-center flex-col"
     >
-   
       <div class="text-lg text-white capitalize w-4/5 md:3/4">
-        
-
         Discover Mailnews: Your go-to platform for concise news summaries,
         saving you time and keeping you informed globally. Tailored email
         updates on your chosen topics, delivered when you want them. Stay in the
@@ -266,4 +250,30 @@
       </div>
     </footer>
   </body>
+  <script>
+    document
+      .getElementById("navbar-solid-bg-btn")
+      .addEventListener("click", function () {
+        document.getElementById("mobile-menu").classList.toggle("hidden");
+        document.getElementById("arrow-left").classList.toggle("hidden");
+        document.getElementById("arrow-right").classList.toggle("hidden");
+      });
+
+    var navbar = document.querySelector("#nav");
+    document.addEventListener("scroll", () => {
+      if (navbar.getBoundingClientRect().top <= 1) {
+        navbar.querySelectorAll("ul a").forEach((ele) => {
+          ele.classList.add("ml-3");
+        });
+        navbar.querySelector("#titleName").classList.remove("md:hidden");
+        navbar.querySelector("ul").classList.remove("w-screen");
+      } else {
+        navbar.querySelectorAll("ul a").forEach((ele) => {
+          ele.classList.remove("ml-3");
+        });
+        navbar.querySelector("#titleName").classList.add("md:hidden");
+        navbar.querySelector("ul").classList.add("w-screen");
+      }
+    });
+  </script>
 </html>
