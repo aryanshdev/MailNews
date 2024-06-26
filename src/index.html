@@ -60,12 +60,13 @@
     </section>
     <nav
       id="nav"
-      class="sticky mx-auto z-50 -top-1 flex text-xl w-[95vw] bg-opacity-5 backdrop-blur-xl rounded-full bg-slate-700 left-0 px-4 py-0 text-white \ items-center h-12 justify-between"
-    >  <div class="w-screen flex flex-wrap items-center justify-between p-0">
+      class="sticky mx-auto z-50 top-2 flex text-xl w-[95vw] bg-opacity-15 h-14 backdrop-blur-xl rounded-full bg-white left-0 px-4 py-0 text-white items-center  justify-between"
+    >
+      <div class="w-screen flex flex-wrap items-center justify-between p-0">
         <a href="/">
           <span
             id="titleName"
-            class="self-center text-2xl font-semibold whitespace-nowrap text-white md:hidden ml-3"
+            class="self-center text-2xl font-semibold whitespace-nowrap text-transparent bg-gradient-to-r from-blue-500 to-yellow-500 via-purple-500 bg-clip-text md:hidden ml-3 "
             >MailNews</span
           >
         </a>
@@ -78,18 +79,93 @@
           aria-expanded="false"
         >
           <span class="sr-only">Open main menu</span>
-          Explore
+          Explore <span class="ml-1" id="navArrow">
+            <img class=" !transition-all !duration-200 w-5 h-5" loading="eager" src="https://img.icons8.com/ios-filled/9CA3AF/50/expand-arrow--v1.png" alt="expand-arrow--v1"/>
+              </span>
         </button>
         <div
           id="mobile-menu"
-          class="hidden top-10 lg:hidden w-screen fixed text-center left-0 z-50 rounded-br-lg rounded-bl-lg bg-slate-950 backdrop-blur-2xl duration-500"
+          class="hidden top-12 lg:hidden w-full rounded-xl fixed text-left z-50 bg-slate-900 bg-opacity-100 opacity-100 backdrop-blur-3xl duration-500 p-0 left-0 font-light border-b-blue-600 border-b-2"
         >
-          <a href="/" class="block text-white py-2 px-4">Home</a>
-          <a href="/news" class="block text-white py-2 px-4">News</a>
-          <a href="/logout" class="block text-white py-2 px-4 font-semibold">
-            Logout
+          <a
+            href="/about"
+            class="flex text-white py-3 px-6 align-middle justify-between"
+            >About
+            <span class="text-right">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+                />
+              </svg>
+            </span>
           </a>
-          <a href="/contact" class="block text-white py-2 px-4">Contact</a>
+          <a
+            href="/news"
+            class="flex text-white py-3 px-6 align-middle justify-between"
+            >News
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+              />
+            </svg>
+          </a>
+          <a
+            href="/register"
+            class="flex text-white py-3 px-6 align-middle justify-between"
+          >
+            Register
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+              />
+            </svg>
+          </a>
+          <a
+            href="/contact"
+            class="flex text-white py-3 px-6 align-middle justify-between"
+            >Contact
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+              />
+            </svg>
+          </a>
         </div>
         <div class="hidden w-full md:block md:w-auto" id="navbar-solid-bg">
           <ul
@@ -100,7 +176,7 @@
                 href="/"
                 class="block hover:text-pink-500 duration-300 text-yellow-400 py-2 px-3 md:p-0 md:bg-transparent md:dark:bg-transparent"
                 aria-current="page"
-                >Home</a
+                >About</a
               >
             </li>
             <li>
@@ -112,16 +188,16 @@
             </li>
             <li>
               <a
-                href="/login"
-                class="block py-2 px-3 md:p-0 hover:text-pink-500 duration-300 text-yellow-400  rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent"
+                href="/register"
+                class="block py-2 px-3 md:p-0 hover:text-pink-500 duration-300 text-yellow-400 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent"
               >
-                Login
+                Register
               </a>
             </li>
             <li>
               <a
                 href="/contact"
-                class="block py-2 px-3 md:p-0  rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 hover:text-pink-500 duration-300 text-yellow-400 md:dark:hover:bg-transparent"
+                class="block py-2 px-3 md:p-0 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 hover:text-pink-500 duration-300 text-yellow-400 md:dark:hover:bg-transparent"
                 >Contact</a
               >
             </li>
@@ -254,14 +330,14 @@
     document
       .getElementById("navbar-solid-bg-btn")
       .addEventListener("click", function () {
+        document.getElementById("navArrow").classList.toggle("rotate-180");
         document.getElementById("mobile-menu").classList.toggle("hidden");
-        document.getElementById("arrow-left").classList.toggle("hidden");
-        document.getElementById("arrow-right").classList.toggle("hidden");
       });
 
     var navbar = document.querySelector("#nav");
     document.addEventListener("scroll", () => {
-      if (navbar.getBoundingClientRect().top <= 1) {
+      console.log(navbar.getBoundingClientRect().top)
+      if (navbar.getBoundingClientRect().top <= 20) {
         navbar.querySelectorAll("ul a").forEach((ele) => {
           ele.classList.add("ml-3");
         });

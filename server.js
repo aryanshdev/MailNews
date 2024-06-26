@@ -919,6 +919,9 @@ app.get("/connect-google-success", (req, res) => {
 app.get("/registration-successful", inSubscribingProcessCheck, (req, res) => {
   res.sendFile(__dirname + "/src/register_success.html");
 });
+
+app.get("/register", (req,res)=>res.redirect("/signup"))
+
 app.get("/signup", (req, res) => {
   if (req.session.loggedin) {
     res.redirect("/dashboard");
