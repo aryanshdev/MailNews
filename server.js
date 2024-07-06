@@ -495,8 +495,7 @@ async function cronEmail() {
 async function emailCurrentSlot() {
   slot++;
   if (slot == 48) {
-    slot = 0;           //MidNight 12 AM (New Day Starts)
-    db.run("COMMIT;")   //TCL, Saves ALl Changes In DB Made On Previous Day
+    slot = 0;          
   }
   console.log("EMAILING SLOT : " + slot);
   await db.all(

@@ -14,11 +14,83 @@
     MESSAGE
   </div>
 
-  <h1 class="text-3xl font-bold  text-center w-screen">MailNews Admin Panel</h1>
+  <nav id="nav" class="fixed mx-auto z-50 top-2 flex text-xl w-[95vw] bg-opacity-20 h-14 backdrop-blur-3xl rounded-full bg-gray-500 px-4 py-0 text-white items-center  justify-between">
+
+
+
+    <div class="w-screen flex flex-wrap items-center justify-between p-0">
+      <a href="/">
+        <span id="titleName" class="self-center text-2xl font-semibold whitespace-nowrap text-transparent bg-gradient-to-r from-blue-400 to-yellow-500 via-purple-500 bg-clip-text ml-3">MailNews</span>
+      </a>
+      <button id="navbar-solid-bg-btn" data-collapse-toggle="navbar-solid-bg-btn" type="button" class="inline-flex items-center p-2 justify-center text-base font-bold text-w-500 rounded-lg md:hidden hover:bg-transparent text-gray-400 focus:outline-none focus:bg-transparent" aria-controls="navbar-solid-bg" aria-expanded="false">
+        <span class="sr-only">Open main menu</span>
+        Explore <span class="ml-1" id="navArrow">
+          <img class=" !transition-all !duration-200 w-5 h-5" loading="eager" src="https://img.icons8.com/ios-filled/9CA3AF/50/expand-arrow--v1.png" alt="expand-arrow--v1">
+            </span>
+      </button>
+      <div id="mobile-menu" class="hidden top-12 lg:hidden w-full rounded-xl text-xl fixed text-left z-50 bg-slate-900 bg-opacity-100 opacity-100 backdrop-blur-3xl duration-500 p-0 left-0 font-normal border-b-blue-600 border-b-2 text-yellow-400">
+        <a href="#substat" class="flex  py-3 px-6 align-middle justify-between">Subs-Stats
+          <span class="text-right">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"></path>
+            </svg>
+          </span>
+        </a>
+        <a href="#topics" class="flex   py-3 px-6 align-middle justify-between">Topic Stats
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"></path>
+          </svg>
+        </a>
+      
+        <a href="#slots" class="flex   py-3 px-6 align-middle justify-between">Slot Stats
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"></path>
+          </svg>
+        </a>
+        <a href="#query" class="flex   py-3 px-6 align-middle justify-between">Issues & Queries
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"></path>
+          </svg>
+        </a>
+        <a href="#news" class="flex   py-3 px-6 align-middle justify-between">Logout Admin
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"></path>
+          </svg>
+        </a>
+      </div>
+      <div class="hidden w-full md:block md:w-auto" id="navbar-solid-bg">
+       
+        <ul class="flex flex-col transition-all duration-500 !text-center justify-evenly font-medium mt-4 rounded-lg bg-gray-50 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent">
+          <li>
+            <a href="#substat" class="block hover:text-pink-500 duration-300 text-yellow-400 py-2  md:p-0 md:bg-transparent md:dark:bg-transparent ml-3 lg:ml-6 " aria-current="page">Subs-Stats</a>
+          </li>
+          <li>
+            <a href="#topics" class="block py-2 px-3 md:p-0 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 hover:text-pink-500 duration-300 text-yellow-400 md:dark:hover:bg-transparent ml-3 lg:ml-6 ">Topic-Stats</a>
+          </li>
+          <li>
+            <a href="#slots" class="block py-2 px-3 md:p-0 hover:text-pink-500 duration-300 text-yellow-400 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent ml-3 lg:ml-6 ">
+              Slot-Stats
+            </a>
+          </li>
+          <li>
+            <a href="#query" class="block py-2 px-3 md:p-0 hover:text-pink-500 duration-300 text-yellow-400 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent ml-3 lg:ml-6 ">
+             Queries
+            </a>
+          </li>
+          <li>
+            <a href="/logout" class="block py-2 px-3 md:p-0 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 hover:text-pink-500 duration-300 text-green-400 md:dark:hover:bg-transparent ml-3 lg:ml-6 ">Logout Admin</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <h1 class="text-3xl font-bold  text-center w-screen mt-20 md:mt-16">MailNews Admin Panel</h1>
   <!-- GRID 1 -->
   <div class="grid grid-flow-row md:grid-flow-col md:grid-cols-2 w-full gap-8 my-14">
     <div class="w-full flex flex-col gap-3 flex-wrap h-fit">
       <h1 class="text-3xl font-semibold w-full">Subscribers</h1>
+      
+    <a name="substat"></a>
       <div class="w-full grid grid-cols-2 gap-3">
         <div class="w-full h-full bg-slate-800 bg-opacity-55 text-white rounded-lg p-2 font-semibold text-lg">
           Total Subs: <%= totalSubscribers %>
@@ -30,7 +102,7 @@
           Subs in 15 Days: <span id="last15"></span>
         </div>
         <div class="w-full h-full bg-slate-800 bg-opacity-55 text-white rounded-lg p-2 font-semibold text-lg">
-          Subs/Day: <span id="subperday"></span>
+          Avg User Per Slot: <span id="subperday"></span>
         </div>
       </div>
       <div class="w-full">
@@ -48,6 +120,8 @@
 
     <div class="w-full flex flex-col gap-3 flex-wrap h-fit text-left">
       <h1 class="text-3xl font-semibold block">Topics</h1>
+      
+    <a name="topics" ></a>
       <div class="w-11/12 max-h-full flex items-center justify-center">
         <canvas id="topicTotalChart" class="w-max fill-white"></canvas>
       </div>
@@ -55,7 +129,9 @@
   </div>
   <!-- GRID 2 -->
   <div class="w-full">
-    <h1 class="text-3xl font-semibold ">Slot Wise Email Timings</h1>
+    <h1 class="text-3xl font-semibold mb-2">Slot Wise Email Timings</h1>
+    
+    <a name="slots" class=""></a>
     <div class="grid grid-cols-3 w-full gap-x-10">
       <div class="w-full col-span-3 md:col-span-2">
         <canvas id="timeSlotChartArea" class='w-full h-36'></canvas>
@@ -87,8 +163,10 @@
   </div>
 
   <!-- GRID 3 -->
+   <a name="query"></a>
   <div class="w-full my-12">
     <h1 class="text-3xl font-semibold mb-6 ">Querys and Issues Raised</h1>
+
     <% if(queryIssueData.length==0) { %>
       <h1 class="font-semibold text-xl">No New or Unreplied Issue/Query</h1>
       <% } for(var queryIssue of queryIssueData){ %>
@@ -101,6 +179,15 @@
 </html>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+      document
+      .getElementById("navbar-solid-bg-btn")
+      .addEventListener("click", function () {
+        document.getElementById("navArrow").classList.toggle("rotate-180");
+        document.getElementById("mobile-menu").classList.toggle("hidden");
+      });
+
+
+
   var subsChartDisplay = document.getElementById('subsChart');
   var topicPieChart = document.getElementById("topicTotalChart");
   var slotChart = document.getElementById("timeSlotChartArea");
@@ -140,7 +227,6 @@
   DateWiseOutput = Object.keys(DateWiseOutput)
     .sort()
     .reduce((accumulator, key) => {
-      console.log(key)
       accumulator[key] = DateWiseOutput[key];
       return accumulator;
     }, {});
@@ -160,7 +246,6 @@
         <% } %>
 
     function UpdateChart() {
-      console.log(document.querySelector('select').value)
       switch (document.querySelector('select').value) {
         case "week":
 
@@ -174,7 +259,6 @@
             DateWiseOutput = Object.keys(DateWiseOutput)
               .sort()
               .reduce((accumulator, key) => {
-                console.log(key)
                 accumulator[key] = DateWiseOutput[key];
                 return accumulator;
               }, {});
@@ -188,12 +272,10 @@
             subsChart.destroy();
             for (var date of getLastNDates(15)) {
               DateWiseOutput[date] = `${(DateWiseSubs[date] ? DateWiseSubs[date] : 0)}`;
-              console.log(DateWiseOutput)
             }
             DateWiseOutput = Object.keys(DateWiseOutput)
               .sort()
               .reduce((accumulator, key) => {
-                console.log(key)
                 accumulator[key] = DateWiseOutput[key];
                 return accumulator;
               }, {});
@@ -207,12 +289,10 @@
             subsChart.destroy();
             for (var date of getLastNDates(30)) {
               DateWiseOutput[date] = `${(DateWiseSubs[date] ? DateWiseSubs[date] : 0)}`;
-              console.log(DateWiseOutput)
             }
             DateWiseOutput = Object.keys(DateWiseOutput)
               .sort()
               .reduce((accumulator, key) => {
-                console.log(key)
                 accumulator[key] = DateWiseOutput[key];
                 return accumulator;
               }, {});

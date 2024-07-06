@@ -354,7 +354,7 @@
         "#" +
           (window.location.href.split("#")[1].trim() == ""
             ? "world"
-            : window.location.href.split("#")[1].trim())
+            : window.location.href.split("#")[1].trim().toLowerCase())
       );
     } catch (error) {
       currentSlide = 0;

@@ -336,16 +336,15 @@
 
     var navbar = document.querySelector("#nav");
     document.addEventListener("scroll", () => {
-      console.log(navbar.getBoundingClientRect().top)
       if (navbar.getBoundingClientRect().top <= 20) {
         navbar.querySelectorAll("ul a").forEach((ele) => {
-          ele.classList.add("ml-3");
+          ele.classList.add("ml-8");
         });
         navbar.querySelector("#titleName").classList.remove("md:hidden");
         navbar.querySelector("ul").classList.remove("w-screen");
       } else {
         navbar.querySelectorAll("ul a").forEach((ele) => {
-          ele.classList.remove("ml-3");
+          ele.classList.remove("ml-8");
         });
         navbar.querySelector("#titleName").classList.add("md:hidden");
         navbar.querySelector("ul").classList.add("w-screen");

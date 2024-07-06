@@ -207,7 +207,7 @@
         <button id="topicUpdateButton"
           class="!bg-slate-700 text-white rounded-full px-12 py-2 lg:px-7 lg:py-2 mt-5 font-semibold text-lg disabled:bg-opacity-70 disabled:text-gray-400 transition-all duration-300"
           disabled="disabled" onclick="javascript:updateTopics()">
-          Save
+          Save Changes
         </button>
       </div>
       <h1 class="text-xl font-bold text-white mt-10 mb-1">Mailing Time</h1>
@@ -222,7 +222,7 @@
       Email timings are based on Server's UTC timing conversions, hence your selected time may vary a little.
       <button id="timeUpdateButton" disabled="disabled" type="submit" onclick="javascript:updateTime()"
         class="!bg-slate-700 text-white rounded-full px-12 py-2 lg:px-7 lg:py-2 mt-5 font-semibold text-lg disabled:bg-opacity-70 disabled:text-gray-400 transition-all duration-300 block">
-        Update
+        Update Timing
       </button>
       <div class="mt-6 mb-10">
         <h1 class="text-xl font-bold text-white mt-10 mb-5">Issues and Queries Raised</h1>
@@ -504,9 +504,9 @@
             "Content-Type": "application/x-www-form-urlencoded",
           },
         }).then((res) => {
-          console.log(res);
           if (res.status === 200) {
             showPopup("Name Updated Successfully", "info");
+            document.querySelector('input[type="text"]').value = ""
           } else if (res.status === 401) {
             showPopup("Session Expired ! \nPlease Login Again", "warn");
             setTimeout(() => {
@@ -532,7 +532,6 @@
             "Content-Type": "application/x-www-form-urlencoded",
           },
         }).then((res) => {
-          console.log(res);
           if (res.status === 200) {
             showPopup("Account Deleted Successfully", "info");
             setTimeout(() => {
