@@ -112,7 +112,7 @@ app.use(
     statusCode: 429,
   })
 );
-app.use(helmet());
+// app.use(helmet());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -572,7 +572,6 @@ function ensureAuthenticated(req, res, next) {
   res.status(401).redirect("/signin");
 }
 function ensureAdmin(req, res, next) {
-  req.session.isAdmin = true;
   if (req.session.isAdmin) {
     return next();
   }
@@ -609,6 +608,8 @@ app.post("/signin", (req, res) => {
               { maxAge: 3600000 * 24 * 7, httpOnly: true }
             );
           }
+          
+         req.session.isAdmin = req.session.loggedin in process.env.ADMINS.split(";")
           res.status(200).redirect("/dashboard");
         } else {
           res
@@ -1047,7 +1048,7 @@ async function fetchData(command) {
   });
 }
 
-app.get("/admin", async (req, res) => {
+app.get("/admin", ensureAdmin, async (req, res) => {
   var queryData = await fetchData("SELECT * FROM query_issues");
   db.all("SELECT * FROM users", async (err, rows) => {
     res.render(__dirname + "/src/admin.ejs", {
