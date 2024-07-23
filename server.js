@@ -7,9 +7,12 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const nodemailer = require("nodemailer");
 let newsWritter = require("./newsGetter");
-const sql1 = require("sqlite3").verbose();
+const sql = require("sqlite3").verbose();
 const fileSystem = require("fs");
 const crypto = require("crypto");
+const helmet = require("helmet");
+const rateLimiter = require("express-rate-limit");
+
 require("dotenv").config();
 
 const verificationMailBody = `
@@ -90,12 +93,26 @@ const app = express();
 
 app.use(
   session({
-    secret: "MailNews-Secret",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 1800000 },
+    cookie: {
+      maxAge: 1800000,
+      secure: true,
+      httpOnly: true,
+      sameSite: "strict",
+    },
   })
 );
+app.use(
+  rateLimiter({
+    windowMs: 5 * 60 * 1000,
+    max: 75,
+    standardHeaders: true,
+    statusCode: 429,
+  })
+);
+app.use(helmet());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -104,10 +121,7 @@ app.use(express.static("src"));
 
 var port = 10000;
 
-
-const sql = require("sqlite3").verbose();               //Import Adapter
-
-let db = new sql.Database("mailNews.db", (err) => {});  //Connect Database
+let db = new sql.Database("mailNews.db", (err) => {}); //Connect Database
 
 //DDL Commands
 
@@ -495,7 +509,7 @@ async function cronEmail() {
 async function emailCurrentSlot() {
   slot++;
   if (slot == 48) {
-    slot = 0;          
+    slot = 0;
   }
   console.log("EMAILING SLOT : " + slot);
   await db.all(
@@ -758,13 +772,13 @@ app.post("/resetPass", (req, res) => {
 
 app.post("/addQuery", ensureAuthenticated, (req, res) => {
   var queryID = parseInt(Math.random() * 10000000000).toString();
-  console.log( `\n\n\nINSERT INTO query_issues (id, email, name, content, date) 
+  console.log(`\n\n\nINSERT INTO query_issues (id, email, name, content, date) 
     VALUES ('${queryID}', 
     '${req.session.loggedin}',
     '${req.session.loggedinName}',
     '${req.body.message}',
     '${req.body.date}');\n\n\n
-`)
+`);
   db.run(
     `INSERT INTO query_issues (id, email, name, content, date) 
     VALUES ('${queryID}', 
@@ -919,7 +933,7 @@ app.get("/registration-successful", inSubscribingProcessCheck, (req, res) => {
   res.sendFile(__dirname + "/src/register_success.html");
 });
 
-app.get("/register", (req,res)=>res.redirect("/signup"))
+app.get("/register", (req, res) => res.redirect("/signup"));
 
 app.get("/signup", (req, res) => {
   if (req.session.loggedin) {
