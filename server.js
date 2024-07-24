@@ -98,8 +98,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       maxAge: 1800000,
-      secure: true,
-      httpOnly: true,
+      secure: false,
       sameSite: "strict",
     },
   })
@@ -112,7 +111,31 @@ app.use(
     statusCode: 429,
   })
 );
-// app.use(helmet());
+app.use((req, res, next) => {
+  // Generate a random nonce value
+  res.locals.nonce = crypto.randomBytes(16).toString('base64');
+  // Set the CSP header with the nonce
+  res.setHeader('Content-Security-Policy', `default-src 'self'; script-src 'self' 'nonce-${res.locals.nonce}';`);
+  next();
+});
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      imgSrc: [
+        "'self'", 
+        'data:', 
+        'https://c.ndtvimg.com', 
+        'https://techcrunch.com/wp-content/', 
+        'https://media.cnn.com/api/v1/images/stellar/',
+        'https://cdn.wionews.com/sites/default/',
+        'https://media.nature.com/',
+        "https://akm-img-a-in.tosshub.com/indiatoday/",
+        'https://img.icons8.com/'
+      ]
+    }
+  }
+}));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -561,6 +584,8 @@ function inSubscribingProcessCheck(req, res, next) {
   if (req.session.currentSubs) {
     return next();
   } else {
+    console.log("SUPER")
+    console.log(req.session)
     res.redirect("/signin");
   }
 }
@@ -720,6 +745,7 @@ app.post("/subscribe", (req, res) => {
 });
 
 app.get("/verify", inSubscribingProcessCheck, (req, res) => {
+  console.log("sad")
   res.sendFile(__dirname + "/src/emailverify.html");
 });
 

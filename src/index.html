@@ -326,31 +326,6 @@
       </div>
     </footer>
   </body>
-  <script>
-    document
-      .getElementById("navbar-solid-bg-btn")
-      .addEventListener("click", function () {
-        document.getElementById("navArrow").classList.toggle("rotate-180");
-        document.getElementById("mobile-menu").classList.toggle("hidden");
-      });
-
-    var navbar = document.querySelector("#nav");
-    document.addEventListener("scroll", () => {
-      if (navbar.getBoundingClientRect().top <= 20) {
-        navbar.querySelectorAll("ul a").forEach((ele) => {
-          ele.classList.add("lg:ml-8");
-          ele.classList.add("ml-4");
-        });
-        navbar.querySelector("#titleName").classList.remove("md:hidden");
-        navbar.querySelector("ul").classList.remove("w-screen");
-      } else {
-        navbar.querySelectorAll("ul a").forEach((ele) => {
-          ele.classList.remove("lg:ml-8");
-          ele.classList.remove("ml-4");
-        });
-        navbar.querySelector("#titleName").classList.add("md:hidden");
-        navbar.querySelector("ul").classList.add("w-screen");
-      }
-    });
-  </script>
+  <script src="./JS_CODES/popup_mobileMenu.js"></script>
+  <script src="./JS_CODES/index.js"></script>
 </html>

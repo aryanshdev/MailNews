@@ -16,6 +16,10 @@
   <body
     class="text-lg bg-slate-950 flex flex-wrap w-screen h-screen scroll-smooth overflow-x-hidden"
   >
+  <div id="popup"
+  class="border-solid border-2 border-gray-400 w-auto p-3 top-10 bg-blue-700 translate-x-100 max-w-56 z-50 my-10 font-sans font-semibold fixed text-white right-0 rounded-md transition-all duration-300 md:text-lg md:p-4 md:max-w-72">
+  MESSAGE
+</div>
   <nav
   class="fixed bg-slate-950 bg-opacity-90 lg:bg-opacity-45 top-0 left-0 w-full px-4 py-0 backdrop-blur-lg text-white z-20 flex items-center h-12 justify-between"
 >
@@ -106,34 +110,11 @@
       <div
         class="bg-slate-800 bg-opacity-25 block backdrop-blur-lg w-5/6 lg:w-1/2 h-auto rounded-xl m-auto text-center px-5 py-4 text-white"
       >
-        <div
-          id="popup"
-          class="bg-red-500 w-full h-auto relative p-3 font-semibold rounded-md mb-3"
-          style="display: none"
-        >
-          Wrong Code. Check Your Code And Submit Again
-          <div class="absolute top-0 right-0" onclick="toggleError('none')">
-            <svg
-              class="w-5 h-5 text-white"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="4"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </div>
-        </div>
+    
         <h1 class="font-bold text-2xl">Verify Your Email</h1>
         <form
-          action="javascript:verify()"
-          method="post"
+          id="verifyForm"
+          action="javascript:none"
           class="pt-4 gap-2 lg:px-3 lg:pt-4 lg:text-sm"
         >
           <p class="pb-4">
@@ -155,45 +136,8 @@
           </button>
         </form>
       </div>
-    </section>
-    <script>
-      var popup = document.querySelector("#popup");
-      function toggleError(visibility) {
-        popup.style.display = visibility;
-      }
-
-      function verify() {
-        var form = document.forms[0];
-        const formData = new FormData(form);
-        var data = new URLSearchParams();
-        document
-          .querySelector("button[type='submit']")
-          .setAttribute("disabled", "disabled");
-        document.querySelector("button[type='submit']").innerHTML = `
-      <svg class="animate-spin  h-7 w-7 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-        <circle class="opacity-50" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-        <path  fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-      </svg>`;
-        const response = fetch("/verifyEmail", {
-          method: "POST",
-          body: new URLSearchParams(formData).toString(),
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }).then((res) => {
-          if (res.status === 200) {
-            window.location.href = "/registration-successful";
-          } else {
-            document
-              .querySelector("button[type='submit']")
-              .removeAttribute("disabled");
-            document.querySelector(
-              "button[type='submit']"
-            ).innerHTML = `Verify`;
-            toggleError("block");
-          }
-        });
-      }
-    </script>
+    </section> 
+    <script src="./JS_CODES/popup_mobileMenu.js"></script>
+    <script src="./JS_CODES/verify.js"></script>
   </body>
 </html>
