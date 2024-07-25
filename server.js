@@ -91,6 +91,48 @@ const tempPassMailBody = `
 
 const app = express();
 
+var port = 10000;
+
+const cspConfig = {
+  directives: {
+    defaultSrc: ["'self'"],
+    imgSrc: [
+      "'self'",
+      "data:",
+      "https://c.ndtvimg.com",
+      "https://techcrunch.com/wp-content/",
+      "https://media.cnn.com/api/v1/images/stellar/",
+      "https://cdn.wionews.com/sites/default/",
+      "https://media.nature.com/",
+      "https://akm-img-a-in.tosshub.com/indiatoday/",
+      "https://img.icons8.com/",
+      "https://lh3.googleusercontent.com" // Add Google user images
+    ],
+    scriptSrc: [
+      "'self'",
+      "'unsafe-inline'",
+      "https://apis.google.com",
+      "https://accounts.google.com"
+    ],
+    frameSrc: ["'self'", "https://accounts.google.com"],
+    connectSrc: [
+      "'self'",
+      "https://accounts.google.com",
+      "https://oauth2.googleapis.com"
+    ],
+    styleSrc: ["'self'", "'unsafe-inline'"],
+    fontSrc: ["'self'", "https://fonts.gstatic.com"], // Allow Google fonts if needed
+  },
+};
+
+// Use Helmet with customized options
+app.use(
+  helmet({
+    contentSecurityPolicy: cspConfig,
+    hsts: process.env.NODE_ENV === "production", // Disable HSTS in development
+  })
+);
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -99,10 +141,27 @@ app.use(
     cookie: {
       maxAge: 1800000,
       secure: false,
-      sameSite: "strict",
+      sameSite: "lax",
     },
   })
 );
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.OAUTH2_CLIENT_ID,
+      clientSecret: process.env.OAUTH2_CLIENT_SECRET,
+      callbackURL:
+        process.env.NODE_ENV === "production"
+          ? "https://mailnews.onrender.com/process-google-auth"
+          : `http://localhost:${port}/process-google-auth`,
+      scope: ["https://www.googleapis.com/auth/plus.login"],
+    },
+    function (accessToken, refreshToken, profile, done) {
+      return done(null, profile._json);
+    }
+  )
+);
+
 app.use(
   rateLimiter({
     windowMs: 5 * 60 * 1000,
@@ -111,38 +170,17 @@ app.use(
     statusCode: 429,
   })
 );
-app.use((req, res, next) => {
-  // Generate a random nonce value
-  res.locals.nonce = crypto.randomBytes(16).toString('base64');
-  // Set the CSP header with the nonce
-  res.setHeader('Content-Security-Policy', `default-src 'self'; script-src 'self' 'nonce-${res.locals.nonce}';`);
-  next();
-});
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      imgSrc: [
-        "'self'", 
-        'data:', 
-        'https://c.ndtvimg.com', 
-        'https://techcrunch.com/wp-content/', 
-        'https://media.cnn.com/api/v1/images/stellar/',
-        'https://cdn.wionews.com/sites/default/',
-        'https://media.nature.com/',
-        "https://akm-img-a-in.tosshub.com/indiatoday/",
-        'https://img.icons8.com/'
-      ]
-    }
-  }
-}));
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static("src"));
 
-var port = 10000;
+app.use((req, res, next) => {
+  res.setHeader('Permissions-Policy', '');
+  next();
+});
 
 let db = new sql.Database("mailNews.db", (err) => {}); //Connect Database
 
@@ -160,22 +198,7 @@ db.run(
    date TEXT NOT NULL)`
 );
 
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.OAUTH2_CLIENT_ID,
-      clientSecret: process.env.OAUTH2_CLIENT_SECRET,
-      callbackURL:
-        process.env.NODE_ENV === "production"
-          ? "https://mailnews.onrender.com/process-google-auth"
-          : `http://localhost:${port}/process-google-auth`,
-      scope: ["https://www.googleapis.com/auth/plus.login"],
-    },
-    function (accessToken, refreshToken, profile, done) {
-      return done(null, profile._json);
-    }
-  )
-);
+
 var singleNewsBlock = `<table class="nl-container" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation"
 style="mso-table-lspace: 0; mso-table-rspace: 0; background-color: #020617; margin-top:7.5px; margin-bottom:7.5px; border: 2px white solid; padding: 1.5%; border-radius: 10px; width: 100%;">
 <tbody>
@@ -492,6 +515,7 @@ title="Medium" style="display:block;height:auto;border:0"></a></td></tr></table>
 
 app.use(passport.initialize());
 app.use(passport.session());
+
 passport.serializeUser(function (user, done) {
   done(null, user);
 });
@@ -584,8 +608,8 @@ function inSubscribingProcessCheck(req, res, next) {
   if (req.session.currentSubs) {
     return next();
   } else {
-    console.log("SUPER")
-    console.log(req.session)
+    console.log("SUPER");
+    console.log(req.session);
     res.redirect("/signin");
   }
 }
@@ -633,8 +657,9 @@ app.post("/signin", (req, res) => {
               { maxAge: 3600000 * 24 * 7, httpOnly: true }
             );
           }
-          
-         req.session.isAdmin = req.session.loggedin in process.env.ADMINS.split(";")
+
+          req.session.isAdmin =
+            req.session.loggedin in process.env.ADMINS.split(";");
           res.status(200).redirect("/dashboard");
         } else {
           res
@@ -745,7 +770,7 @@ app.post("/subscribe", (req, res) => {
 });
 
 app.get("/verify", inSubscribingProcessCheck, (req, res) => {
-  console.log("sad")
+  console.log("sad");
   res.sendFile(__dirname + "/src/emailverify.html");
 });
 
@@ -842,7 +867,6 @@ app.post("/verifyEmail", inSubscribingProcessCheck, async (req, res) => {
         "${req.session.currentSubs.topics}",
         ${req.session.currentSubs.slot})`,
       (err) => {
-        console.log(err);
         if (err) {
           res.status(400).send("Email Already Registered");
         } else {
@@ -890,13 +914,13 @@ app.get(
 app.get(
   "/process-google-auth",
   passport.authenticate("google", {
-    failureRedirect: "/signin",
+    failureRedirect: "/",
     successRedirect: "/google-auth-success",
     keepSessionInfo: true,
   })
 );
 
-app.get("/google-auth-success", ensureAuthenticated, (req, res) => {
+app.get("/google-auth-success", (req, res) => {
   if (req.session.loggedin) {
     db.run(
       `UPDATE users SET googleUID = '${req.user.sub}' WHERE emailID = '${req.session.loggedin}'`,

@@ -127,7 +127,7 @@
         <h1 class="font-bold text-2xl">Sign In To MailNews</h1>
 
         <form
-          action="javascript:submitForm()"
+          action="javascript:void"
           method="post"
           class="pt-4 gap-2 lg:px-3 lg:pt-4 lg:text-sm"
         >
@@ -137,7 +137,7 @@
             name="email"
             class="border-slate-800 border-2 border-solid rounded-lg w-full p-2 outline-nonelg:p-2 bg-slate-800 focus:bg-slate-700 duration-200 mb-5 text-white font-semibold"
             placeholder="Email"
-            onblur="validateEmail(this)"
+          
           />
           <input
             type="password"
@@ -225,91 +225,7 @@
       </div>
     </section>
   </body>
-  <script>
-    var currentPopUpTimeoutID;
-    function showPopup(textMessage, type = "info", durartion = 5000) {
-      clearTimeout(currentPopUpTimeoutID);
-      if (type === "err") {
-        popup.style.backgroundColor = "rgb(153, 27, 27)";
-      } else if (type === "info") {
-        popup.style.backgroundColor = "rgb(29, 78, 216)";
-      } else if (type === "warn") {
-        popup.style.backgroundColor = "rgb(202, 138, 4)";
-      }
-      popup.textContent = textMessage;
-      popup.classList.add("mr-7");
-      popup.classList.remove("translate-x-100");
-
-      currentPopUpTimeoutID = setTimeout(() => {
-        popup.classList.remove("mr-7");
-        popup.classList.add("translate-x-100");
-      }, durartion);
-    }
-
-    fetch("/autologin", {
-      method: "GET",
-    })
-      .then((res) => {
-        if (res.status === 202) {
-          showPopup("Attempting Auto Login", "info", 2000);
-        }
-      })
-      .then(async () => {
-        setTimeout(() => {
-          fetch("/autologin", {
-            method: "POST",
-          }).then((res) => {
-            if (res.status === 406) {
-              showPopup(
-                "Auto Login Failed, Login and Select Save Login Information To Save Info Again",
-                "err",
-                7500
-              );
-            } else if (res.status === 200) {
-              window.location.href = "/dashboard";
-            }
-          });
-        }, 2000);
-      });
-
-    function validateEmail(ele) {
-      if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(ele.value)) {
-        (ele.style.border = "2px solid rgb(34, 197, 94)"),
-          document
-            .querySelector("button[type='submit']")
-            .removeAttribute("disabled");
-      } else {
-        (ele.style.border = "2px solid red"),
-          (ele.value = ""),
-          ele.setAttribute("placeholder", "Enter a Valid E-Mail"),
-          document
-            .querySelector("button[type='submit']")
-            .setAttribute("disabled", "disabled");
-      }
-    }
-
-    function submitForm() {
-      var processedData = new URLSearchParams(new FormData(document.forms[0]));
-      processedData.append(
-        "saveLogin",
-        document.forms[0].querySelector("input[name='saveInfo']").checked
-      );
-      fetch("/signin", {
-        method: "POST",
-        body: processedData,
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      }).then(async (res) => {
-        if (res.status == 401) {
-          showPopup(await res.text(), "err", 7500);
-        } else if (res.status == 404) {
-          showPopup(await res.text(), "err", 7500);
-        }
-        else if (res.status == 200) {
-          window.location.href = "/dashboard";
-        }
-      });
-    }
-  </script>
+  <script src="./JS_CODES/popup_mobileMenu.js">
+</script>
+<script src="./JS_CODES/signin.js"> </script>
 </html>
