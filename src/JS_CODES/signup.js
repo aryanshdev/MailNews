@@ -128,19 +128,19 @@ document.querySelector("#signup").addEventListener("submit" , ()=>{
     submitForm()
 });
 
-document.querySelector("input[name='email']").addEventListener("blur" , (listner)=>{
+document.querySelector("input[name='email']").addEventListener("input" , (listner)=>{
     validateEmail(listner.target);
 });
 
-document.querySelector("input[name='name']").addEventListener("blur" , (listner)=>{
+document.querySelector("input[name='name']").addEventListener("input" , (listner)=>{
     checkNameFill(listner.target);
 });
 
-document.querySelector("input[name='pass']").addEventListener("blur" , (listner)=>{
+document.querySelector("input[name='pass']").addEventListener("input" , (listner)=>{
     validatePasswordPattern(listner.target);
 });
 
-document.querySelector("input[name='conpass']").addEventListener("blur" , (listner)=>{
+document.querySelector("input[name='conpass']").addEventListener("input" , (listner)=>{
     validateSamePassword(listner.target);
 });
 

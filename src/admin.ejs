@@ -102,13 +102,13 @@
           Subs in 15 Days: <span id="last15"></span>
         </div>
         <div class="w-full h-full bg-slate-800 bg-opacity-55 text-white rounded-lg p-2 font-semibold text-lg">
-          Avg User Per Slot: <span id="subperday"></span>
+          Avg User Per Slot: <span id="subsperslot"></span>
         </div>
       </div>
       <div class="w-full">
         <canvas id="subsChart" class="w-1/2 h-1/2 fill-white !min-h-60 "></canvas>
       </div>
-      <div class="flex justify-center" onchange="UpdateChart()">
+      <div class="flex justify-center"  id="subsChartDiv">
         <select name="time" id="subsChart"
           class="bg-slate-800 rounded-xl text-white px-5 text-base py-2 w-fit font-semibold">
           <option value="week">Last Week</option>
@@ -171,14 +171,15 @@
       <h1 class="font-semibold text-xl">No New or Unreplied Issue/Query</h1>
       <% } for(var queryIssue of queryIssueData){ %>
         <%- include('QueryDisplay.ejs', {querytitle:queryIssue.content, id:queryIssue.id , date:queryIssue.date,
-          name:queryIssue.name, email:queryIssue.email, displayReply:"*/"}) %>
+          name:queryIssue.name, email:queryIssue.email, nonceID : nonce ,  displayReply:"*/"}) %>
           <% } %>
   </div>
 </body>
 
 </html>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script nonce="">
+<script nonce="<%= nonce %>" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="./JS_CODES/popup_mobileMenu.js"></script>
+<script nonce="<%= nonce %>">
   var subsChartDisplay = document.getElementById('subsChart');
   var topicPieChart = document.getElementById("topicTotalChart");
   var slotChart = document.getElementById("timeSlotChartArea");
@@ -223,6 +224,7 @@
     }, {});
 
   document.getElementById('subperday').innerText = (<%= totalSubscribers %> / Object.keys(DateWiseSubs).length).toFixed(2);
+  document.getElementById('subsperslot').innerText = (<%= totalSubscribers %> / 48).toFixed(2);
   //#endregion
 
   var topicsDataProcessed = {}
@@ -400,7 +402,16 @@
         }, 2000);
       }
     })
-  }
+  };
 
+  
+  
+document.querySelector("select#subsChart").addEventListener("change", ()=>{UpdateChart()});
 
+document.querySelectorAll("form").forEach((ele)=>{
+  ele.addEventListener("submit", (listener)=>{
+    listener.preventDefault();
+    submitReply(listener.target.getAttribute("compID"));
+  })
+});
 </script>

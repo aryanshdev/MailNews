@@ -93,12 +93,14 @@ const app = express();
 
 var port = 10000;
 
+// Content Security Policy configuration
 const cspConfig = {
   directives: {
     defaultSrc: ["'self'"],
     imgSrc: [
       "'self'",
       "data:",
+      "https://pagead2.googlesyndication.com",
       "https://c.ndtvimg.com",
       "https://techcrunch.com/wp-content/",
       "https://media.cnn.com/api/v1/images/stellar/",
@@ -106,22 +108,33 @@ const cspConfig = {
       "https://media.nature.com/",
       "https://akm-img-a-in.tosshub.com/indiatoday/",
       "https://img.icons8.com/",
-      "https://lh3.googleusercontent.com" // Add Google user images
+      "https://lh3.googleusercontent.com", // Google user images
     ],
     scriptSrc: [
       "'self'",
-      "'unsafe-inline'",
+      "https://pagead2.googlesyndication.com",
       "https://apis.google.com",
-      "https://accounts.google.com"
+      "https://accounts.google.com",
+      "https://tpc.googlesyndication.com",
+      "https://pagead2.googlesyndication.com/pagead/js",
     ],
-    frameSrc: ["'self'", "https://accounts.google.com"],
-    connectSrc: [
+    frameSrc: [
       "'self'",
       "https://accounts.google.com",
-      "https://oauth2.googleapis.com"
+      "https://googleads.g.doubleclick.net",
+      "https://pagead2.googlesyndication.com",
+    ],
+    connectSrc: [
+      "'self'",
+      "ws://localhost:10000",
+      "https://accounts.google.com",
+      "https://oauth2.googleapis.com",
+      "https://pagead2.googlesyndication.com",
     ],
     styleSrc: ["'self'", "'unsafe-inline'"],
-    fontSrc: ["'self'", "https://fonts.gstatic.com"], // Allow Google fonts if needed
+    fontSrc: ["'self'", "https://fonts.gstatic.com"],
+    formAction: ["'self'", "javascript:"],
+    navigateTo: ["'self'"],
   },
 };
 
@@ -129,7 +142,7 @@ const cspConfig = {
 app.use(
   helmet({
     contentSecurityPolicy: cspConfig,
-    hsts: process.env.NODE_ENV === "production", // Disable HSTS in development
+    hsts: false, // Disable HSTS in development
   })
 );
 
@@ -177,11 +190,6 @@ app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static("src"));
 
-app.use((req, res, next) => {
-  res.setHeader('Permissions-Policy', '');
-  next();
-});
-
 let db = new sql.Database("mailNews.db", (err) => {}); //Connect Database
 
 //DDL Commands
@@ -197,7 +205,6 @@ db.run(
    email TEXT NOT NULL, name TEXT NOT NULL, content TEXT NOT NULL,
    date TEXT NOT NULL)`
 );
-
 
 var singleNewsBlock = `<table class="nl-container" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation"
 style="mso-table-lspace: 0; mso-table-rspace: 0; background-color: #020617; margin-top:7.5px; margin-bottom:7.5px; border: 2px white solid; padding: 1.5%; border-radius: 10px; width: 100%;">
@@ -647,7 +654,6 @@ app.post("/signin", (req, res) => {
         ) {
           req.session.loggedin = row.emailID;
           req.session.loggedinName = row.name;
-          console.log(req.session);
           if (req.body.saveLogin === "true") {
             res.cookie(
               "__logcred__",
@@ -658,9 +664,10 @@ app.post("/signin", (req, res) => {
             );
           }
 
-          req.session.isAdmin =
-            req.session.loggedin in process.env.ADMINS.split(";");
-          res.status(200).redirect("/dashboard");
+          req.session.isAdmin = process.env.ADMINS.split(";").includes(
+            req.session.loggedin
+          );
+          res.sendStatus(200);
         } else {
           res
             .status(401)
@@ -682,6 +689,11 @@ app.get("/dashboard", ensureAuthenticated, (req, res) => {
   let email = req.session.loggedin;
   db.get(`SELECT * FROM users WHERE emailID = "${email}"`, async (err, row) => {
     if (row) {
+      var nonceCode = crypto.randomBytes(16).toString("hex");
+      res.setHeader(
+        "Content-Security-Policy",
+        `script-src 'self' 'nonce-${nonceCode}'`
+      );
       res.render(__dirname + "/src/dashboard.ejs", {
         isLoggedIn: true,
         selectedTopicsString: row.interests,
@@ -690,6 +702,7 @@ app.get("/dashboard", ensureAuthenticated, (req, res) => {
         ),
         timeSlot: row.emailslot,
         googleAuth: row.googleUID,
+        nonce:nonceCode,
       });
     } else {
       res.status(404).render(__dirname + "/src/error.ejs", {
@@ -871,7 +884,7 @@ app.post("/verifyEmail", inSubscribingProcessCheck, async (req, res) => {
           res.status(400).send("Email Already Registered");
         } else {
           delete req.session.registrationCode;
-          res.redirect("/registration-successful");
+          res.sendStatus(200);
         }
       }
     );
@@ -943,6 +956,9 @@ app.get("/google-auth-success", (req, res) => {
           if (row) {
             req.session.loggedin = row.emailID;
             req.user.email = row.emailID;
+            req.session.isAdmin = process.env.ADMINS.split(";").includes(
+              req.session.loggedin
+            );
             res.redirect("/dashboard");
           } else {
             if (row == undefined) {
@@ -1020,7 +1036,10 @@ app.post("/autologin", (req, res) => {
         if (row.password == hashedPass) {
           req.session.loggedin = row.emailID;
           req.session.loggedinName = row.name;
-          res.status(200).redirect("/dashboard");
+          req.session.isAdmin = process.env.ADMINS.split(";").includes(
+            req.session.loggedin
+          );
+          res.sendStatus(200);
         } else {
           res.sendStatus(406);
         }
@@ -1099,8 +1118,19 @@ async function fetchData(command) {
 }
 
 app.get("/admin", ensureAdmin, async (req, res) => {
+  const nonceCode = crypto.randomBytes(16).toString("hex");
   var queryData = await fetchData("SELECT * FROM query_issues");
   db.all("SELECT * FROM users", async (err, rows) => {
+    if (err) {
+      return res.status(500).send("Database query error");
+    }
+
+    // Set the Content-Security-Policy header with the nonce
+    res.setHeader(
+      "Content-Security-Policy",
+      `script-src 'self' 'nonce-${nonceCode}'`
+    );
+
     res.render(__dirname + "/src/admin.ejs", {
       totalSubscribers: rows.length,
       emailSlots: rows.reduce((acc, row) => {
@@ -1129,6 +1159,7 @@ app.get("/admin", ensureAdmin, async (req, res) => {
         }
         return acc;
       }, {}),
+      nonce: nonceCode,
       queryIssueData: queryData,
     });
   });
@@ -1170,11 +1201,12 @@ app.post("/reply", ensureAdmin, (req, res) => {
                 .replace("QUERY_ID", req.body.queryID),
             })
             .catch((err) => {
+              console.log(err)
               res.status(500).send("Some Error Occured");
             })
             .then(() => {
               db.run(
-                `DELETE  FROM query_issues WHERE id = '${req.body.queryID}'`
+                `DELETE FROM query_issues WHERE id = '${req.body.queryID}'`
               );
               res.status(200).send("Successfully Replied");
             });

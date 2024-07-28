@@ -24,10 +24,10 @@ fetch("/autologin", {
             7500
           );
         } else if (res.status === 200) {
-          window.location.href = "/dashboard";
+            window.location.href="/dashboard";
         }
-      });
-    }, 2000);
+       
+      });}, 2250);
   });
 
 function validateEmail(ele) {
@@ -71,3 +71,7 @@ function submitForm() {
 document.querySelector("input[name='email']").addEventListener("blur", (listner)=>{
     validateEmail(listner.target);
 })
+
+document.querySelector("form").addEventListener("submit", (e) => {
+  submitForm();
+});

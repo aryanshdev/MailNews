@@ -32,92 +32,68 @@
     class="bg-green-400 -z-10 blur-3xl w-56 h-56 fixed -top-14 opacity-60 md:opacity-85 rounded-full -left-14 md:-left-7 md:-top-2 md:animate-pulse">
   </div>
 
-  <nav
-  class="fixed bg-slate-950 bg-opacity-90 lg:bg-opacity-45 top-0 left-0 w-full px-4 py-0 backdrop-blur-lg text-white z-20 flex items-center h-12 justify-between"
->
-  <div class="w-screen flex flex-wrap items-center justify-between p-2">
-    <a href="/">
-      <span
-        class="self-center text-xl font-semibold whitespace-nowrap text-white"
-        >MailNews</span
-      >
-    </a>
-    <button
-      id="navbar-solid-bg-btn"
-      data-collapse-toggle="navbar-solid-bg-btn"
-      type="button"
-      class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-      aria-controls="navbar-solid-bg"
-      aria-expanded="false"
-    >
-      <span class="sr-only">Open main menu</span>
-      <svg
-        class="w-5 h-5"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 17 14"
-      >
-        <path
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M1 1h15M1 7h15M1 13h15"
-        />
-      </svg>
-    </button>
-    <div
-      id="mobile-menu"
-      class="hidden top-10 lg:hidden w-screen fixed text-center left-0 z-50 rounded-br-lg rounded-bl-lg bg-slate-950 backdrop-blur-2xl duration-500"
-    >
-      <a href="/" class="block text-white py-2 px-4">Home</a>
-      <a href="/news" class="block text-white py-2 px-4">News</a>
-      <a
-        href="/logout"
-        class="block text-white py-2 px-4 font-semibold"
-      >
-     Logout
+ <div class="flex w-full fixed z-50 justify-center mx-auto top-2">
+  <nav id="nav" class="flex text-xl w-[98vw] bg-opacity-20 h-14 backdrop-blur-3xl rounded-full bg-gray-500 px-4 py-0 text-white items-center  justify-center">
+
+    <div class="w-screen flex flex-wrap items-center justify-between p-0">
+      <a href="/">
+        <span id="titleName" class="self-center text-2xl font-semibold whitespace-nowrap text-transparent animate-gradient-4 bg-[length:200%_auto] bg-[linear-gradient(to_right,theme(colors.blue.500),theme(colors.purple.500),theme(colors.pink.500),theme(colors.yellow.500),theme(colors.pink.500),theme(colors.purple.400),theme(colors.blue.500))] bg-clip-text ml-3">MailNews</span>
       </a>
-      <a href="/contact" class="block text-white py-2 px-4">Contact</a>
+      <button id="navbar-solid-bg-btn" data-collapse-toggle="navbar-solid-bg-btn" type="button" class="inline-flex items-center p-2 justify-center text-base font-bold text-w-500 rounded-lg md:hidden hover:bg-transparent text-gray-400 focus:outline-none focus:bg-transparent" aria-controls="navbar-solid-bg" aria-expanded="false">
+        <span class="sr-only">Open main menu</span>
+        Explore <span class="ml-1" id="navArrow">
+          <img class=" !transition-all !duration-200 w-5 h-5" loading="eager" src="https://img.icons8.com/ios-filled/9CA3AF/50/expand-arrow--v1.png" alt="expand-arrow--v1">
+            </span>
+      </button>
+      <div id="mobile-menu" class="hidden top-12 lg:hidden w-full rounded-xl text-xl fixed text-left z-50 bg-slate-900 bg-opacity-100 opacity-100 backdrop-blur-3xl duration-500 p-0 left-0 font-normal border-b-blue-600 border-b-2 text-yellow-400">
+    
+        <a href="/" class="flex   py-3 px-6 align-middle justify-between">Home
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"></path>
+          </svg>
+        </a>
+      
+        <a href="/news" class="flex   py-3 px-6 align-middle justify-between">News
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"></path>
+          </svg>
+        </a>
+        <a href="/contact" class="flex   py-3 px-6 align-middle justify-between">Contact
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"></path>
+          </svg>
+        </a>
+        <a href="/logout" class="flex   py-3 px-6 align-middle justify-between">Logout
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"></path>
+          </svg>
+        </a>
+      </div>
+      <div class="hidden w-full md:block md:w-auto" id="navbar-solid-bg">
+       
+        <ul class="flex flex-col transition-all duration-500 !text-center justify-evenly font-medium mt-4 rounded-lg bg-gray-50 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent">
+          
+          <li>
+            <a href="/" class="block py-2 px-3 md:p-0 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 hover:text-pink-500 duration-300 text-yellow-400 md:dark:hover:bg-transparent ml-3 lg:ml-6 ">Home</a>
+          </li>
+          <li>
+            <a href="/news" class="block py-2 px-3 md:p-0 hover:text-pink-500 duration-300 text-yellow-400 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent ml-3 lg:ml-6 ">
+              News
+            </a>
+          </li>
+          <li>
+            <a href="/contact" class="block py-2 px-3 md:p-0 hover:text-pink-500 duration-300 text-yellow-400 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent ml-3 lg:ml-6 ">
+             Contact
+            </a>
+          </li>
+          <li>
+            <a href="/logout" class="block py-2 px-3 md:p-0 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 hover:text-pink-500 duration-300 text-green-400 md:dark:hover:bg-transparent ml-3 lg:ml-6 ">Logout</a>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="hidden w-full md:block md:w-auto" id="navbar-solid-bg">
-      <ul
-        class="flex flex-col font-medium mt-4 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent"
-      >
-        <li>
-          <a
-            href="/"
-            class="block py-2 px-3 md:p-0 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent"
-            aria-current="page"
-            >Home</a
-          >
-        </li>
-        <li>
-          <a
-            href="#"
-            class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent"
-            >News</a
-          >
-        </li>
-        <li>
-          <a
-          href="/logout"
-            class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent">
-            Logout
-          </a>
-        </li>
-        <li>
-          <a
-            href="/contact"
-            class="block py-2 px-3 md:p-0 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:dark:hover:bg-transparent"
-            >Contact</a
-          >
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+  </nav>
+ </div>
 
   <!-- SIDE NAVBAR ON LARGE DISPLAY -->
   <div
@@ -134,7 +110,7 @@
   <!-- TOP NAVBAR ON SMALL DISPLAY -->
   <div class="w-screen lg:w-4/5 h-auto overflow-x-scroll pt-12" id="progressAttach">
     <div
-      class="flex lg:hidden h-auto whitespace-nowrap overflow-y-scroll scroll-smooth top-0 pt-1 z-10 sticky bg-slate-800 text-white font-semibold text-lg bg-opacity-25 backdrop-blur-lg flex-row text-center">
+      class="flex lg:hidden h-auto whitespace-nowrap overflow-y-scroll scroll-smooth top-0 pt-1 z-10 sticky bg-slate-800 text-white font-semibold text-lg bg-opacity-25 backdrop-blur-lg flex-row text-center rounded-full w-[98vw]">
       <div class="sticky py-2 flex text-center h-fit overflow-x-scroll flex-row flex-wrap w-screen">
         <div class="w-1/2 text-center duration-300" id="Prefrences-btn">
           <a href="#Prefrences"
@@ -174,39 +150,36 @@
         <fieldset
           class="grid grid-cols-2 gap-2 mt-4 lg:grid-cols-3 lg:w-2/3 lg:gap-y-4 text-white text-lg align-middle justify-center lg:gap-1">
           <div class="flex items-center">
-            <input type="checkbox" id="World" name="World" value="World" onclick="javascript:updateTopicList()"
-              class="mr-3 checked:accent-green-500" />
+            <input type="checkbox" id="World" name="World" value="World" class="mr-3 checked:accent-green-500" />
             <label for="option1">World</label>
           </div>
           <div class="flex items-center">
-            <input type="checkbox" id="Science" name="Science" value="Science" onclick="javascript:updateTopicList()"
-              class="mr-3 checked:accent-green-500" />
+            <input type="checkbox" id="Science" name="Science" value="Science" class="mr-3 checked:accent-green-500" />
             <label for="option2">Science</label>
           </div>
           <div class="flex items-center">
-            <input type="checkbox" id="Tech" name="Tech" value="Tech" onclick="javascript:updateTopicList()"
-              class="mr-3 checked:accent-green-500" />
+            <input type="checkbox" id="Tech" name="Tech" value="Tech" class="mr-3 checked:accent-green-500" />
             <label for="option3">Tech</label>
           </div>
           <div class="flex items-center">
-            <input type="checkbox" id="Business" name="Business" value="Business" onclick="javascript:updateTopicList()"
+            <input type="checkbox" id="Business" name="Business" value="Business"
               class="mr-3 checked:accent-green-500" />
             <label for="option4">Business</label>
           </div>
           <div class="flex items-center">
-            <input type="checkbox" id="Sports" name="Sports" value="Sports" onclick="javascript:updateTopicList()"
+            <input type="checkbox" id="Sports" name="Sports" value="Sports"
               class="mr-3 checked:accent-green-500 checked:bg-green-600" />
             <label for="option5">Sports</label>
           </div>
           <div class="flex items-center w-full overflow-clip break-words">
             <input type="checkbox" id="Entertainment" name="Entertainment" value="Entertainment"
-              onclick="javascript:updateTopicList()" class="mr-3 checked:accent-green-500" />
+              class="mr-3 checked:accent-green-500" />
             <label for="option6">Entertainment</label>
           </div>
         </fieldset>
         <button id="topicUpdateButton"
           class="!bg-slate-700 text-white rounded-full px-12 py-2 lg:px-7 lg:py-2 mt-5 font-semibold text-lg disabled:bg-opacity-70 disabled:text-gray-400 transition-all duration-300"
-          disabled="disabled" onclick="javascript:updateTopics()">
+          disabled="disabled">
           Save Changes
         </button>
       </div>
@@ -216,22 +189,22 @@
           at:</label>
         <input type="time" name="time" id="time"
           class="ml-3 col-span-2 bg-slate-800 font-semibold text-xl px-5 py-2 rounded-full min-w-max mb-2" step="1800"
-          value="00:00" onchange="javascript:updateTimeButton()" />
+          value="00:00" />
 
       </div>
       Email timings are based on Server's UTC timing conversions, hence your selected time may vary a little.
-      <button id="timeUpdateButton" disabled="disabled" type="submit" onclick="javascript:updateTime()"
+      <button id="timeUpdateButton" disabled="disabled" type="submit"
         class="!bg-slate-700 text-white rounded-full px-12 py-2 lg:px-7 lg:py-2 mt-5 font-semibold text-lg disabled:bg-opacity-70 disabled:text-gray-400 transition-all duration-300 block">
         Update Timing
       </button>
       <div class="mt-6 mb-10">
         <h1 class="text-xl font-bold text-white mt-10 mb-5">Issues and Queries Raised</h1>
-        <% if(queryIssueData.length == 0) { %>
+        <% if(queryIssueData.length==0) { %>
           <h1 class="font-semibold text-lg">No Unreplied Issue/Query</h1>
-        <% } for(var queryIssue of queryIssueData){ %>
-            <%-  include('QueryDisplay.ejs', {querytitle:queryIssue.content, id:queryIssue.id , date:queryIssue.data,
-            name:queryIssue.name, email:queryIssue.email, displayReply:"none"}) %>
-         <% } %>
+          <% } for(var queryIssue of queryIssueData){ %>
+            <%- include('QueryDisplay.ejs', {querytitle:queryIssue.content, id:queryIssue.id , date:queryIssue.data,
+              name:queryIssue.name, email:queryIssue.email, displayReply:"none"}) %>
+              <% } %>
       </div>
       <div class="flex justify-center w-full">
 
@@ -244,10 +217,8 @@
         <p class="mt-2">
           Connected Google Account Makes It Easier To Sign In and Login Even If You Forget Your Password
         </p>
-          <button
-            class=" !bg-slate-700 text-white rounded-full px-7 gap-5 py-2 lg:px-7 lg:py-2 mt-5 font-semibold text-lg
-          flex justify-evenly items-center"
-          onclick="javascript:<%-  googleAuth  ? 'window.location.href=`/disconnect-google`' : 'window.location.href=`/connect-google-post`' %>">
+        <button id="googleButton" class=" !bg-slate-700 text-white rounded-full px-7 gap-5 py-2 lg:px-7 lg:py-2 mt-5 font-semibold text-lg
+          flex justify-evenly items-center">
           <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="35" height="35" viewBox="0 0 48 48">
             <path fill="#FFC107"
               d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z">
@@ -263,44 +234,43 @@
             </path>
           </svg>
           <%- googleAuth ? 'Connected' : 'Connect' %>
-            </button>
-            <p class="mt-3">Click button to <%- googleAuth ? 'Disconnect' : 'Connect' %> </p>
-            <h3 class="font-bold text-xl mt-5 text-white">Change Name </h3>
-            <form action="javascript:submitNameChange()">
-              <input type="text"
-                class="border-slate-800 border-2 border-solid rounded-lg mt-3 p-2 outline-none lg:p-2 w-full md:w-1/2 bg-slate-800 focus:bg-slate-700 duration-200 mb-2 text-white font-semibold"
-                required placeholder="Enter New Name">
-              <button type="submit"
-                class="!bg-slate-700 ml-3 text-white rounded-full px-9 py-2 lg:px-4 lg:py-2 mt-1 font-semibold text-lg disabled:opacity-75">Change</button>
-            </form>
+        </button>
+        <p class="mt-3">Click button to <%- googleAuth ? 'Disconnect' : 'Connect' %> </p>
+        <h3 class="font-bold text-xl mt-5 text-white">Change Name </h3>
+        <form id="nameUpdateForm" action="javascript:void">
+          <input type="text"
+            class="border-slate-800 border-2 border-solid rounded-lg mt-3 p-2 outline-none lg:p-2 w-full md:w-1/2 bg-slate-800 focus:bg-slate-700 duration-200 mb-2 text-white font-semibold"
+            required placeholder="Enter New Name">
+          <button type="submit"
+            class="!bg-slate-700 ml-3 text-white rounded-full px-9 py-2 lg:px-4 lg:py-2 mt-1 font-semibold text-lg disabled:opacity-75">Change</button>
+        </form>
 
-            <h3 class="font-bold text-xl mt-5 text-white">Change Account Password </h3>
-            <form action="javascript:submitPasswordChange()">
-              <div class="w-full flex flex-row flex-wrap gap-2">
-                <input type="text"
-                  class="border-slate-800 inline border-2 border-solid  rounded-lg mt-3 p-2 outline-none lg:p-2 w-full md:w-1/2 bg-slate-800 focus:bg-slate-700 duration-200 mb-2 text-white font-semibold"
-                  onchange="javascript:updatePasswordButton()" required name="oldPass"
-                  placeholder="Enter Current Password">
-                <input type="text"
-                  class="border-slate-800 inline border-2 border-solid rounded-lg p-2 outline-none lg:p-2 w-full md:w-1/2 bg-slate-800 focus:bg-slate-700 duration-200 mb-2 text-white font-semibold"
-                  onchange="javascript:updatePasswordButton()" required name="newPass" placeholder="Enter New Password">
-              </div>
-              <p class="mb-5 text-slate-300 font-light text-sm transition-all duration-200" id="password-hint">
-                Password Should Be Atleast 6 Characters And Contain Letters, Atleast
-                1 Symbol and 1 Number
-              </p>
-              <button type="submit" id="passwordUpdateButton" disabled="disabled"
-                class="!bg-slate-700  text-white rounded-full px-9 py-2 lg:px-4 lg:py-2 mt-1 font-semibold text-lg disabled:opacity-75">Change</button>
-            </form>
-            <div class="text-center my-10"><button type="button" onclick="javascript:window.location.href='/logout'"
-                class="!bg-slate-700  text-white rounded-full px-9 py-2 lg:px-4 lg:py-2 mt-1 font-semibold text-lg disabled:opacity-75">Logout</button>
-            </div>
-            <div class="text-center mt-20 p-2">
-              <h1 class="font-bold text-2xl">Danger Zone</h1>
-              <button onclick="javascript:DeleteAccountAskConfirm()" id="DeleteAccountButton"
-                class="!bg-red-700 mt-5 mb-5 text-white rounded-full px-9 py-2 lg:px-4 lg:py-2  font-semibold text-lg disabled:opacity-75 self-center">Delete
-                Account</button>
-            </div>
+        <h3 class="font-bold text-xl mt-5 text-white">Change Account Password </h3>
+        <form action="javascript:void">
+          <div class="w-full flex flex-row flex-wrap gap-2">
+            <input type="text"
+              class="border-slate-800 inline border-2 border-solid  rounded-lg mt-3 p-2 outline-none lg:p-2 w-full md:w-1/2 bg-slate-800 focus:bg-slate-700 duration-200 mb-2 text-white font-semibold"
+              required name="oldPass" placeholder="Enter Current Password">
+            <input type="text"
+              class="border-slate-800 inline border-2 border-solid rounded-lg p-2 outline-none lg:p-2 w-full md:w-1/2 bg-slate-800 focus:bg-slate-700 duration-200 mb-2 text-white font-semibold"
+              required name="newPass" placeholder="Enter New Password">
+          </div>
+          <p class="mb-5 text-slate-300 font-light text-sm transition-all duration-200" id="password-hint">
+            Password Should Be Atleast 6 Characters And Contain Letters, Atleast
+            1 Symbol and 1 Number
+          </p>
+          <button type="submit" id="passwordUpdateButton" disabled="disabled"
+            class="!bg-slate-700  text-white rounded-full px-9 py-2 lg:px-4 lg:py-2 mt-1 font-semibold text-lg disabled:opacity-75">Change</button>
+        </form>
+        <div class="text-center my-10"><button type="button" id="logoutButton"
+            class="!bg-slate-700  text-white rounded-full px-9 py-2 lg:px-4 lg:py-2 mt-1 font-semibold text-lg disabled:opacity-75">Logout</button>
+        </div>
+        <div class="text-center mt-20 p-2">
+          <h1 class="font-bold text-2xl">Danger Zone</h1>
+          <button id="DeleteAccountButton"
+            class="!bg-red-700 mt-5 mb-5 text-white rounded-full px-9 py-2 lg:px-4 lg:py-2  font-semibold text-lg disabled:opacity-75 self-center">Delete
+            Account</button>
+        </div>
       </div>
     </div>
     <style>
@@ -308,34 +278,9 @@
         content: url("https://img.icons8.com/ios-glyphs/100/ffffff/clock--v1.png");
       }
     </style>
-    <script>
-      document
-        .getElementById("navbar-solid-bg-btn")
-        .addEventListener("click", function () {
-          document.getElementById("mobile-menu").classList.toggle("hidden");
-          document.getElementById("arrow-left").classList.toggle("hidden");
-          document.getElementById("arrow-right").classList.toggle("hidden");
-        });
+    <script src="./JS_CODES/popup_mobileMenu.js"></script>
+    <script nonce="<%= nonce %>">
 
-      var currentPopUpTimeoutID;
-      function showPopup(textMessage, type = "info", durartion = 5000) {
-        clearTimeout(currentPopUpTimeoutID);
-        if (type === "err") {
-          popup.style.backgroundColor = "rgb(153, 27, 27)";
-        } else if (type === "info") {
-          popup.style.backgroundColor = "rgb(29, 78, 216)";
-        } else if (type === "warn") {
-          popup.style.backgroundColor = "rgb(202, 138, 4)";
-        }
-        popup.textContent = textMessage;
-        popup.classList.add("mr-7");
-        popup.classList.remove("translate-x-100");
-
-        currentPopUpTimeoutID = setTimeout(() => {
-          popup.classList.remove("mr-7");
-          popup.classList.add("translate-x-100");
-        }, durartion);
-      }
 
       document.getElementById("greeting").textContent =
         new Date().getHours() < 12
@@ -344,13 +289,12 @@
             ? "Afternoon"
             : "Evening";
 
-            var d = new Date();
-      console.log(<%= timeSlot %>);
-      d.setUTCHours(parseInt(<%= timeSlot %>/2) ,  parseInt(<%= timeSlot %>/2) == (<%= timeSlot %>/2) ? 0 : 30 , 0, 0);
+      var d = new Date();
+      d.setUTCHours(parseInt(<%= timeSlot %> /2) ,  parseInt(<%= timeSlot %>/2) == (<%= timeSlot %>/2) ? 0 : 30, 0, 0);
       document.getElementById("time").value = (d.getHours() > 9 ? d.getHours() : '0' + d.getHours()) + ":" + (d.getMinutes() > 9 ? d.getMinutes() : '0' + d.getMinutes());
 
       function updateTimeButton() {
-        if (document.getElementById("time").value !== (d.getHours() > 9 ? d.getHours() : '0' + d.getHours()) + ":" + (d.getUTCMinutes() > 9 ? d.getUTCMinutes() : '0' + d.getUTCMinutes())) {
+        if (document.getElementById("time").value != (d.getHours() > 9 ? d.getHours() : '0' + d.getHours()) + ":" + (d.getMinutes() > 9 ? d.getMinutes() : '0' + d.getMinutes())) {
           document
             .querySelector("#timeUpdateButton")
             .removeAttribute("disabled");
@@ -380,9 +324,9 @@
         }).then((res) => {
           console.log(res);
           if (res.status === 200) {
-            showPopup("Password Updated Successfully", "info");
+            showPopup("Password Updated Successfully", "success");
           } else if (res.status === 400) {
-            showPopup("Current Password Wrong ! \nPlease Check And Try Again", "warn");
+            showPopup("Current Password Wrong ! \nPlease Check And Try Again", "err");
           } else if (res.status === 401) {
             showPopup("Session Expired ! \nPlease Login Again", "warn");
             setTimeout(() => {
@@ -401,14 +345,14 @@
         d.setHours(time.split(":")[0], time.split(":")[1], 0, 0);
         fetch("/updateSlot", {
           method: "POST",
-          body: new URLSearchParams({ timeSlot: parseInt(d.getUTCHours()*2 + parseInt(d.getUTCMinutes() / 30)) }),
+          body: new URLSearchParams({ timeSlot: parseInt(d.getUTCHours() * 2 + parseInt(d.getUTCMinutes() / 30)) }),
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
           },
         }).then((res) => {
           console.log(res);
           if (res.status === 200) {
-            showPopup("Mailing Time Updated Successfully", "info");
+            showPopup("Mailing Time Updated Successfully", "success");
             document
               .querySelector("#timeUpdateButton")
               .setAttribute("disabled", "disabled");
@@ -431,7 +375,6 @@
             topicList.push(checkbox.value);
           }
         });
-
         if (!onlyReturn) {
           if (
             topicList.sort().toString() !==
@@ -518,11 +461,12 @@
         });
       }
 
+
       function DeleteAccountAskConfirm() {
         showPopup("Are You Sure You Want To Delete Your Account ?! Select Delete Account Again To Delete", "warn", 10000);
-        document.getElementById("DeleteAccountButton").setAttribute("onclick", "javascript:DeleteAccount()");
+        document.getElementById("DeleteAccountButton").addEventListener("click", DeleteAccount);
         setTimeout(() => {
-          document.getElementById("DeleteAccountButton").setAttribute("onclick", "javascript:DeleteAccountAskConfirm()");
+          document.getElementById("DeleteAccountButton").addEventListener("click", DeleteAccountAskConfirm);
         }, 10000);
       }
       function DeleteAccount() {
@@ -548,6 +492,40 @@
         });
       }
 
+      function validatePasswordPattern(ele) {
+        if (
+          /(?=^.*[A-Za-z])(?=^.*\d)(?=^.*[!@#$%^&*+.-])^.+$/.test(ele.value) &&
+          ele.value.length >= 6
+        ) {
+          (ele.style.border = "2px solid rgb(34, 197, 94)"),
+            document
+              .querySelector("button[type='submit']")
+              .removeAttribute("disabled");
+        } else {
+          (ele.style.border = "2px solid red"),
+            document
+              .querySelector("button[type='submit']")
+              .setAttribute("disabled", "disabled");
+          validateSamePassword(ele.form.conpass);
+        }
+      }
+      document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+        checkbox.addEventListener("change", () => { updateTopicList() });
+      });
+      document.querySelector("#topicUpdateButton").addEventListener("click", updateTopics);
+      document.getElementById("time").addEventListener("change", updateTimeButton);
+      document.getElementById("timeUpdateButton").addEventListener("click", updateTime);
+      document.getElementById("passwordUpdateButton").addEventListener("click", submitPasswordChange);
+      document.getElementById("DeleteAccountButton").addEventListener("click", DeleteAccountAskConfirm);
+      document.querySelector('input[name="newPass"]').addEventListener("blur", updatePasswordButton);
+      document.querySelector('input[name="oldPass"]').addEventListener("blur", updatePasswordButton);
+      document.getElementById("googleButton").addEventListener("click", () => {
+        window.location.href = "<%= googleAuth ? '/disconnect-google' : '/connect-google-post' %>";
+      });
+      document.getElementById("nameUpdateForm").addEventListener("submit", submitNameChange);
+      document.getElementById("logoutButton").addEventListener("click", () => [
+        window.location.href = "/logout"
+      ])
     </script>
 </body>
 
